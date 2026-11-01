@@ -1,0 +1,2759 @@
+<html xmlns:o='urn:schemas-microsoft-com:office:office'
+      xmlns:w='urn:schemas-microsoft-com:office:word'
+      xmlns:v='urn:schemas-microsoft-com:vml'
+      xmlns='urn:w3-org-ns:HTML'>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>FSD-TMP Input VAT API Integration with Titan PI</title>
+    <!--[if gte mso 9]>
+    <xml>
+        <o:OfficeDocumentSettings>
+            <o:TargetScreenSize>1024x640</o:TargetScreenSize>
+            <o:PixelsPerInch>72</o:PixelsPerInch>
+            <o:AllowPNG/>
+        </o:OfficeDocumentSettings>
+        <w:WordDocument>
+            <w:View>Print</w:View>
+            <w:Zoom>90</w:Zoom>
+            <w:DoNotOptimizeForBrowser/>
+        </w:WordDocument>
+    </xml>
+    <![endif]-->
+    <style>
+                <!--
+        @page Section1 {
+            size: 8.5in 11.0in;
+            margin: 1.0in;
+            mso-header-margin: .5in;
+            mso-footer-margin: .5in;
+            mso-paper-source: 0;
+        }
+
+        table {
+            border: solid 1px;
+            border-collapse: collapse;
+        }
+
+        table td, table th {
+            border: solid 1px;
+            padding: 5px;
+        }
+
+        td {
+            page-break-inside: avoid;
+        }
+
+        tr {
+            page-break-after: avoid;
+        }
+
+        div.Section1 {
+            page: Section1;
+        }
+
+        /* Confluence print stylesheet. Common to all themes for print media */
+/* Full of !important until we improve batching for print CSS */
+
+@media print {
+    #main {
+        padding-bottom: 1em !important; /* The default padding of 6em is too much for printouts */
+    }
+
+    body {
+        font-family: Arial, Helvetica, FreeSans, sans-serif;
+        font-size: 10pt;
+        line-height: 1.2;
+    }
+
+    body, #full-height-container, #main, #page, #content, .has-personal-sidebar #content {
+        background: var(--ds-surface, #fff) !important;
+        color: var(--ds-text, #000) !important;
+        border: 0 !important;
+        width: 100% !important;
+        height: auto !important;
+        min-height: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        display: block !important;
+    }
+
+    a, a:link, a:visited, a:focus, a:hover, a:active {
+        color: var(--ds-link-pressed, #000);
+    }
+
+    #content h1,
+    #content h2,
+    #content h3,
+    #content h4,
+    #content h5,
+    #content h6 {
+        font-family: Arial, Helvetica, FreeSans, sans-serif;
+        page-break-after: avoid;
+    }
+
+    pre {
+        font-family: Monaco, "Courier New", monospace;
+    }
+
+    #header,
+    .aui-header-inner,
+    #navigation,
+    #sidebar,
+    .sidebar,
+    #personal-info-sidebar,
+    .ia-fixed-sidebar,
+    .page-actions,
+    .navmenu,
+    .ajs-menu-bar,
+    .noprint,
+    .inline-control-link,
+    .inline-control-link a,
+    a.show-labels-editor,
+    .global-comment-actions,
+    .comment-actions,
+    .quick-comment-container,
+    #addcomment {
+        display: none !important;
+    }
+
+    /* CONF-28544 cannot print multiple pages in IE */
+    #splitter-content {
+        position: relative !important;
+    }
+
+    .comment .date::before {
+        content: none !important; /* remove middot for print view */
+    }
+
+    h1.pagetitle img {
+        height: auto;
+        width: auto;
+    }
+
+    .print-only {
+        display: block;
+    }
+
+    #footer {
+        position: relative !important; /* CONF-17506 Place the footer at end of the content */
+        margin: 0;
+        padding: 0;
+        background: none;
+        clear: both;
+    }
+
+    #poweredby {
+        border-top: none;
+        background: none;
+    }
+
+    #poweredby li.print-only {
+        display: list-item;
+        font-style: italic;
+    }
+
+    #poweredby li.noprint {
+        display: none;
+    }
+
+    /* no width controls in print */
+    .wiki-content .table-wrap,
+    .wiki-content p,
+    .panel .codeContent,
+    .panel .codeContent pre,
+    .image-wrap {
+        overflow: visible !important;
+    }
+
+    /* TODO - should this work? */
+    #children-section,
+    #comments-section .comment,
+    #comments-section .comment .comment-body,
+    #comments-section .comment .comment-content,
+    #comments-section .comment p {
+        page-break-inside: avoid;
+    }
+
+    #page-children a {
+        text-decoration: none;
+    }
+
+    /**
+     hide twixies
+
+     the specificity here is a hack because print styles
+     are getting loaded before the base styles. */
+    #comments-section.pageSection .section-header,
+    #comments-section.pageSection .section-title,
+    #children-section.pageSection .section-header,
+    #children-section.pageSection .section-title,
+    .children-show-hide {
+        padding-left: 0;
+        margin-left: 0;
+    }
+
+    .children-show-hide.icon {
+        display: none;
+    }
+
+    /* personal sidebar */
+    .has-personal-sidebar #content {
+        margin-right: 0px;
+    }
+
+    .has-personal-sidebar #content .pageSection {
+        margin-right: 0px;
+    }
+
+    .no-print, .no-print * {
+        display: none !important;
+    }
+}
+-->
+    </style>
+</head>
+<body>
+    <h1>FSD-TMP Input VAT API Integration with Titan PI</h1>
+    <div class="Section1">
+        <h1 data-nh-numbering="1. " id="FSDTMPInputVATAPIIntegrationwithTitanPI-Roles&amp;Responsibilities"><span class="nh-number">1. </span>Roles &amp; Responsibilities</h1>
+<p><strong>Business Stakeholders</strong></p>
+<div class="table-wrap">
+ <table class="relative-table wrapped confluenceTable" style="width: 829.983px;">
+  <colgroup class="">
+   <col class="" style="width: 440.885px;">
+   <col class="" style="width: 387.986px;">
+  </colgroup>
+  <thead class="">
+   <tr class="">
+    <th style="text-align: left;vertical-align: top;" class="confluenceTh">
+     <p>Role</p></th>
+    <th style="text-align: left;vertical-align: top;" class="confluenceTh">
+     <p>Responsibility</p></th>
+   </tr>
+  </thead>
+  <tbody class="">
+   <tr class="">
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p><span style="color:#172b4d;">Business Excellence &amp; Transformation Manager</span></p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <div class="content-wrapper">
+      <ul class="inline-task-list" data-inline-tasks-content-id="296153961">
+       <li class="checked" data-inline-task-id="1" data-uuid="57dd5af8-1ae0-487c-b4c0-d2091d436ae7"><a class="confluence-userlink user-mention" data-username="chloe.zuo" href="/display/~chloe.zuo" data-linked-resource-id="20830401" data-linked-resource-version="1" data-linked-resource-type="userinfo" data-base-url="https://confluence">Chloe Zuo</a>&nbsp; Approve by <time datetime="2026-09-22" class="date-past">22 Sep 2026</time>&nbsp;</li>
+      </ul>
+     </div></td>
+   </tr>
+   <tr>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd"><span style="color:#172b4d;">Shanghai Financial Controller</span></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <div class="content-wrapper">
+      <ul class="inline-task-list" data-inline-tasks-content-id="296153961">
+       <li class="checked" data-inline-task-id="2" data-uuid="e0c0fec9-70cf-49f4-9f4d-83a51813071f"><a class="confluence-userlink user-mention" data-username="Sophia.Zhang" href="/display/~Sophia.Zhang" data-linked-resource-id="40642564" data-linked-resource-version="1" data-linked-resource-type="userinfo" data-base-url="https://confluence">Sophia Zhang</a> <span class="inline-comment-marker" data-ref="1f09fd55-3633-4166-babe-37cfb4a59d63">Approve</span> by <time datetime="2026-09-22" class="date-past">22 Sep 2026</time>&nbsp;</li>
+      </ul>
+     </div></td>
+   </tr>
+   <tr class="">
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd"><span style="color:#172b4d;">Shanghai Tax Manager</span></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <div class="content-wrapper">
+      <ul class="inline-task-list" data-inline-tasks-content-id="296153961">
+       <li class="checked" data-inline-task-id="3" data-uuid="b842f335-0264-49de-9e69-48d575dc8841">@Frank Bao <span class="inline-comment-marker" data-ref="e20bd164-df76-474d-a515-3de94e15bf4a">Review</span> by&nbsp;<time datetime="2026-09-22" class="date-past">22 Sep 2026</time>&nbsp;</li>
+      </ul>
+     </div></td>
+   </tr>
+   <tr>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd"><span style="color:#172b4d;"><span style="color:#172b4d;"><span style="color:#333333;">Supporting Operations Manager, China</span></span></span></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <div class="content-wrapper">
+      <ul class="inline-task-list" data-inline-tasks-content-id="296153961">
+       <li class="checked" data-inline-task-id="20" data-uuid="a6c94d1b-0e80-4f96-b6e7-e872353aa749"><a class="confluence-userlink user-mention" data-username="janny.kang" href="/display/~janny.kang" data-linked-resource-id="20826303" data-linked-resource-version="1" data-linked-resource-type="userinfo" data-base-url="https://confluence">Janny Kang</a>&nbsp; Approve by <time datetime="2026-09-22" class="date-past">22 Sep 2026</time>&nbsp;</li>
+      </ul>
+     </div></td>
+   </tr>
+   <tr>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd"><span style="color:#172b4d;"><span style="color:#172b4d;">Shanghai Refined Metals Traffic Operation Manager</span></span></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <div class="content-wrapper">
+      <ul class="inline-task-list" data-inline-tasks-content-id="296153961">
+       <li class="checked" data-inline-task-id="4" data-uuid="e009b1a4-ae60-4dd3-bb45-560ba4d695d9"><a class="confluence-userlink user-mention" data-username="jane.wu" href="/display/~jane.wu" data-linked-resource-id="20830783" data-linked-resource-version="1" data-linked-resource-type="userinfo" data-base-url="https://confluence">Jane Wu</a>&nbsp; Approve by <time datetime="2026-09-22" class="date-past">22 Sep 2026</time>&nbsp;</li>
+      </ul>
+     </div></td>
+   </tr>
+   <tr class="">
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd"><span style="color:#172b4d;">China Accounting Manager</span></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <div class="content-wrapper">
+      <ul class="inline-task-list" data-inline-tasks-content-id="296153961">
+       <li class="checked" data-inline-task-id="5" data-uuid="3eedda13-44e4-475f-a0f4-fd101a32bb3d"><a class="confluence-userlink user-mention" data-username="Amy.Zhou" href="/display/~Amy.Zhou" data-linked-resource-id="60962080" data-linked-resource-version="1" data-linked-resource-type="userinfo" data-base-url="https://confluence">Amy Zhou</a> &nbsp;Approve by <time datetime="2026-09-22" class="date-past">22 Sep 2026</time>&nbsp;</li>
+      </ul>
+     </div></td>
+   </tr>
+   <tr class="">
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd"><span style="color:#172b4d;">NF Concs. Ops Head,<span> </span></span>China</td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <div class="content-wrapper">
+      <ul class="inline-task-list" data-inline-tasks-content-id="296153961">
+       <li class="checked" data-inline-task-id="6" data-uuid="3c792576-f73c-4249-b631-080dc2e611bd"><a class="confluence-userlink user-mention" data-username="amber.zhu" href="/display/~amber.zhu" data-linked-resource-id="20829389" data-linked-resource-version="1" data-linked-resource-type="userinfo" data-base-url="https://confluence">Amber Zhu</a> Approve by <time datetime="2026-09-22" class="date-past">22 Sep 2026</time>&nbsp;</li>
+      </ul>
+     </div></td>
+   </tr>
+   <tr class="">
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd"><span style="color:#333333;">Pb/Zn/Ag RM SH Team Leader</span></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <div class="content-wrapper">
+      <ul class="inline-task-list" data-inline-tasks-content-id="296153961">
+       <li class="checked" data-inline-task-id="7" data-uuid="9814e38e-f808-4d6f-adb8-894eb6623b9b"><a class="confluence-userlink user-mention" data-username="Sara.Shen" href="/display/~Sara.Shen" data-linked-resource-id="24546542" data-linked-resource-version="1" data-linked-resource-type="userinfo" data-base-url="https://confluence">Sara Shen</a> Review by&nbsp;<time datetime="2026-09-22" class="date-past">22 Sep 2026</time>&nbsp;</li>
+      </ul>
+     </div></td>
+   </tr>
+   <tr>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd"><span style="color:#172b4d;"><span style="color:#333333;">Cu RM SH Team Leader</span></span></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <div class="content-wrapper">
+      <ul class="inline-task-list" data-inline-tasks-content-id="296153961">
+       <li class="checked" data-inline-task-id="8" data-uuid="fbddf8f6-5cd7-4907-b7c5-650923624a68"><a class="confluence-userlink user-mention" data-username="Phyllis.Ping" href="/display/~Phyllis.Ping" data-linked-resource-id="20830477" data-linked-resource-version="1" data-linked-resource-type="userinfo" data-base-url="https://confluence">Phyllis Ping</a>&nbsp; Review by <time datetime="2026-09-22" class="date-past">22 Sep 2026</time>&nbsp;</li>
+      </ul>
+     </div></td>
+   </tr>
+   <tr>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd"><span style="color:#172b4d;"><span style="color:#333333;">Al RM SH Team leader</span></span></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <div class="content-wrapper">
+      <ul class="inline-task-list" data-inline-tasks-content-id="296153961">
+       <li class="checked" data-inline-task-id="9" data-uuid="7ca2921f-c800-41a5-bcf9-e74e2496cc13"><a class="confluence-userlink user-mention" data-username="vanessa.zhang" href="/display/~vanessa.zhang" data-linked-resource-id="20826829" data-linked-resource-version="1" data-linked-resource-type="userinfo" data-base-url="https://confluence">Vanessa Zhang</a> Review by <time datetime="2026-09-22" class="date-past">22 Sep 2026</time>&nbsp;</li>
+      </ul>
+     </div></td>
+   </tr>
+   <tr class="">
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>Shanghai Ni/Co/FeNi Traffic Operation Manager</p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <div class="content-wrapper">
+      <ul class="inline-task-list" data-inline-tasks-content-id="296153961">
+       <li class="checked" data-inline-task-id="10" data-uuid="2d1bbafe-28fd-43f6-9e88-61b406463ecb">@Julie Jiang <span class="inline-comment-marker" data-ref="2daf0f0b-4a32-4021-918c-368083a64c67">Review</span> by <time datetime="2026-09-22" class="date-past">22 Sep 2026</time>&nbsp;</li>
+      </ul>
+     </div></td>
+   </tr>
+   <tr class="">
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>Shanghai Concs Pb/Zn Traffic Operation Manager</p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <div class="content-wrapper">
+      <ul class="inline-task-list" data-inline-tasks-content-id="296153961">
+       <li class="checked" data-inline-task-id="11" data-uuid="bd1fc868-3557-4c6f-9dd7-42e591f82ca3">@Monica Gao <span class="inline-comment-marker" data-ref="c40c37a7-4173-4e67-82e4-53ed318961c2">Review</span> by <time datetime="2026-09-22" class="date-past">22 Sep 2026</time>&nbsp;</li>
+      </ul>
+     </div></td>
+   </tr>
+   <tr class="">
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p><span style="color:#172b4d;">Shanghai Concs Copper Traffic Operation Manager</span></p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <div class="content-wrapper">
+      <ul class="inline-task-list" data-inline-tasks-content-id="296153961">
+       <li class="checked" data-inline-task-id="12" data-uuid="7ebd7939-6cf0-4310-8dce-87f26fb9118f">Jennie Chen <span class="inline-comment-marker" data-ref="845fd157-57d2-46e4-b5e0-6ab69395855f">Review</span> by <time datetime="2026-09-22" class="date-past">22 Sep 2026</time>&nbsp;</li>
+      </ul>
+     </div></td>
+   </tr>
+   <tr class="">
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p><span style="color:#172b4d;">Shanghai Bulk Operation Manager</span></p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <div class="content-wrapper">
+      <ul class="inline-task-list" data-inline-tasks-content-id="296153961">
+       <li class="checked" data-inline-task-id="13" data-uuid="13b0be44-10a6-4e50-904c-a4609dba74b8"><a class="confluence-userlink user-mention" data-username="Emma.Wei" href="/display/~Emma.Wei" data-linked-resource-id="20831116" data-linked-resource-version="1" data-linked-resource-type="userinfo" data-base-url="https://confluence">Emma Wei</a> Approve by <time datetime="2026-09-22" class="date-past">22 Sep 2026</time>&nbsp;</li>
+      </ul>
+     </div></td>
+   </tr>
+   <tr>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p><span style="color:#172b4d;">Mailroom team leader</span></p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <div class="content-wrapper">
+      <ul class="inline-task-list" data-inline-tasks-content-id="296153961">
+       <li data-inline-task-id="22" data-uuid="f590f6e0-ba95-4c03-b9c0-6ca194b6e0be"><a class="confluence-userlink user-mention" data-username="Yujun.Ma" href="/display/~Yujun.Ma" data-linked-resource-id="48305525" data-linked-resource-version="1" data-linked-resource-type="userinfo" data-base-url="https://confluence">Yujun Ma</a>Review by <time datetime="2026-09-22" class="date-past">22 Sep 2026</time>&nbsp;</li>
+      </ul>
+     </div></td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>A</p>
+<p><br></p>
+<p><strong>IT Stakeholders</strong></p>
+<div class="table-wrap">
+ <table class="relative-table wrapped confluenceTable" style="width: 861.424px;">
+  <colgroup class="">
+   <col class="" style="width: 441.667px;">
+   <col class="" style="width: 418.646px;">
+  </colgroup>
+  <thead class="">
+   <tr class="">
+    <th style="text-align: left;vertical-align: top;" class="confluenceTh">
+     <p>Role</p></th>
+    <th style="text-align: left;vertical-align: top;" class="confluenceTh">
+     <p>Responsibility</p></th>
+   </tr>
+  </thead>
+  <tbody class="">
+   <tr class="">
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p><span style="color:#172b4d;">China BO Business Analyst</span></p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <div class="content-wrapper">
+      <p><span style="color:#626f86;"><a class="confluence-userlink user-mention" data-username="Zoe.Zhang" href="/display/~Zoe.Zhang" data-linked-resource-id="124751974" data-linked-resource-version="1" data-linked-resource-type="userinfo" data-base-url="https://confluence">Zoe Zhang</a> Author <br></span></p>
+     </div></td>
+   </tr>
+   <tr class="">
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p><span style="color:#172b4d;">Back-office Functional lead</span></p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <div class="content-wrapper">
+      <ul class="inline-task-list" data-inline-tasks-content-id="296153961">
+       <li data-inline-task-id="14" data-uuid="cf1a8df5-deaf-43bc-967e-c1b7e08378f2"><a class="confluence-userlink user-mention" data-username="Hardik.Mehta" href="/display/~Hardik.Mehta" data-linked-resource-id="21856816" data-linked-resource-version="1" data-linked-resource-type="userinfo" data-base-url="https://confluence">Hardik Mehta</a> &nbsp;Approve by <time datetime="2026-09-22" class="date-past">22 Sep 2026</time>&nbsp;</li>
+      </ul>
+     </div></td>
+   </tr>
+   <tr class="">
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd"><span style="color:#333333;">Head of Delivery - Titan Financial Execution</span></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <div class="content-wrapper">
+      <ul class="inline-task-list" data-inline-tasks-content-id="296153961">
+       <li data-inline-task-id="15" data-uuid="34c26c8f-3950-4ccb-8197-2c677483f3cf"><a class="confluence-userlink user-mention" data-username="Abhishek.Shinde" href="/display/~Abhishek.Shinde" data-linked-resource-id="45261113" data-linked-resource-version="1" data-linked-resource-type="userinfo" data-base-url="https://confluence">Abhishek Shinde</a> Review by&nbsp;<time datetime="2026-09-22" class="date-past">22 Sep 2026</time>&nbsp;</li>
+      </ul>
+     </div></td>
+   </tr>
+   <tr>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p><span style="color:#172b4d;">Lead Business Analyst - Treasury</span></p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <div class="content-wrapper">
+      <ul class="inline-task-list" data-inline-tasks-content-id="296153961">
+       <li data-inline-task-id="21" data-uuid="d0b7c590-a363-4ebe-bd11-8292f838542a"><a class="confluence-userlink user-mention" data-username="Anoop.K" href="/display/~Anoop.K" data-linked-resource-id="27042389" data-linked-resource-version="1" data-linked-resource-type="userinfo" data-base-url="https://confluence">Anoop K</a>&nbsp; Review by <time datetime="2026-09-22" class="date-past">22 Sep 2026</time>&nbsp;</li>
+      </ul>
+     </div></td>
+   </tr>
+   <tr class="">
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p><span style="color:#172b4d;">PI &amp; SI Lead BA</span></p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <div class="content-wrapper">
+      <ul class="inline-task-list" data-inline-tasks-content-id="296153961">
+       <li data-inline-task-id="16" data-uuid="d9cf4bc8-6d52-4051-88ae-aaee76bc02b9"><a class="confluence-userlink user-mention" data-username="Ketan.Vajani" href="/display/~Ketan.Vajani" data-linked-resource-id="180133050" data-linked-resource-version="1" data-linked-resource-type="userinfo" data-base-url="https://confluence">Ketan Vajani</a> Approve by <time datetime="2026-09-22" class="date-past">22 Sep 2026</time>&nbsp;</li>
+      </ul>
+     </div></td>
+   </tr>
+   <tr>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p><span style="color:#172b4d;"><span style="color:#333333;">Senior Technical Lead</span></span></p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <div class="content-wrapper">
+      <ul class="inline-task-list" data-inline-tasks-content-id="296153961">
+       <li data-inline-task-id="17" data-uuid="c0b6da7d-37d4-4efa-91c9-31c514b91e8c"><a class="confluence-userlink user-mention" data-username="Shilpa.Bhansali" href="/display/~Shilpa.Bhansali" data-linked-resource-id="89397179" data-linked-resource-version="1" data-linked-resource-type="userinfo" data-base-url="https://confluence">Shilpa Bhansali</a> Approve by <time datetime="2026-09-22" class="date-past">22 Sep 2026</time>&nbsp;</li>
+      </ul>
+     </div></td>
+   </tr>
+   <tr>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p><span style="color:#172b4d;"><span style="color:#333333;">Senior Functional Consultant - Business Analyst</span></span></p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <div class="content-wrapper">
+      <ul class="inline-task-list" data-inline-tasks-content-id="296153961">
+       <li data-inline-task-id="18" data-uuid="5eeb1463-da4f-4df6-8c6a-9426482810d9"><a class="confluence-userlink user-mention" data-username="Prashant.Banerjee" href="/display/~Prashant.Banerjee" data-linked-resource-id="126859930" data-linked-resource-version="1" data-linked-resource-type="userinfo" data-base-url="https://confluence">Prashant Banerjee</a> Approve by <time datetime="2026-09-22" class="date-past">22 Sep 2026</time>&nbsp;</li>
+      </ul>
+     </div></td>
+   </tr>
+   <tr>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p><span style="color:#172b4d;"><span style="color:#333333;">Senior Technical Lead</span></span></p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <div class="content-wrapper">
+      <ul class="inline-task-list" data-inline-tasks-content-id="296153961">
+       <li data-inline-task-id="23" data-uuid="d18c17bc-d2fb-46da-9aa1-d1d22a19e3cc"><span class="placeholder-inline-tasks"><a class="confluence-userlink user-mention" data-username="Kevin.Chen" href="/display/~Kevin.Chen" data-linked-resource-id="87681857" data-linked-resource-version="1" data-linked-resource-type="userinfo" data-base-url="https://confluence">Kevin Chen</a>&nbsp; Review by <time datetime="2026-09-23" class="date-past">23 Sep 2026</time>&nbsp;</span></li>
+      </ul>
+     </div></td>
+   </tr>
+   <tr>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p><span style="color:#172b4d;"><span style="color:#333333;"><span style="color:#333333;">Head of Quality Assurance - Titan</span></span></span></p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <div class="content-wrapper">
+      <ul class="inline-task-list" data-inline-tasks-content-id="296153961">
+       <li data-inline-task-id="24" data-uuid="38f30b6c-c254-411c-ab52-ad461eb92f2c"><span class="placeholder-inline-tasks"><a class="confluence-userlink user-mention" data-username="Saurin.Gosar" href="/display/~Saurin.Gosar" data-linked-resource-id="20826043" data-linked-resource-version="1" data-linked-resource-type="userinfo" data-base-url="https://confluence">Saurin Gosar</a> Review by <time datetime="2026-09-25" class="date-past">25 Sep 2026</time>&nbsp;</span></li>
+      </ul>
+     </div></td>
+   </tr>
+   <tr>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p style="text-align: left;">Sovui Tester</p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <div class="content-wrapper">
+      <ul class="inline-task-list" data-inline-tasks-content-id="296153961">
+       <li data-inline-task-id="25" data-uuid="45bcdcad-8039-4c4a-a26f-ee3b4243453f"><span class="placeholder-inline-tasks"><a class="confluence-userlink user-mention" data-username="Vicky.Li" href="/display/~Vicky.Li" data-linked-resource-id="290816714" data-linked-resource-version="1" data-linked-resource-type="userinfo" data-base-url="https://confluence">Vicky Li</a>&nbsp; Review by <time datetime="2026-09-25" class="date-past">25 Sep 2026</time>&nbsp;</span></li>
+      </ul>
+     </div></td>
+   </tr>
+   <tr class="">
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">TMP BA</td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <div class="content-wrapper">
+      <ul class="inline-task-list" data-inline-tasks-content-id="296153961">
+       <li class="checked" data-inline-task-id="19" data-uuid="02182f36-9583-422d-9427-dacb196d3063"><a class="confluence-userlink user-mention current-user-mention" data-username="Bin.Li" href="/display/~Bin.Li" data-linked-resource-id="248295729" data-linked-resource-version="1" data-linked-resource-type="userinfo" data-base-url="https://confluence">Bin Li</a> Approve by <time datetime="2026-09-22" class="date-past">22 Sep 2026</time>&nbsp;</li>
+      </ul>
+     </div></td>
+   </tr>
+   <tr>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd"><span style="color:#172b4d;"><span style="color:#333333;">Global Head of M&amp;M and Bulk Technology</span></span></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <div class="content-wrapper">
+      <p><a class="confluence-userlink user-mention" data-username="Michael.Wong" href="/display/~Michael.Wong" data-linked-resource-id="40642314" data-linked-resource-version="1" data-linked-resource-type="userinfo" data-base-url="https://confluence">Michael Wong</a> informed</p>
+     </div></td>
+   </tr>
+   <tr class="">
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd"><span style="color:#172b4d;">Head of IT - APAC</span></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <div class="content-wrapper">
+      <p><a class="confluence-userlink user-mention" data-username="Louise.Liu" href="/display/~Louise.Liu" data-linked-resource-id="48927288" data-linked-resource-version="1" data-linked-resource-type="userinfo" data-base-url="https://confluence">Louise Liu</a> Informed</p>
+     </div></td>
+   </tr>
+   <tr class="">
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd"><span style="color:#172b4d;">China IT PM</span></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <div class="content-wrapper">
+      <p><a class="confluence-userlink user-mention" data-username="Martin.Wang" href="/display/~Martin.Wang" data-linked-resource-id="109977477" data-linked-resource-version="1" data-linked-resource-type="userinfo" data-base-url="https://confluence">Martin Wang</a> Informed</p>
+     </div></td>
+   </tr>
+   <tr>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd"><span style="color:#333333;">Technical Project Manager</span></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <div class="content-wrapper">
+      <p><a class="confluence-userlink user-mention" data-username="Prasad.Kamat" href="/display/~Prasad.Kamat" data-linked-resource-id="50823475" data-linked-resource-version="1" data-linked-resource-type="userinfo" data-base-url="https://confluence">Prasad Kamat</a>&nbsp; Informed</p>
+     </div></td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<h1 data-nh-numbering="2. " id="FSDTMPInputVATAPIIntegrationwithTitanPI-Glossary"><span class="nh-number">2. </span>Glossary</h1>
+<p><span style="color:#172b4d;">For the full glossary of Titan terms the central glossary is maintained<span>&nbsp;</span></span><a class="external-link" style="text-align: left;" href="https://pulse.trafigura.com/workspaces/titan/_layouts/15/WopiFrame.aspx?sourcedoc=/workspaces/titan/Titan%20Releases%20Documents/Titan%20Glossary.xlsx" rel="nofollow">here</a><span style="color:#172b4d;">.</span></p>
+<div class="table-wrap">
+ <table class="relative-table wrapped confluenceTable" style="width: 98.404%;">
+  <colgroup>
+   <col style="width: 11.8631%;">
+   <col style="width: 88.1369%;">
+  </colgroup>
+  <tbody class="">
+   <tr class="">
+    <td class="confluenceTd">
+     <p><strong>Term</strong></p></td>
+    <td class="confluenceTd">
+     <p><strong>Definition</strong></p></td>
+   </tr>
+   <tr class="">
+    <td class="confluenceTd">
+     <p>VAT Invoice</p></td>
+    <td class="confluenceTd">
+     <p>This is a China specific term. A Value-Added Tax (VAT) invoice is a document issued by an accountable entity. A VAT invoice sets out the details of a taxable supply and all related information as prescribed by VAT law. In the context of this document ,this is to mention the Golden tax VAT invoice verified with China Golden tax system.</p></td>
+   </tr>
+   <tr class="">
+    <td class="confluenceTd">
+     <p>Special VAT Invoice</p></td>
+    <td class="confluenceTd">
+     <p>This is a China specific term. Special VAT Invoices are issued by Trafigura to its counterparty when selling commodities or providing taxable services. The Special VAT invoices are used for VAT deduction purposes. Trafigura also receives Special VAT invoice from counterparty for purchase trades.</p></td>
+   </tr>
+   <tr class="">
+    <td class="confluenceTd">
+     <p>General VAT Invoice</p></td>
+    <td class="confluenceTd">
+     <p>This is a China specific term. General VAT invoices cannot be used for VAT deduction purposes. General&nbsp; VAT Invoices are issued by Trafigura to its counterparty when selling commodities or providing tax services. Trafigura also receives General VAT invoice for counterparty for purchase trades.</p></td>
+   </tr>
+   <tr class="">
+    <td class="confluenceTd">
+     <p>VAT Invoice Number</p></td>
+    <td class="confluenceTd">
+     <p>This is a China specific term. The golden tax invoice number approved/ generated by Golden Tax system.</p></td>
+   </tr>
+   <tr>
+    <td class="confluenceTd">
+     <p>Commercial Invoice</p></td>
+    <td class="confluenceTd">
+     <p>A seller-issued invoice that provides detailed information about goods or services sold to a buyer and is used for customs declaration, tax assessment, and international trade settlement. It serves as a commercial and shipping document supporting domestic and cross-border trade transactions. It is also called international invoice in Titan.</p></td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<h1 data-nh-numbering="3. " id="FSDTMPInputVATAPIIntegrationwithTitanPI-Scope"><span class="nh-number">3. </span>Scope</h1>
+<h2 data-nh-numbering="3.1. " id="FSDTMPInputVATAPIIntegrationwithTitanPI-InScope"><span class="nh-number">3.1. </span><span class="nh-number"><span> </span></span>In Scope</h2>
+<ul>
+ <li>GC incorporated in China</li>
+ <li>Business Line: RM, Bulk, Concs.</li>
+ <li>Trading VAT invoices, including Cargo &amp; Service invoices</li>
+ <li data-uuid="a9921f2b-9ae7-4046-bd4e-d51d61bf3f42">Customs VAT payment receipt, Customs duty payment receipt, Withholding tax payment receipt</li>
+ <li>Both IC VAT and non-IC VAT are in scope</li>
+ <li>Blue VAT invoice and red VAT invoice (normal PI &amp; CN)</li>
+ <li><span style="color:#f87168;"><span style="color:#172b4d;">China International （Commercial） invoice</span></span></li>
+</ul>
+<h2 data-nh-numbering="3.2. " id="FSDTMPInputVATAPIIntegrationwithTitanPI-OutofScope"><span class="nh-number">3.2. </span>Out of Scope</h2>
+<ul>
+ <li>GC not incorporated in China</li>
+ <li>Business Line: Energy</li>
+ <li>non-Trading invoices</li>
+</ul>
+<h1 data-nh-numbering="4. " id="FSDTMPInputVATAPIIntegrationwithTitanPI-To-beprocess"><span class="nh-number">4. </span><span class="inline-comment-marker" data-ref="a39ceb03-25b3-48ec-9874-cc52141cfc0e">To-be process</span></h1>
+<p>Interface Frequency:</p>
+<p>Invoice synchronization:</p>
+<div class="table-wrap">
+ <table class="relative-table wrapped confluenceTable" style="width: 101.589%;">
+  <colgroup>
+   <col style="width: 9.22809%;">
+   <col style="width: 6.60537%;">
+   <col style="width: 10.928%;">
+   <col style="width: 6.79964%;">
+   <col style="width: 16.2706%;">
+   <col style="width: 43.5203%;">
+   <col style="width: 6.60537%;">
+  </colgroup>
+  <tbody>
+   <tr>
+    <th scope="col" class="confluenceTh">VAT/Commercial invoice</th>
+    <th scope="col" class="confluenceTh">Cargo/Service</th>
+    <th scope="col" class="confluenceTh">Subtype of Service VAT</th>
+    <th scope="col" class="confluenceTh">Direction</th>
+    <th scope="col" class="confluenceTh">Frequency</th>
+    <th scope="col" class="confluenceTh">Comments</th>
+    <th scope="col" class="confluenceTh">Fix Version</th>
+   </tr>
+   <tr>
+    <td class="confluenceTd">VAT invoice</td>
+    <td class="confluenceTd">Cargo</td>
+    <td class="confluenceTd">/</td>
+    <td class="confluenceTd">TMP→Titan PI</td>
+    <td class="confluenceTd">daily batch at <strong>19:00 PM</strong> Shanghai time</td>
+    <td class="confluenceTd">Cargo payment is done by prepayment, VAT invoice in Titan is for recording purpose, so once a day is enough</td>
+    <td class="confluenceTd">27.R2</td>
+   </tr>
+   <tr>
+    <td class="confluenceTd">VAT Invoice</td>
+    <td class="confluenceTd">Service</td>
+    <td class="confluenceTd">Bank invoice</td>
+    <td class="confluenceTd">TMP→Titan PI</td>
+    <td class="confluenceTd">monthly at <strong>19:00 PM</strong> Shanghai time</td>
+    <td class="confluenceTd">Bank charges are collected by bank already, bank VAT in Titan is for recording purpose, and TO &amp; Acct do this at monthly basis.</td>
+    <td class="confluenceTd">27.R1</td>
+   </tr>
+   <tr>
+    <td class="confluenceTd">VAT Invoice</td>
+    <td class="confluenceTd">Service</td>
+    <td class="confluenceTd">non-Bank Service invoice</td>
+    <td class="confluenceTd">TMP→Titan PI</td>
+    <td class="confluenceTd"><strong>near real-time </strong>when user confirm to pay</td>
+    <td class="confluenceTd">Booking in Titan PI to initiate payment to service provider/regulator, so time efficiency is important.</td>
+    <td class="confluenceTd">27.R1</td>
+   </tr>
+   <tr>
+    <td class="confluenceTd">China International invoices</td>
+    <td class="confluenceTd">Service</td>
+    <td class="confluenceTd">WHT</td>
+    <td class="confluenceTd">TMP→Titan PI</td>
+    <td class="confluenceTd"><strong>near real-time </strong>when user confirm to book Titan PI</td>
+    <td class="confluenceTd"><br></td>
+    <td class="confluenceTd">27.R1</td>
+   </tr>
+   <tr>
+    <td class="confluenceTd">China International invoices</td>
+    <td class="confluenceTd">Cargo &amp; Service</td>
+    <td class="confluenceTd">Customs VAT, Duty invoices, Others</td>
+    <td class="confluenceTd">Titan PI→ TMP</td>
+    <td class="confluenceTd"><strong>TMP scheduled intervals, e.g. every 5mins&nbsp;</strong></td>
+    <td class="confluenceTd">
+     <p>Since Customs VAT need to be triggered auto-confirming &amp; duplication booking control, so time efficiency matters.&nbsp;</p>
+     <p>To avoid impact to Titan performance, TMP will invoke the Titan PI API at scheduled intervals to get delta invoice data instead of synchronous API calls as aligned with technical team.</p></td>
+    <td class="confluenceTd">
+     <p>27.R2</p></td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>Interface result response:</p>
+<div class="table-wrap">
+ <table class="relative-table wrapped confluenceTable" style="width: 95.1781%;">
+  <colgroup class="">
+   <col class="" style="width: 31.7767%;">
+   <col class="" style="width: 8.29408%;">
+   <col class="" style="width: 59.9769%;">
+  </colgroup>
+  <tbody class="">
+   <tr class="">
+    <th class="confluenceTh">Response</th>
+    <th class="confluenceTh">Direction</th>
+    <th class="confluenceTh">Frequency</th>
+   </tr>
+   <tr class="">
+    <td class="confluenceTd"><span style="color:#172b4d;">Titan PI NO. &amp; Status &amp; Error Msg</span></td>
+    <td class="confluenceTd">Titan PI→ TMP</td>
+    <td class="confluenceTd"><span style="color:#172b4d;"><strong>near real time</strong> basis when Titan PI receives TMP request, the status will be the current status in Titan&nbsp;</span></td>
+   </tr>
+   <tr>
+    <td class="confluenceTd"><span style="color:#172b4d;">Titan PI Status &amp; Error Msg</span></td>
+    <td class="confluenceTd">Titan PI→ TMP</td>
+    <td class="confluenceTd"><span style="color:#172b4d;"><strong>TMP schedule query at intervals (e.g. 5 mins) </strong>to query Titan PI to get latest status of 'Approved', 'Externalfail' or 'Cancelled'</span></td>
+   </tr>
+   <tr class="">
+    <td class="confluenceTd">TMP success/fail response on China International invoices</td>
+    <td class="confluenceTd">TMP→Titan PI</td>
+    <td class="confluenceTd">
+     <p><span style="color:#172b4d;"><strong>near real time</strong> basis when status get updated to 'Success' or 'Fail'</span></p></td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p><br></p><a name="composition-deck-To-beprocess"></a>
+<div id="To-beprocess" class="aui-tabs
+             horizontal-tabs
+          composition-deck
+          " history="true" loopcards="false" effecttype="" effectduration="1.0" nextafter="0.0">
+ <ul class="tabs-menu
+                            top
+                    "></ul>
+ <div class="deck-cards tabs-pane active-pane" style="">
+  <p><b>VAT Invoice &amp;amp; WHT invoice</b></p>
+  <div id="-555263101" class="tabs-pane" style="">
+   <a name="composition-deck-Cargo/service/Status"></a>
+   <div id="Cargo/service/Status" class="aui-tabs
+             horizontal-tabs
+          composition-deck
+          " history="true" loopcards="false" effecttype="" effectduration="1.0" nextafter="0.0">
+    <ul class="tabs-menu
+                            top
+                    "></ul>
+    <div class="deck-cards tabs-pane active-pane" style="">
+     <p><b>Cargo VAT</b></p>
+     <div id="1857069189" class="tabs-pane" style="">
+      <p><img class="drawio-diagram-image" width="468" style="width:600px;max-width: 100%;" src="e5023bad8a7d8bc568170064bb71b3a1459f9243d19f9229c71fad61be03fdcb" height="341"></p>
+     </div>
+     <p><b>Service VAT</b></p>
+     <div id="-262085890" class="tabs-pane" style="">
+      <p><img class="drawio-diagram-image" width="468" style="width:600px;max-width: 100%;" src="da79b27fe18a681986c3c2271b8a36d79e80aae74348188e2f0b7731e2ec5ea9" height="395"></p>
+     </div>
+     <p><b>Withholding tax payment receipt</b></p>
+     <div id="858414630" class="tabs-pane" style="">
+      <p><img class="drawio-diagram-image" width="468" style="width:600px;max-width: 100%;" src="5956730cf86f233ac272ea6068887854f3db0e6d273a5410e090cb0b06ac384d" height="308"></p>
+     </div>
+     <p><b>IC Invoicing</b></p>
+     <div id="-1032487676" class="tabs-pane" style="">
+      <p><img class="drawio-diagram-image" width="468" style="width:600px;max-width: 100%;" src="fb4738473d1cd049e3af27cd224df89faf2741ae2b5098c30ac6661ba25e8414" height="167"></p>
+     </div>
+     <p><br></p>
+     <p><b>Status Transition</b></p>
+     <div id="-450820541" class="tabs-pane" style="">
+      <p><img class="drawio-diagram-image" width="468" style="width:546px;max-width: 100%;" src="229c0ce2306cf908b03aaf18f3c41bb35276496bb65428696f73c733b8e136f6" height="270"></p>
+     </div>
+     <p><br></p>
+    </div>
+   </div><!-- // .deck -->
+   <p><br></p>
+  </div>
+  <p><b>China International/Commercial Invoice</b></p>
+  <div id="-1169427615" class="tabs-pane" style="">
+   <p><img class="drawio-diagram-image" width="468" style="width:600px;max-width: 100%;" src="b5113345df7ca6dfc275e681667285193c950216d457a9e7f236799a53ce469c" height="209"></p>
+  </div>
+  <p><b>Customs VAT and Duty Invoices</b></p>
+  <div id="-1548265870" class="tabs-pane" style="">
+   <p><img class="drawio-diagram-image" width="468" style="width:600px;max-width: 100%;" src="070c113f778df123fbe9d17f56494257d7677d9d7c51b92f255f5e017ebf2a54" height="304"></p>
+  </div>
+  <p><br></p>
+ </div>
+</div><!-- // .deck -->
+<h1 data-nh-numbering="5. " id="FSDTMPInputVATAPIIntegrationwithTitanPI-FunctionalRequirement"><span class="nh-number">5. </span>Functional Requirement</h1>
+<div class="table-wrap">
+ <table class="relative-table wrapped confluenceTable" style="width: 2005.0px;">
+  <colgroup>
+   <col style="width: 70.0px;">
+   <col style="width: 172.0px;">
+   <col style="width: 1561.0px;">
+   <col style="width: 129.0px;">
+   <col style="width: 72.0px;">
+  </colgroup>
+  <tbody class="">
+   <tr>
+    <td class="highlight-#f4f5f7 confluenceTd" style="text-align: left;vertical-align: top;" data-highlight-colour="#f4f5f7"><strong title="">ID</strong></td>
+    <td class="highlight-#f4f5f7 confluenceTd" style="text-align: left;vertical-align: top;" data-highlight-colour="#f4f5f7"><strong title=""><span style="color:#000000;">Item</span></strong></td>
+    <td class="highlight-#f4f5f7 confluenceTd" style="text-align: left;vertical-align: top;" data-highlight-colour="#f4f5f7">
+     <p title=""><strong>Description</strong></p></td>
+    <td class="highlight-#f4f5f7 confluenceTd" style="text-align: left;vertical-align: top;" data-highlight-colour="#f4f5f7">
+     <p title=""><strong>System</strong></p></td>
+    <td class="highlight-grey confluenceTd" style="text-align: left;vertical-align: top;" data-highlight-colour="grey">
+     <p title=""><strong>Fix Version</strong></p></td>
+   </tr>
+   <tr class="">
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">FR-01</td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd"><span style="color:#000000;">Customs VAT &amp; duty invoices</span></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <div class="content-wrapper">
+      <p>As an ST user, I need Titan PI to auto synchronize below information of China Customs VAT &amp; Duty invoices (booked as China International invoices) to TMP on daily basis, so that I don't need to manually link Titan PI No. with Customs payment receipt in TMP.</p>
+      <p>Information required: Titan PI No., CP Invoice Ref.,<s> Account period</s>, Description</p>
+      <p>Criteria: Status='Approved', TMP status &lt;&gt;'Success' (meaning not booked in TMP yet)</p>
+      <p>PRD. sample:&nbsp;</p>
+      <p>Customs VAT:</p>
+      <p><span class="confluence-embedded-file-wrapper confluence-embedded-manual-size"><img class="confluence-embedded-image" draggable="false" height="232" src="6fbe862ccebacc6ffda2530ff03f1837bc9d7f90fe3d8b1b3dea65cf2860049d" data-image-src="/download/attachments/296153961/image-2026-9-17_11-7-43.png?version=1&amp;modificationDate=1789614463000&amp;api=v2" data-unresolved-comment-count="0" data-linked-resource-id="383888193" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="image-2026-9-17_11-7-43.png" data-base-url="https://confluence" data-linked-resource-content-type="image/png" data-linked-resource-container-id="296153961" data-linked-resource-container-version="100" tabindex="0" alt="" width="468"></span><span class="confluence-embedded-file-wrapper confluence-embedded-manual-size"><img class="confluence-embedded-image" draggable="false" height="83" src="0b4b0f31eb0a99fb0ca9e05ef55bbca41949ee27d55cf65e18a926578caa98ba" data-image-src="/download/attachments/296153961/image-2026-9-17_11-8-22.png?version=1&amp;modificationDate=1789614503000&amp;api=v2" data-unresolved-comment-count="0" data-linked-resource-id="383888197" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="image-2026-9-17_11-8-22.png" data-base-url="https://confluence" data-linked-resource-content-type="image/png" data-linked-resource-container-id="296153961" data-linked-resource-container-version="100" tabindex="0" alt="" width="468"></span></p>
+      <p><span class="confluence-embedded-file-wrapper confluence-embedded-manual-size"><img class="confluence-embedded-image" draggable="false" height="200" src="1ac1047e8e31667932ccf57c8ecf4497635bd8cfad74d1e85650d0927cbbbc77" data-image-src="/download/attachments/296153961/image-2026-9-17_11-9-22.png?version=1&amp;modificationDate=1789614563000&amp;api=v2" data-unresolved-comment-count="0" data-linked-resource-id="383888199" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="image-2026-9-17_11-9-22.png" data-base-url="https://confluence" data-linked-resource-content-type="image/png" data-linked-resource-container-id="296153961" data-linked-resource-container-version="100" tabindex="0" alt="" width="468"></span></p>
+      <p>Customs Duty:</p>
+      <p><span class="confluence-embedded-file-wrapper confluence-embedded-manual-size"><img class="confluence-embedded-image confluence-thumbnail" draggable="false" height="235" src="da28b36ac3076bf234bf6c48752f922b272d8ebe01c6406e30f44943e1935e3f" data-image-src="/download/attachments/296153961/image-2026-9-18_18-4-54.png?version=1&amp;modificationDate=1789725894000&amp;api=v2" data-unresolved-comment-count="0" data-linked-resource-id="383894112" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="image-2026-9-18_18-4-54.png" data-base-url="https://confluence" data-linked-resource-content-type="image/png" data-linked-resource-container-id="296153961" data-linked-resource-container-version="100" tabindex="0" alt="" width="313"></span><span class="confluence-embedded-file-wrapper confluence-embedded-manual-size"><img class="confluence-embedded-image" draggable="false" height="107" src="cf48480844844c0ff2aa3fb7deca90398f3bd3755218b365e61ad8f2f6417198" data-image-src="/download/attachments/296153961/image-2026-9-18_18-6-11.png?version=1&amp;modificationDate=1789725971000&amp;api=v2" data-unresolved-comment-count="0" data-linked-resource-id="383894116" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="image-2026-9-18_18-6-11.png" data-base-url="https://confluence" data-linked-resource-content-type="image/png" data-linked-resource-container-id="296153961" data-linked-resource-container-version="100" tabindex="0" alt="" width="468"></span><span class="confluence-embedded-file-wrapper confluence-embedded-manual-size"><img class="confluence-embedded-image" draggable="false" height="175" src="c6aaf408e7a33dd6a9f5bb5f621dfb70b9cfc1eaf2a13149eafcf34490f6ead4" data-image-src="/download/attachments/296153961/image-2026-9-18_18-5-35.png?version=1&amp;modificationDate=1789725935000&amp;api=v2" data-unresolved-comment-count="0" data-linked-resource-id="383894114" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="image-2026-9-18_18-5-35.png" data-base-url="https://confluence" data-linked-resource-content-type="image/png" data-linked-resource-container-id="296153961" data-linked-resource-container-version="100" tabindex="0" alt="" width="468"></span></p>
+      <p><br></p>
+     </div></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>Titan PI</p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>27.R2</p></td>
+   </tr>
+   <tr>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">FR-02</td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd"><span style="color:#000000;">Customs VAT &amp; duty invoices</span></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>As an ST user, I need Titan PI to auto synchronize below information of China Customs VAT &amp; Duty invoices Credit Note to TMP on daily basis when CN get approved, so that I don't need to manually unlink Titan PI No. with Customs payment receipt in TMP.</p>
+     <p>Information required: Titan PI No., CP Invoice Ref., <s>Account period</s>, Description, Underlying PI No.</p>
+     <p>Criteria: Status='Approved', TMP status &lt;&gt;'Success' (meaning not booked in TMP yet)</p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>Titan PI</p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>27.R2</p></td>
+   </tr>
+   <tr>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">FR-03</td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd"><span style="color:#000000;">Customs VAT &amp; duty invoices</span></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>As an ST user, I need TMP to auto sync. Titan PI No. based on the CP. invoice Ref.&nbsp; and PI description upon receive Titan PI message of the same, so that I don't need to manually input the same in TMP.</p>
+     <p>Notes: For Titan PI-Customs Payment receipt 1-1 case, ST will input customs VAT or duty payment receipt No. in CP Invoice Ref, for 1-N case, ST&nbsp;will input in Description field with multiple customs VAT or duty payment receipt No. with semicolon separated.</p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>TMP</p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>27.R2</p></td>
+   </tr>
+   <tr>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">FR-04</td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd"><span style="color:#000000;">Customs VAT &amp; duty invoices</span></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">As an ST user, I need TMP to auto clear Titan PI No. based on the CP. invoice Ref.&nbsp; and PI description, untick customs VAT if already ticked (as in reality customs VAT does not have red invoice), upon receive Titan CN on the same, so that I don't need to manually clear the same in TMP.&nbsp;</td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>TMP</p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>27.R2</p></td>
+   </tr>
+   <tr>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">FR-05</td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd"><span style="color:#000000;">Customs VAT</span></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">As a mailroom user, I need TMP to auto untick Customs VAT upon receive Titan CN if previously ticked, so to avoid wrong input VAT ticking.</td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>TMP</p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>27.R2</p></td>
+   </tr>
+   <tr>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">FR-06</td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd"><span style="color:#000000;">Customs VAT &amp; duty invoices</span></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">As an ST user, I need TMP to inform me if Titan PI sends another PI No. on the same Customs VAT &amp; Duty invoice which is already synchronized with Titan PI No. to avoid duplicated booking &amp; payment.</td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>TMP</p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>27.R2</p></td>
+   </tr>
+   <tr class="">
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">FR-07</td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p><span style="color:#000000;">General VAT invoice</span></p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <div class="content-wrapper">
+      <p>General VAT invoice with tax amount should be interfaced to Titan PI in the API as below, due to General VAT tax is irrecoverable and Oracle does not support 'IRR' tax code.</p>
+      <ul>
+       <li data-uuid="054ba330-40f1-49f0-a7af-5c43119d5b67">If the input VAT is not deductible (i.e. 6% Service General VAT), the tax status should be interfaced to Titan PI as ‘Outside scope’ &amp; tax code ‘CN099PI’.</li>
+      </ul>
+      <ul>
+       <li data-uuid="3a1eb8b9-592a-4a5b-8ca4-c157ba33968d">If the tax is exempted (e.g. Gold), the tax status should be interfaced to Titan PI as ‘Applicable’ &amp; tax code ‘CN205PI’.</li>
+      </ul>
+      <p>Tax amount to be consolidated into net amount and pass to Titan net amount,</p>
+      <p>Tax amount pass to Titan as 0.</p>
+      <p>Notes:</p>
+      <p><span style="color:#000000;"><span style="color:#172b4d;">General VAT whose VAT is irrecoverable, there will be a break between TMP and Oracle in tax amount reconciliation, but total invoice amount reconciliation is balanced.</span></span></p>
+      <p>PRD. Sample:</p>
+      <p>Service General VAT with 6% tax rate: Tax Status-Outside Scope, Tax Code: CN099PI</p>
+      <p><span class="confluence-embedded-file-wrapper confluence-embedded-manual-size"><img class="confluence-embedded-image" draggable="false" height="237" src="1cfe300008ee3ce2a06395d446525c07c7351c7267a4a766185ddf972ef31310" data-image-src="/download/attachments/296153961/image-2026-8-31_14-4-54.png?version=1&amp;modificationDate=1788161540000&amp;api=v2" data-unresolved-comment-count="0" data-linked-resource-id="380031143" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="image-2026-8-31_14-4-54.png" data-base-url="https://confluence" data-linked-resource-content-type="image/png" data-linked-resource-container-id="296153961" data-linked-resource-container-version="100" tabindex="0" alt="" width="468"></span><span class="confluence-embedded-file-wrapper confluence-embedded-manual-size"><img class="confluence-embedded-image confluence-external-resource" draggable="false" alt="image-2026-9-9_9-53-59.png" height="250" src="https://confluence/download/attachments/296153961/image-2026-9-9_9-53-59.png?version=1&amp;modificationDate=1788918839000&amp;api=v2" data-image-src="https://confluence/download/attachments/296153961/image-2026-9-9_9-53-59.png?version=1&amp;modificationDate=1788918839000&amp;api=v2"></span></p>
+      <p>Cargo General VAT with tax exempted: Tax Status-Applicable, Tax Code:CN205PI</p>
+      <p><span class="confluence-embedded-file-wrapper confluence-embedded-manual-size"><img class="confluence-embedded-image" draggable="false" height="249" src="053a3911137d59bfbd26cbaa0e501b6d748fd6b7a05e940e078919ee9feb8b2d" data-image-src="/download/attachments/296153961/image-2026-9-9_9-52-2.png?version=1&amp;modificationDate=1788918723000&amp;api=v2" data-unresolved-comment-count="0" data-linked-resource-id="382824266" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="image-2026-9-9_9-52-2.png" data-base-url="https://confluence" data-linked-resource-content-type="image/png" data-linked-resource-container-id="296153961" data-linked-resource-container-version="100" tabindex="0" alt="" width="468"></span><span class="confluence-embedded-file-wrapper confluence-embedded-manual-size"><img class="confluence-embedded-image" draggable="false" height="156" src="ea1e85a26502bcea019c0a9197c4bcde564e1fb659d2a7deddde00f074f1f58b" data-image-src="/download/attachments/296153961/image-2026-9-9_9-51-2.png?version=1&amp;modificationDate=1788918662000&amp;api=v2" data-unresolved-comment-count="0" data-linked-resource-id="382824265" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="image-2026-9-9_9-51-2.png" data-base-url="https://confluence" data-linked-resource-content-type="image/png" data-linked-resource-container-id="296153961" data-linked-resource-container-version="100" tabindex="0" alt="" width="468"></span></p>
+     </div></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>TMP</p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>27.R1</p></td>
+   </tr>
+   <tr>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">FR-08</td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p><span style="color:#000000;">IC VAT invoice</span></p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <div class="content-wrapper">
+      <p>Previously IC VAT invoice will not be extracted to Titan PI feed, in API, IC invoice should also be covered since it is not necessary to be triggered by SI to follow the internal invoicing approving process.</p>
+      <p>If CP is also China GC, mark internal invoice as 'Yes'.</p>
+     </div></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>TMP,</p>
+     <p>Titan PI</p>
+     <p>CCEP-194525</p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>27.R2</p></td>
+   </tr>
+   <tr>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">FR-09</td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p><span style="color:#000000;">IC VAT invoice</span></p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <div class="content-wrapper">
+      <p>Internal purchase VAT invoice will only be interfaced to Titan PI after internal Titan SI issued successfully, so that TMP will interface Titan SI number to Titan PI as CP invoice reference for IC invoices.</p>
+     </div></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>TMP, Titan PI</p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>27.R2</p></td>
+   </tr>
+   <tr>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">FR-10</td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p><span style="color:#000000;">IC VAT invoice</span></p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <div class="content-wrapper">
+      <p>After internal PI booked, PI No. should be sent to Titan SI to book the internal invoice number.</p>
+     </div></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>Titan PI, Titan SI</p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>27.R2</p></td>
+   </tr>
+   <tr>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">FR-11</td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p><span style="color:#000000;">Service VAT attribution</span></p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>TMP to synchronize RM service cost group from WDMS and support user to do service VAT attribution in TMP by uploading attribution lines, so that TMP can interface the same to Titan PI at day end batch job. For invoices with attribution, the invoice will get auto attributed and approved in Titan PI.</p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>WDMS,</p>
+     <p>TMP,</p>
+     <p>Titan PI</p>
+     <p>CCEP-192145</p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>TBD</p></td>
+   </tr>
+   <tr>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">FR-12</td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p><span style="color:#000000;">Service VAT without attribution</span></p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>For service VAT without attribution, only those confirmed to be booked by user will be interfaced to Titan PI as Incomplete status and then user will do further attribution and approval in Titan PI. The information from TMP should not allow user modification so to make sure it's the same from TMP.</p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>TMP,</p>
+     <p>Titan PI</p>
+     <p>CCEP-192145</p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>27.R1</p></td>
+   </tr>
+   <tr>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">FR-13</td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p><span style="color:#000000;">Status Transition</span></p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>The status of the VAT invoices sent to Titan PI will be updated with Titan PI No. and status. Sent-&gt;Approved or failed or cancelled. For failed ones, error message should be shown for user to check.</p>
+     <p><span style="color:#172b4d;">TMP will add Titan PI number and Titan PI status for each VAT invoice. After sending the VAT invoice to Titan PI, the status will be 'sent', Titan PI will response with current PI No. &amp; Status (e.g. Awaiting external validation) to TMP.&nbsp; TMP will schedule query at intervals (every 5 mins) to get the latest Titan PI status and update the same in TMP (e.g. 'Approved' or 'external fail' or 'Cancelled' ) For failed ones, the failed reason should also be presented for user to further check. For Cancelled ones, Titan PI No. in TMP should be shown as empty and taken as not sent to Titan PI and should be re-sent if other criteria met.</span></p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>TMP,</p>
+     <p>Titan PI</p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>27.R1</p></td>
+   </tr>
+   <tr>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">FR-14</td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p><span style="color:#000000;">Failed PI</span></p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>As a TMP user who confirm the Input VAT to be booked in Titan PI, I need to be notified for the '<span style="color:#172b4d;">external fail</span>' Titan PI timely with failure reason, so that I can take necessary actions timely and clear about the gap between TMP and Titan/Oracle.</p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>TMP</p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>27.R1</p></td>
+   </tr>
+   <tr>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">FR-15</td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>Accounting Period</p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>As an Accounting user, I require TMP to derive the VAT ticking month from the invoice Accounting Period in Oracle, so that Input VAT Invoices are deducted in the correct reporting period, avoiding timing discrepancies and ensuring compliance with China accounting and tax regulations.</p>
+     <p>Note: Input VAT Confirmation</p>
+     <p>A mandatory tax process in China whereby a company confirms eligible VAT invoices on the State Tax Administration platform before claiming Input VAT credits. The confirmation must be performed in the correct tax period which is the same in GAI/Oracle. Therefore, TMP requires the Accounting Period determined in Titan PI to decide in which month the VAT invoice should be included for deduction.</p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>TMP,</p>
+     <p>Oracle</p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>27.R1</p></td>
+   </tr>
+   <tr>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">FR-16</td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p><span style="color:#172b4d;">Input VAT Confirmation</span></p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>TMP should block user from unticking (取消认证) input VAT if Titan PI No. is not empty.</p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>TMP</p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>27.R1</p></td>
+   </tr>
+   <tr>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">FR-17</td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p><span style="color:#172b4d;">Report</span></p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>As an Accounting user, I require TMP to send a month-end and M+1 exception report of VAT invoices that have been accounted for in the financial system (Titan PI No. not empty and not Credit Noted) but are not yet VAT-confirmed, so that unconfirmed input VAT invoices can be followed up promptly, minimizing the risk of missed VAT deductions and supporting tax compliance.</p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>TMP</p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>27.R1</p></td>
+   </tr>
+   <tr>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">FR-18</td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p><span style="color:#000000;">Cargo Doc. L/C</span></p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>In cargo invoice attribution screen add a checkbox 'Cargo Doc LC'. If ticked, TMP will default LC amount=invoice net amount, LC Tax Amount=invoice tax amount, and allow user modification. The same will be interfaced to Titan PI.</p>
+     <p>If PI amount fully covered by LC amount, 'DO NOT Pay' will be ticked by Titan PI automatically. Otherwise only the amount not covered by LC will be allowed to create PO.</p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>TMP,</p>
+     <p>Titan PI</p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>27.R2</p></td>
+   </tr>
+   <tr>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">FR-19</td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p><span style="color:#000000;">Bulk invoice weight basis</span></p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd"><span style="color:#000000;">In cargo invoice attribution screen, add field 'invoice weight basis' to record Bulk VAT invoice weight basis and pass the same to Titan PI, Titan PI needs to use the same to do Qty validation, i.e. if VAT invoice weight basis is Wet, use assignment Wet weight to validate invoiced weight, else use assignment Dry weight to do the validation. The remaining Qty calculation should be on the same invoice weight basis.</span></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd"><span style="color:#000000;"> </span>
+     <p>TMP,</p>
+     <p>Titan PI</p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>27.R2</p></td>
+   </tr>
+   <tr>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">FR-20</td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p><span style="color:#000000;">Bulk invoice weight basis</span></p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">Titan PI should pass the Bulk invoice weight basis to BO, so that BO can show the correct invoiced weight and remaining to be invoiced weight in Bulk Settlement Note.</td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>Titan PI,</p>
+     <p>Business Object</p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>27.R2</p></td>
+   </tr>
+   <tr>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">FR-21</td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p><span style="color:#000000;">Cargo Invoice filter</span></p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>Cargo invoice: Same as current Excel uploader <a href="https://confluence/display/CLA/FSD+-TMP+Cargo+Input+VAT+invoice+attribution+feed+to+be+uploaded+to+Titan+PI" rel="nofollow">FSD -TMP Cargo Input VAT invoice attribution feed to be uploaded to Titan PI - China local automation - Confluence</a> with only difference to include IC invoice as well.</p>
+     <p>IC invoice must be interfaced after Titan SI booked successfully so that internal invoice number can be updated to Titan SI when Titan PI approved.</p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>TMP</p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>27.R2</p></td>
+   </tr>
+   <tr>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">FR-22</td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p><span style="color:#000000;">Service Invoice filter</span></p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p><span class="inline-comment-marker" data-ref="4a7f5733-8bdf-4c9e-9126-10c00d768793">Functional Line</span> should be mandatory for invoices user confirmed to be booked</p>
+     <p>IC invoice must be interfaced after Titan SI booked successfully so that internal invoice number can be updated to Titan SI when Titan PI approved.</p>
+     <p>Bank invoices: Attributed to Titan charges Trx</p>
+     <p>non-Bank invoice &amp; WHT: Functional Line &lt;&gt;'Energy' &amp; User confirmed to be booked: Yes</p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">TMP</td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">27.R1</td>
+   </tr>
+   <tr>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">FR-23</td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd"><span style="color:#000000;">Estimate assignment Attribution</span></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>China input VAT and Element VAT QV reports need to add field assignment state sourced from Logistics for purchase assignments, so that TMP can consume it to build validation logic upon attribution.</p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>QV</p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>27.R2</p></td>
+   </tr>
+   <tr>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">FR-24</td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p><span style="color:#000000;">Estimate assignment Attribution</span></p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>When user attribute VAT invoice to un-actualized assignments whose assignment state='Estimate', there should be warning msg pop up to warn the user to check whether it's correct and allow to save when user confirm.</p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>TMP</p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>27.R2</p></td>
+   </tr>
+   <tr>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">FR-25</td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p><span style="color:#000000;">Estimate assignment Attribution</span></p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>For the scenario where CP issued Traf. VAT ahead of assignment actualized, currently Titan PI bulk uploader does not support, user need to manually book in Titan PI. This validation should be removed in API.</p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>Titan PI</p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>27.R2</p></td>
+   </tr>
+   <tr>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">FR-26</td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>Negative Attribution</p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">Titan PI API must support negative quota/assignment attribution (overall invoice amount is positive), so that Ops does not need to book such scenario manually in Titan PI and complete the attribution in TMP.</td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>Titan PI</p>
+     <p>CCEP-188836</p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>27.R2</p></td>
+   </tr>
+   <tr>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">FR-27</td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p><span class="inline-comment-marker" data-ref="0f84a441-a2f1-45f2-838e-b8b0fc843efd">Quantity FIFO Attribution</span></p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>Now in PI bulk uploader, Qty auto attribution is based on assignment quantity ratio, in Titan API, it should be based on FIFO logic, i.e. <span style="color:#172b4d;">the system should allocate the Invoice Quantity in the FIFO Logic based on the Assignment Quantity instead of Assignment Quantity Prorate </span><span style="color:#172b4d;">and if any additional Quantity is left should be added to the last assignment.</span></p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>Titan PI</p>
+     <p><a class="external-link" href="https://jira/browse/CCEP-189708" data-issue-key="CCEP-189708" rel="nofollow">CCEP-189708</a></p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>27.R2</p></td>
+   </tr>
+   <tr>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">FR-28</td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>Final Invoice Accrual clearance</p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p><span style="color:#172b4d;">The invoice amount auto attribution from Quota (RM &amp; Bulk FLs and Alumina under Concs. FL) to Assignment (FIFO to actualized assignments) will remain unchanged as per the Excel bulk uploader Section 8.4 on <a href="https://confluence/spaces/CCE/pages/251768588/FSD+-+Purchase+Invoice+and+Credit+Notes+uploader+for+China+VAT+Invoices#FSDPurchaseInvoiceandCreditNotesuploaderforChinaVATInvoices-AutoAttribution" rel="nofollow">FSD - Purchase Invoice and Credit Notes uploader for China VAT Invoices - CC&amp;E - Confluence</a>, with below enhancement is needed to clear previous provisional over-invoicing.</span></p>
+     <p>During provisional quota to assignments allocation, any residual invoice amount will be temporarily allocated to the last actualized assignment. Once the Quota status is set to 'Final', Titan PI shall redistribute such residual amounts across all assignments according to the final quota allocation, eliminating any over-invoicing and clearing all remaining accrual balances.</p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>Titan PI</p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>27.R2</p></td>
+   </tr>
+   <tr>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">FR-29</td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p><span style="color:#f87168;"> <span style="color:#172b4d;"><span class="inline-comment-marker" data-ref="52f10050-3f13-45dd-a043-84ce8613fcac">Bank VAT Invoice</span></span></span></p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>Bank invoice attributed to Titan charges transactions by Treasury Ops in TMP will be auto interfaced to Titan PI at daily batch job. For Titan Charges CCF type other than 'Mm Interest' &amp; 'Other Mm Fee', the Titan PI will be incomplete status and Acct. need to do further attribution &amp; Approval in Titan PI.</p>
+     <p>Note: If TO identifies mistake after Titan PI is booked and cancel attribution in TMP to re-attribute, TMP should warn user that the Titan PI is booked already and user need to tell TMP the new Titan PI No. after re-book in Titan PI since the same GT Invoice No. cannot be used to re-book in Titan PI due to unique key validation.</p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>TMP, Titan PI</p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>27.R1</p></td>
+   </tr>
+   <tr>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">FR-30</td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p><span style="color:#f87168;"><span style="color:#172b4d;"><span class="inline-comment-marker" data-ref="52f10050-3f13-45dd-a043-84ce8613fcac">Bank VAT Invoice</span></span></span></p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>For bank invoices attributed to Titan Charges CCF types of 'Mm Interest' &amp; 'Other Mm Fee', TMP will interface to Titan PI with below attribution details, so Acct. does not need to do further operation in Titan PI and the PI will get auto attributed and approved.</p>
+     <div class="table-wrap">
+      <table class="wrapped confluenceTable" data-mce-resize="false">
+       <colgroup>
+        <col>
+        <col>
+        <col>
+        <col>
+       </colgroup>
+       <tbody>
+        <tr>
+         <th scope="col" class="confluenceTh">CCF Type</th>
+         <th scope="col" class="confluenceTh">Cost code</th>
+         <th scope="col" class="confluenceTh">MMI ID</th>
+         <th scope="col" class="confluenceTh">Deal ID</th>
+        </tr>
+        <tr>
+         <td class="confluenceTd">Mm Interest</td>
+         <td class="confluenceTd">C32P</td>
+         <td class="confluenceTd">Source ID from the attributed Titan CS Trx.</td>
+         <td class="confluenceTd">N/A, booked as pooled PI</td>
+        </tr>
+        <tr>
+         <td class="confluenceTd">Other Mm Fee</td>
+         <td class="confluenceTd">C31</td>
+         <td class="confluenceTd">-</td>
+         <td class="confluenceTd">
+          <p>Mapped per GC as below:</p>
+          <p>GC &nbsp; &nbsp;Deal ID <br>
+            TIC &nbsp; &nbsp;1292941 <br>
+            TTH &nbsp; &nbsp;1303397 <br>
+            TEZ &nbsp; &nbsp;1303401 <br>
+            Lykos &nbsp; &nbsp;1303398 <br>
+            TTY &nbsp; &nbsp;1339400</p></td>
+        </tr>
+       </tbody>
+      </table>
+     </div></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>TMP, Titan PI</p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>27.R1</p></td>
+   </tr>
+   <tr>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">FR-31</td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p><span style="color:#f87168;"><span style="color:#172b4d;">China International Invoice</span></span></p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>China international invoices, both PI &amp; CN, should be interfaced to TMP input invoice at scheduled intervals.</p>
+     <p><span class="inline-comment-marker" data-ref="85197cc8-4c80-4696-8526-fcdc3f0d96e7">Invoice header</span>: Titan PI No., invoice CP. Ref., Description, GC, CP, invoice date, invoice owner, <s>account period,</s> Cargo/Service invoice type,&nbsp;<span class="inline-comment-marker" data-ref="930d1cb2-467c-4cb1-870e-fe8129959411">functional line</span>, business line, commodity, Invoice Currency, Invoice net amount, Invoice Tax Amount, Invoice gross amount, underlying PI No. for Credit Note</p>
+     <p>Invoice Line: cost group, line net amount, line tax amount, line gross amount</p>
+     <p>Criteria: Status='Approved', TMP status &lt;&gt;'Success'</p>
+     <p>Note: Customs VAT &amp; duty invoice should be covered in the same since they are booked as China&nbsp;international invoices.</p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>TMP, Titan PI</p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>27.R2</p></td>
+   </tr>
+   <tr>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">FR-32</td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p><span style="color:#f87168;"><span style="color:#172b4d;">China International Invoice</span></span></p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>TMP should handle China international invoices differently per below:</p>
+     <p>Cost Code=C26, net amount=0, tax amount&gt;0 → should be mapped with Customs VAT</p>
+     <p>Cost Code=C26, net amount&gt;0, tax amount=0 → should be mapped with Customs duty payment receipt</p>
+     <p>Cost Code=C82, net amount=0, tax amount&gt;0 → This is WHT payment receipt invoices which will synchronized from TMP to Titan PI. So when receives it in China international invoices from Titan PI, TMP should not duplicate it under commercial invoices.&nbsp;</p>
+     <p>Others will be categorized as Commercial invoices in TMP Input invoices. Further sub-classification will be discussed later per Acct. further requirement.</p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>TMP</p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>27.R2</p></td>
+   </tr>
+   <tr>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">FR-33</td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p><span style="color:#f87168;"><span style="color:#172b4d;">China International Invoice</span></span></p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>The underlying China International invoice should be updated to 'fully reversed' (已全额红冲) or 'partially reversed' （已部分红冲）based on the Credit Note amount in TMP.</p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>TMP</p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>27.R2</p></td>
+   </tr>
+   <tr>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">FR-34</td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p><span style="color:#f87168;"><span style="color:#172b4d;">China International Invoice</span></span></p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>TMP should response back to Titan PI on the synchronization status of China international invoices on near real-time basis.</p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>TMP, Titan PI</p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>27.R2</p></td>
+   </tr>
+   <tr>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">FR-35</td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p><span style="color:#f87168;"><span style="color:#172b4d;">Partial Credit Note</span></span></p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p style="text-align: left;">In Cargo PI excel bulk uploader, only fully reversal-full credit note is supported, but in API, partial credit note should also be supported, so that user does not need to do manual credit note booking when receive partial CN from counterparty.</p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>TMP, Titan PI</p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>27.R1</p></td>
+   </tr>
+   <tr>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">FR-36</td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p><span style="color:#f87168;"><span style="color:#172b4d;">Invoice Owner</span></span></p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p style="text-align: left;">For Cargo VAT invoices, invoice owner will remain the logic to map&nbsp;from Logistics.Primary assignment owner based on attribution,</p>
+     <p>For non-bank Service VAT, TMP will pass invoice owner as the user ‘s name who confirms booking of the service VAT in Titan PI.</p>
+     <p><span style="color:#172b4d;"><span class="inline-comment-marker" data-ref="bbc118ac-a880-4419-a941-449ec2bc5721">For bank service VAT, TMP will default Amy Zhou as invoice owner and pass to Titan PI.</span></span></p>
+     <p><span style="color:#172b4d;"><span class="inline-comment-marker" data-ref="bbc118ac-a880-4419-a941-449ec2bc5721">For WHT invoices, TMP will default Amy Zhou as invoice owner and pass to Titan PI.</span></span></p>
+     <p><span style="color:#172b4d;"><span class="inline-comment-marker" data-ref="bbc118ac-a880-4419-a941-449ec2bc5721">Operator &amp; Approver will be the same as Invoice Owner.</span></span></p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>TMP, Titan PI</p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>27.R1</p></td>
+   </tr>
+   <tr>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">FR-37</td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p><span style="color:#f87168;"><span style="color:#172b4d;">Created By</span></span></p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p style="text-align: left;">For invoices created by TMP API, the 'Created By' should clearly indicate that it's auto created from TMP, so that user can easily differentiate it from manual-booked PIs.</p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>Titan PI</p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>27.R1</p></td>
+   </tr>
+   <tr>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">FR-38</td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p><span style="color:#f87168;"><span style="color:#172b4d;">WHT invoice</span></span></p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <div class="content-wrapper">
+      <p style="text-align: left;">After WHT payment to local tax bureau, the WHT payment receipt will be auto synchronized into TMP, when Acct. user confirms it to be booked into Titan, TMP will call Titan PI API to book the same in Titan PI with below cost code and deal ID.</p>
+      <div class="table-wrap">
+       <table data-mce-resize="false" class="confluenceTable">
+        <colgroup>
+         <col>
+         <col>
+        </colgroup>
+        <tbody>
+         <tr>
+          <th scope="col" class="confluenceTh">Cost Code</th>
+          <th scope="col" class="confluenceTh">Deal ID</th>
+         </tr>
+         <tr>
+          <td class="confluenceTd">C82</td>
+          <td class="confluenceTd">
+           <p>TMP should support maintain deal ID per different GCs, so far only below two and system should support maintaining deal ID for other GCs in future.</p>
+           <p>GC &nbsp; &nbsp;Deal ID <br>
+             TIC &nbsp; <span>1333854 （Pudong new area）</span> <br>
+             TTH &nbsp;<span>1329181&nbsp; （danzhou）</span></p></td>
+         </tr>
+        </tbody>
+       </table>
+      </div>
+      <p style="text-align: left;">PRD. Sample:</p>
+      <p style="text-align: left;"><span class="confluence-embedded-file-wrapper confluence-embedded-manual-size"><img class="confluence-embedded-image confluence-thumbnail" draggable="false" height="251" src="c3067bb01d41d9fb27e4640584ff55784b04a6fc87496d34665f16ec2bb336d2" data-image-src="/download/attachments/296153961/image-2026-9-22_17-12-6.png?version=1&amp;modificationDate=1790068326000&amp;api=v2" data-unresolved-comment-count="0" data-linked-resource-id="383898593" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="image-2026-9-22_17-12-6.png" data-base-url="https://confluence" data-linked-resource-content-type="image/png" data-linked-resource-container-id="296153961" data-linked-resource-container-version="100" tabindex="0" alt="" width="468"></span><span class="confluence-embedded-file-wrapper confluence-embedded-manual-size"><img class="confluence-embedded-image" draggable="false" height="88" src="6ea7be0514ed53bff2eba372b277fee25c18ccc22d838b1400926c0591d80cd6" data-image-src="/download/attachments/296153961/image-2026-9-22_17-12-48.png?version=1&amp;modificationDate=1790068368000&amp;api=v2" data-unresolved-comment-count="0" data-linked-resource-id="383898594" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="image-2026-9-22_17-12-48.png" data-base-url="https://confluence" data-linked-resource-content-type="image/png" data-linked-resource-container-id="296153961" data-linked-resource-container-version="100" tabindex="0" alt="" width="468"></span><span class="confluence-embedded-file-wrapper confluence-embedded-manual-size"><img class="confluence-embedded-image" draggable="false" height="195" src="420a0c54cbd2612374a867ea3585057643865ae08f784492ae58f7c665bc0af3" data-image-src="/download/attachments/296153961/image-2026-9-22_17-13-27.png?version=1&amp;modificationDate=1790068407000&amp;api=v2" data-unresolved-comment-count="0" data-linked-resource-id="383898596" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="image-2026-9-22_17-13-27.png" data-base-url="https://confluence" data-linked-resource-content-type="image/png" data-linked-resource-container-id="296153961" data-linked-resource-container-version="100" tabindex="0" alt="" width="468"></span></p>
+     </div></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>TMP, Titan PI</p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>27.R1</p></td>
+   </tr>
+   <tr>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">FR-39</td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p><span style="color:#f87168;"><span style="color:#172b4d;">Report</span></span></p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <div class="content-wrapper">
+      <p style="text-align: left;">At month end, TMP should automate a report to show the VAT /WHT&nbsp;invoices confirmed to be booked in TMP but without Titan PI No., so to take action to see whether user forget to update the Titan PI to TMP under exceptional cases, to avoid break. (address Question 5)</p>
+     </div></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>TMP</p></td>
+    <td style="text-align: left;vertical-align: top;" class="confluenceTd">
+     <p>27.R1</p></td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<h1 data-nh-numbering="6. " id="FSDTMPInputVATAPIIntegrationwithTitanPI-DetailedFieldMapping"><span class="nh-number">6. </span>Detailed Field Mapping</h1>
+<h2 data-nh-numbering="6.1. " id="FSDTMPInputVATAPIIntegrationwithTitanPI-CargoVATinvoicesfromTMPtoTitanPI(27.R2)"><span class="nh-number">6.1. </span>Cargo VAT invoices from TMP to Titan PI (27.R2)</h2><a name="composition-deck-Dataextractionlogic"></a>
+<div id="Dataextractionlogic" class="aui-tabs
+             horizontal-tabs
+          composition-deck
+          " history="true" loopcards="false" effecttype="" effectduration="1.0" nextafter="0.0">
+ <ul class="tabs-menu
+                            top
+                    "></ul>
+ <div class="deck-cards tabs-pane active-pane" style="">
+  <p><b>Header</b></p>
+  <div id="-2137403731" class="tabs-pane" style="">
+   <p><strong>Data level</strong>: Invoice Level. This table is per Invoice level, one line for input VAT invoice.</p>
+   <div class="table-wrap">
+    <table class="fixed-width wrapped confluenceTable" style="text-align: left;width: 99.83%;">
+     <colgroup class="">
+      <col class="" style="width: 11.698%;">
+      <col class="" style="width: 18.342%;">
+      <col class="" style="width: 16.1273%;">
+      <col style="width: 27.7686%;">
+      <col class="" style="width: 26.065%;">
+     </colgroup>
+     <tbody class="">
+      <tr class="">
+       <td class="highlight-grey confluenceTd" title="Background color :" data-highlight-colour="grey"><strong title="">Column Name</strong></td>
+       <td class="highlight-grey confluenceTd" title="Background color :" data-highlight-colour="grey"><strong title="">Column Description</strong></td>
+       <td class="highlight-grey confluenceTd" title="Background color :" data-highlight-colour="grey"><strong title="">Data Source From</strong></td>
+       <td class="highlight-grey confluenceTd" title="Background color :" data-highlight-colour="grey"><strong title="">Data Source Field</strong></td>
+       <td class="highlight-grey confluenceTd" title="Background color :" data-highlight-colour="grey"><strong title="">Remark</strong></td>
+      </tr>
+      <tr class="">
+       <td class="confluenceTd">Invoice Line Link Id</td>
+       <td class="confluenceTd">
+        <p><span>This field is to link header and lines, use golden tax invoice reference directly</span></p></td>
+       <td class="confluenceTd">
+        <p>Cargo-Input VAT invoice Attribution</p>
+        <p>Customs VAT-Customs VAT</p>
+        <p>other service VAT-Input VAT</p></td>
+       <td class="confluenceTd">
+        <p>VAT Invoice No.</p>
+        <p>发票号码</p></td>
+       <td class="confluenceTd">Will be mapped as CP invoice Ref in Titan PI editor</td>
+      </tr>
+      <tr>
+       <td class="confluenceTd">Invoice Owner</td>
+       <td class="confluenceTd">
+        <p><span>Invoice Owner</span></p></td>
+       <td class="confluenceTd">
+        <p>Cargo-Titan PI get based on attribution</p></td>
+       <td class="confluenceTd">
+        <p>Cargo VAT will be mapped from Logistics.Primary assignment owner based on attribution,</p></td>
+       <td class="confluenceTd"><br></td>
+      </tr>
+      <tr>
+       <td class="confluenceTd">Invoice Type</td>
+       <td class="confluenceTd">
+        <p><span>Option list: </span></p>
+        <p><span>CARGO <br>
+           CARGO DOC LC <br>
+           SERVICE <br>
+           CLAIM</span></p></td>
+       <td class="confluenceTd">Input VAT invoice</td>
+       <td class="confluenceTd">
+        <p>Invoice Type</p>
+        <p>发票分类, Cargo or <span>CARGO DOC LC</span></p></td>
+       <td class="confluenceTd"><br></td>
+      </tr>
+      <tr>
+       <td class="confluenceTd">Cargo Invoice Type</td>
+       <td class="confluenceTd">
+        <p><span>Option List:</span></p>
+        <p><span>ProvisionalInvoice <br>
+           FinalAdjustment <br>
+           FinalInvoice <br><br></span></p></td>
+       <td class="confluenceTd"><span style="color:#172b4d;">Input VAT invoice </span></td>
+       <td class="confluenceTd">
+        <p>If all quotas/assignments attributed to the cargo invoice are final, then '<span>FinalInvoice</span>', else '<span>ProvisionalInvoice</span>'.</p></td>
+       <td class="confluenceTd">
+        <p>Credit Note is not mandatory, Titan will get from underlying invoice.</p></td>
+      </tr>
+      <tr>
+       <td class="confluenceTd">Invoice Category</td>
+       <td class="confluenceTd">
+        <p><span>Option List:</span></p>
+        <p><span>Purchase Invoice</span></p>
+        <p><span>Credit Note</span></p></td>
+       <td class="confluenceTd"><span style="color:#172b4d;">Input VAT invoice </span></td>
+       <td class="confluenceTd">
+        <p>Red invoice: Credit Note</p>
+        <p>Blue Invoice: Purchase Invoice</p></td>
+       <td class="confluenceTd"><br></td>
+      </tr>
+      <tr>
+       <td class="confluenceTd">VAT Type (Special/General)</td>
+       <td class="confluenceTd">
+        <p><span>Option List:</span></p>
+        <p>Special <br>
+          General</p></td>
+       <td class="confluenceTd"><span style="color:#172b4d;">Input VAT invoice</span></td>
+       <td class="confluenceTd">
+        <p>发票类型</p>
+        <p>增值税专票-Special</p>
+        <p>增值税普票-General</p></td>
+       <td class="confluenceTd"><br></td>
+      </tr>
+      <tr>
+       <td class="confluenceTd">Tax Status</td>
+       <td class="confluenceTd">
+        <p><span>Option List:</span></p>
+        <p><span>Applicable <br>
+           Outside Scope</span></p></td>
+       <td class="confluenceTd"><span style="color:#172b4d;">Input VAT invoice</span></td>
+       <td class="confluenceTd">Tax Applicability</td>
+       <td class="confluenceTd">Check tax code mapping</td>
+      </tr>
+      <tr>
+       <td class="confluenceTd">Indirect Tax Code</td>
+       <td class="confluenceTd">
+        <p>Tax Code</p></td>
+       <td class="confluenceTd"><span style="color:#172b4d;">Master data in TMP</span></td>
+       <td class="confluenceTd">
+        <p>Tax Code GUID</p></td>
+       <td class="confluenceTd">Check tax code mapping</td>
+      </tr>
+      <tr>
+       <td class="confluenceTd">Invoice Date</td>
+       <td class="confluenceTd">
+        <p><span>Invoice Date, will be used to default invoice due date, Due date and Tax point date also in Titan PI</span></p></td>
+       <td class="confluenceTd"><span style="color:#172b4d;">Input VAT invoice</span></td>
+       <td class="confluenceTd">Invoice Date</td>
+       <td class="confluenceTd"><br></td>
+      </tr>
+      <tr>
+       <td class="confluenceTd">Invoice CCY</td>
+       <td class="confluenceTd">
+        <p><span>Invoice Currency</span></p></td>
+       <td class="confluenceTd">
+        <p><span style="color:#172b4d;">Input VAT invoice</span></p></td>
+       <td class="confluenceTd"><span style="color:#172b4d;">Invoice CCY</span></td>
+       <td class="confluenceTd">Always 'CNY' for VAT invoices from TMP</td>
+      </tr>
+      <tr>
+       <td class="confluenceTd">VAT Inclusive Amount</td>
+       <td class="confluenceTd">
+        <p><span>VAT Inclusive Amount</span></p></td>
+       <td class="confluenceTd">
+        <p><span style="color:#172b4d;">Input VAT invoice Attribution</span></p></td>
+       <td class="confluenceTd"><span style="color:#172b4d;">VAT Inclusive Amount summed from Attribution lines</span></td>
+       <td class="confluenceTd">will be negative for red invoice (Titan Credit Note)</td>
+      </tr>
+      <tr>
+       <td class="confluenceTd">Tax Amount in Invoice CCY</td>
+       <td class="confluenceTd">
+        <p><span>Tax Amount in Invoice CCY</span></p></td>
+       <td class="confluenceTd">
+        <p><span style="color:#172b4d;">Input VAT invoice Attribution</span></p></td>
+       <td class="confluenceTd"><span style="color:#172b4d;">Tax Amount summed from Attribution lines</span></td>
+       <td class="confluenceTd"><br></td>
+      </tr>
+      <tr>
+       <td class="confluenceTd">LC Amount</td>
+       <td class="confluenceTd">LC Amount</td>
+       <td class="confluenceTd"><span style="color:#172b4d;">Input VAT invoice Attribution</span></td>
+       <td class="confluenceTd">LC Amount</td>
+       <td class="confluenceTd">New in TMP, Mandatory when Invoice Type is '<span>CARGO DOC LC</span>'</td>
+      </tr>
+      <tr>
+       <td class="confluenceTd">LC Tax Amount</td>
+       <td class="confluenceTd">LC Tax Amount</td>
+       <td class="confluenceTd"><span style="color:#172b4d;">Input VAT invoice Attribution</span></td>
+       <td class="confluenceTd">LC Tax Amount</td>
+       <td class="confluenceTd">New in TMP, Mandatory when Invoice Type is '<span>CARGO DOC LC</span>'</td>
+      </tr>
+      <tr>
+       <td class="confluenceTd">Linked PI Id for Credit Note</td>
+       <td class="confluenceTd">
+        <p><span>the underlying CP invoice ref for Credit Note, mandatory only for Credit Note</span></p></td>
+       <td class="confluenceTd"><span style="color:#172b4d;">Input VAT invoice</span></td>
+       <td class="confluenceTd">
+        <p>关联发票号</p>
+        <p>Blue Invoice No. for Red Invoice</p></td>
+       <td class="confluenceTd"><br></td>
+      </tr>
+      <tr>
+       <td class="confluenceTd">Internal Invoice</td>
+       <td class="confluenceTd">
+        <p><span>newly added in API</span></p></td>
+       <td class="confluenceTd"><span style="color:#172b4d;">Input VAT invoice</span></td>
+       <td class="confluenceTd">
+        <p>Internal Invoice flag</p></td>
+       <td class="confluenceTd">If CP is also China GC, set it as 'Yes', else 'No'</td>
+      </tr>
+      <tr>
+       <td class="confluenceTd">Titan SI No.</td>
+       <td class="confluenceTd">
+        <p><span>newly added in API</span></p></td>
+       <td class="confluenceTd"><span style="color:#172b4d;">Input VAT invoice</span></td>
+       <td class="confluenceTd">
+        <p>Get from output VAT based on GT Invoice No.</p></td>
+       <td class="confluenceTd">Mandatory when Internal Invoice flag is 'Yes'.</td>
+      </tr>
+     </tbody>
+    </table>
+   </div>
+  </div>
+  <p><b>Lines</b></p>
+  <div id="73424607" class="tabs-pane" style="">
+   <div class="table-wrap">
+    <table class="fixed-width wrapped confluenceTable" style="text-align: left;width: 96.6572%;">
+     <colgroup class="">
+      <col class="" style="width: 12.3757%;">
+      <col class="" style="width: 19.2375%;">
+      <col style="width: 12.6099%;">
+      <col class="" style="width: 29.8533%;">
+      <col class="" style="width: 25.9236%;">
+     </colgroup>
+     <tbody class="">
+      <tr class="">
+       <td class="highlight-grey confluenceTd" data-highlight-colour="grey"><strong title="">Column Name</strong></td>
+       <td class="highlight-grey confluenceTd" data-highlight-colour="grey"><strong title="">Column Description</strong></td>
+       <td class="highlight-grey confluenceTd" data-highlight-colour="grey"><strong title="">Data Source From</strong></td>
+       <td class="highlight-grey confluenceTd" data-highlight-colour="grey"><strong title="">Data Source Field</strong></td>
+       <td class="highlight-grey confluenceTd" data-highlight-colour="grey"><strong title="">Remark</strong></td>
+      </tr>
+      <tr class="">
+       <td class="confluenceTd">Invoice Line Link Id</td>
+       <td class="confluenceTd">
+        <p><span>This field is to link header and lines, use golden tax invoice reference directly</span></p></td>
+       <td class="confluenceTd"><span style="color:#172b4d;">Input VAT invoice Attribution</span></td>
+       <td class="confluenceTd">VAT Invoice No.</td>
+       <td class="confluenceTd"><br></td>
+      </tr>
+      <tr>
+       <td class="confluenceTd"><span style="color:#172b4d;">VAT Inclusive Amount</span></td>
+       <td class="confluenceTd">
+        <p><span style="color:#172b4d;">Sum of the attributed VAT-inclusive amount per Invoice &amp; Quota ID</span></p></td>
+       <td class="confluenceTd"><span style="color:#172b4d;">Input VAT invoice Attribution</span></td>
+       <td class="confluenceTd"><span style="color:#172b4d;">VAT Inclusive Amount</span></td>
+       <td class="confluenceTd">will be negative for Titan Credit Note, and partial CN should also be supported, i.e. CN amount less than underlying PI amount, same to below</td>
+      </tr>
+      <tr>
+       <td class="confluenceTd"><span style="color:#172b4d;">Tax Amount in Invoice CCY</span></td>
+       <td class="confluenceTd">
+        <p><span style="color:#172b4d;">Sum of the attributed VAT amount per Invoice &amp; Quota ID</span></p></td>
+       <td class="confluenceTd"><span style="color:#172b4d;">Input VAT invoice Attribution</span></td>
+       <td class="confluenceTd"><span style="color:#172b4d;">Tax Amount in Invoice CCY</span></td>
+       <td class="confluenceTd">will be negative for Titan Credit Note, and partial CN should also be supported</td>
+      </tr>
+      <tr>
+       <td class="confluenceTd"><span style="color:#172b4d;">Quantity</span></td>
+       <td class="confluenceTd">
+        <p><span style="color:#172b4d;">Sum of the attributed Quantity per Invoice &amp; Quota ID</span></p></td>
+       <td class="confluenceTd"><span style="color:#172b4d;">Input VAT invoice Attribution</span></td>
+       <td class="confluenceTd"><span style="color:#172b4d;">Quantity</span></td>
+       <td class="confluenceTd">will be negative for Titan Credit Note, and partial CN should also be supported</td>
+      </tr>
+      <tr>
+       <td class="confluenceTd"><span style="color:#172b4d;">Quota ID</span></td>
+       <td class="confluenceTd">
+        <p><span style="color:#172b4d;">Attributed Quota ID</span></p></td>
+       <td class="confluenceTd"><span style="color:#172b4d;">Input VAT invoice Attribution</span></td>
+       <td class="confluenceTd"><span style="color:#172b4d;">Quota ID</span></td>
+       <td class="confluenceTd"><br></td>
+      </tr>
+      <tr>
+       <td class="confluenceTd"><span style="color:#172b4d;">Assignment ID</span></td>
+       <td class="confluenceTd">
+        <p><span style="color:#172b4d;">Attributed Assignment ID</span></p></td>
+       <td class="confluenceTd"><span style="color:#172b4d;">Input VAT invoice Attribution</span></td>
+       <td class="confluenceTd"><span style="color:#172b4d;">Assignment ID</span></td>
+       <td class="confluenceTd"><br></td>
+      </tr>
+     </tbody>
+    </table>
+   </div>
+  </div>
+  <p><br></p>
+ </div>
+</div><!-- // .deck -->
+<h2 data-nh-numbering="6.2. " id="FSDTMPInputVATAPIIntegrationwithTitanPI-ServiceVATinvoices&amp;WHTPaymentReceiptfromTMPtoTitanPI(27.R1)"><span class="nh-number">6.2. </span>&nbsp;Service VAT invoices &amp; WHT Payment Receipt from TMP to Titan PI (27.R1)</h2>
+<p>Note: Service Invoice may flow from TMP with or without attribution, thus Lines will be optional for service invoices.&nbsp; If with Attribution, Titan PI will auto approve the PI. If without Attribution, the Titan PI will be booked in Incomplete status, and user will further attribute in Titan and manual approve it. Titan PI should control that the information from TMP should not be editable to keep it aligned with TMP. Both pooled and non-pooled invoice are covered.</p><a name="composition-deck-Dataextractionlogic"></a>
+<div id="Dataextractionlogic" class="aui-tabs
+             horizontal-tabs
+          composition-deck
+          " history="true" loopcards="false" effecttype="" effectduration="1.0" nextafter="0.0">
+ <ul class="tabs-menu
+                            top
+                    "></ul>
+ <div class="deck-cards tabs-pane active-pane" style="">
+  <p><b>Header</b></p>
+  <div id="-2137403731" class="tabs-pane" style="">
+   <p><strong>Data level</strong>: Invoice Level. This table is per Invoice level, one line for input VAT invoice.</p>
+   <div class="table-wrap">
+    <table class="fixed-width wrapped confluenceTable" style="text-align: left;width: 92.8299%;">
+     <colgroup class="">
+      <col class="" style="width: 10.9483%;">
+      <col class="" style="width: 15.8505%;">
+      <col style="width: 5.93863%;">
+      <col class="" style="width: 18.574%;">
+      <col style="width: 29.3589%;">
+      <col class="" style="width: 19.3365%;">
+     </colgroup>
+     <tbody class="">
+      <tr class="">
+       <td class="highlight-grey confluenceTd" title="Background color :" data-highlight-colour="grey"><strong title="">Column Name</strong></td>
+       <td class="highlight-grey confluenceTd" title="Background color :" data-highlight-colour="grey"><strong title="">Column Description</strong></td>
+       <td class="highlight-#f4f5f7 confluenceTd" data-highlight-colour="#f4f5f7"><strong title=""><strong style="text-align: left;">Mandatory</strong><span style="color:#172b4d;">&nbsp; &nbsp;</span></strong></td>
+       <td class="highlight-grey confluenceTd" title="Background color :" data-highlight-colour="grey"><strong title="">Data Source From</strong></td>
+       <td class="highlight-grey confluenceTd" title="Background color :" data-highlight-colour="grey"><strong title="">Data Source Field</strong></td>
+       <td class="highlight-grey confluenceTd" title="Background color :" data-highlight-colour="grey"><strong title="">Remark</strong></td>
+      </tr>
+      <tr class="">
+       <td class="confluenceTd">Invoice Line Link Id</td>
+       <td class="confluenceTd">
+        <p><span>This field is to link header and lines, use golden tax invoice reference directly</span></p></td>
+       <td class="confluenceTd">
+        <p>Yes</p></td>
+       <td class="confluenceTd">
+        <p>Input VAT-service invoice</p>
+        <p>WHT Payment Receipt</p></td>
+       <td class="confluenceTd">
+        <p>VAT Invoice No./WHT Pmt receipt No.</p>
+        <p>发票号码/缴款书编号</p></td>
+       <td class="confluenceTd">Will be mapped as CP invoice Ref in Titan PI editor</td>
+      </tr>
+      <tr>
+       <td class="confluenceTd"><span data-teams="true">Pooled </span></td>
+       <td class="confluenceTd">Pooled PI</td>
+       <td class="confluenceTd">
+        <p>Yes</p></td>
+       <td class="confluenceTd">
+        <p>Input VAT-service invoice</p></td>
+       <td class="confluenceTd">
+        <p>TMP to derive</p></td>
+       <td class="confluenceTd">
+        <p>TMP to derive refer to bank invoice section</p>
+        <p>Currently Pooled PI only cover Mm Interest C32P bank invoices. It should be auto approved in Titan PI.</p></td>
+      </tr>
+      <tr>
+       <td class="confluenceTd">Invoice Owner</td>
+       <td class="confluenceTd">
+        <p><span>Invoice Owner</span></p></td>
+       <td class="confluenceTd">
+        <p>Yes</p></td>
+       <td class="confluenceTd">
+        <p>Input VAT-service invoice</p>
+        <p>WHT Payment Receipt</p></td>
+       <td class="confluenceTd">
+        <p>Service VAT-will be passed from TMP the user name who confirm booking of the service VAT</p>
+        <p><span style="color:#172b4d;">Bank invoice &amp; WHT invoices -Amy Zhou</span></p></td>
+       <td class="confluenceTd">
+        <p>New in TMP-Input Service Invoice &amp; WHT Pmt receipt No.</p>
+        <p>Titan PI should default Operator and Approver with the same value of Invoice Owner.</p></td>
+      </tr>
+      <tr>
+       <td class="confluenceTd">Operator</td>
+       <td class="confluenceTd">
+        <p><span>Operator</span></p></td>
+       <td class="confluenceTd">
+        <p>Yes</p></td>
+       <td class="confluenceTd">
+        <p>same as Invoice Owner</p></td>
+       <td class="confluenceTd">
+        <p>same as Invoice Owner</p></td>
+       <td class="confluenceTd">
+        <p><br></p></td>
+      </tr>
+      <tr>
+       <td class="confluenceTd">Approver</td>
+       <td class="confluenceTd">
+        <p><span>Approver</span></p></td>
+       <td class="confluenceTd">
+        <p>Yes</p></td>
+       <td class="confluenceTd">
+        <p>same as Invoice Owner</p></td>
+       <td class="confluenceTd">
+        <p>same as Invoice Owner</p></td>
+       <td class="confluenceTd">
+        <p><br></p></td>
+      </tr>
+      <tr>
+       <td class="confluenceTd">Commodity</td>
+       <td class="confluenceTd">
+        <p>Commodity name</p></td>
+       <td class="confluenceTd">
+        <p>Yes</p></td>
+       <td class="confluenceTd">
+        <p>Input VAT-service invoice</p></td>
+       <td class="confluenceTd">
+        <p>Commodity GUID</p></td>
+       <td class="confluenceTd">New field in TMP-Input Service Invoice, if user input commodity name, TMP to get Commodity GUID from SRD Adaptor, then pass the GUID to Titan. If user does not choose commodity, TMP to pass '<span style="color:#333333;">DC4C527730DB40A09F18F87384B5A746</span>'&nbsp; (GUID for 'ALL') to Titan PI.</td>
+      </tr>
+      <tr>
+       <td class="confluenceTd">Group Company</td>
+       <td class="confluenceTd">
+        <p>Buyer in the invocie</p></td>
+       <td class="confluenceTd">
+        <p>Yes</p></td>
+       <td class="confluenceTd">
+        <p>Input VAT-service invoice</p>
+        <p>WHT Payment Receipt</p></td>
+       <td class="confluenceTd">
+        <p>Group Company GUID from SRD</p></td>
+       <td class="confluenceTd"><br></td>
+      </tr>
+      <tr>
+       <td class="confluenceTd">Counterparty</td>
+       <td class="confluenceTd">
+        <p>Seller in the invoice</p></td>
+       <td class="confluenceTd">
+        <p>Yes</p></td>
+       <td class="confluenceTd">
+        <p>Input VAT-service invoice</p>
+        <p>WHT Payment Receipt</p></td>
+       <td class="confluenceTd">
+        <p>Counterparty GUID from SRD</p></td>
+       <td class="confluenceTd"><br></td>
+      </tr>
+      <tr>
+       <td class="confluenceTd"><span style="color:#172b4d;">Group Company Business Line</span></td>
+       <td class="confluenceTd">
+        <p>RM</p>
+        <p>Bulk</p>
+        <p>Concs.</p></td>
+       <td class="confluenceTd">
+        <p>Yes</p></td>
+       <td class="confluenceTd">
+        <p>Input VAT-service invoice</p>
+        <p>WHT Payment Receipt</p></td>
+       <td class="confluenceTd">
+        <p>Functional Line</p>
+        <p>业务线</p></td>
+       <td class="confluenceTd">Make it mandatory in TMP. service invoice when user confirm to be booked in&nbsp; Titan.</td>
+      </tr>
+      <tr>
+       <td class="confluenceTd">Invoice Type</td>
+       <td class="confluenceTd">
+        <p><span>Option list: </span></p>
+        <p><span>CARGO <br>
+           CARGO DOC LC <br>
+           SERVICE <br>
+           CLAIM</span></p></td>
+       <td class="confluenceTd">Yes</td>
+       <td class="confluenceTd">Input VAT invoice</td>
+       <td class="confluenceTd">
+        <p>Invoice Type-‘<span>SERVICE</span>’</p>
+        <p>发票分类</p></td>
+       <td class="confluenceTd"><br></td>
+      </tr>
+      <tr>
+       <td class="confluenceTd">Invoice Category</td>
+       <td class="confluenceTd">
+        <p><span>Option List:</span></p>
+        <p><span>Purchase Invoice</span></p>
+        <p><span>Credit Note</span></p></td>
+       <td class="confluenceTd"><span style="color:#172b4d;">Yes</span></td>
+       <td class="confluenceTd"><span style="color:#172b4d;">Input VAT invoice </span></td>
+       <td class="confluenceTd">
+        <p>Red invoice: Credit Note</p>
+        <p>Blue Invoice: Purchase Invoice</p></td>
+       <td class="confluenceTd"><br></td>
+      </tr>
+      <tr>
+       <td class="confluenceTd">VAT/International</td>
+       <td class="confluenceTd">
+        <p><span>Option List:</span></p>
+        <p><span>VAT</span></p>
+        <p>China International</p></td>
+       <td class="confluenceTd"><span style="color:#172b4d;">Yes</span></td>
+       <td class="confluenceTd"><span style="color:#172b4d;">Input VAT invoice</span></td>
+       <td class="confluenceTd">
+        <p><span style="color:#172b4d;">WHT Payment Receipt-'China International'</span></p>
+        <p><span style="color:#172b4d;">non WHT Payment Receipt-'VAT'</span></p></td>
+       <td class="confluenceTd"><br></td>
+      </tr>
+      <tr>
+       <td class="confluenceTd">VAT Type (Special/General)</td>
+       <td class="confluenceTd">
+        <p><span>Option List:</span></p>
+        <p>Special <br>
+          General</p></td>
+       <td class="confluenceTd"><span style="color:#172b4d;">Yes</span></td>
+       <td class="confluenceTd"><span style="color:#172b4d;">Input VAT invoice</span></td>
+       <td class="confluenceTd">
+        <p>发票类型</p>
+        <p>增值税专票-Special</p>
+        <p>增值税普票-General</p>
+        <p><span style="color:#172b4d;">China International invoice will be empty for this field since it's not applicable</span></p></td>
+       <td class="confluenceTd"><br></td>
+      </tr>
+      <tr>
+       <td class="confluenceTd">Tax Status</td>
+       <td class="confluenceTd">
+        <p><span>Option List:</span></p>
+        <p><span>Applicable <br>
+           Outside Scope</span></p></td>
+       <td class="confluenceTd"><span style="color:#172b4d;">Yes</span></td>
+       <td class="confluenceTd"><span style="color:#172b4d;">Input VAT invoice</span></td>
+       <td class="confluenceTd">Tax Applicability</td>
+       <td class="confluenceTd">Check tax code mapping</td>
+      </tr>
+      <tr>
+       <td class="confluenceTd">Indirect Tax Code</td>
+       <td class="confluenceTd">
+        <p>Tax Code</p></td>
+       <td class="confluenceTd"><span style="color:#172b4d;">Yes</span></td>
+       <td class="confluenceTd"><span style="color:#172b4d;">Master data in TMP</span></td>
+       <td class="confluenceTd">
+        <p>Tax Code GUID</p></td>
+       <td class="confluenceTd">Check tax code mapping</td>
+      </tr>
+      <tr>
+       <td class="confluenceTd">Invoice Date</td>
+       <td class="confluenceTd">
+        <p><span>Invoice Date, will be used to default invoice due date, Due date and Tax point date also in Titan PI</span></p></td>
+       <td class="confluenceTd"><span style="color:#172b4d;">Yes</span></td>
+       <td class="confluenceTd"><span style="color:#172b4d;">Input VAT invoice</span></td>
+       <td class="confluenceTd">Invoice Date</td>
+       <td class="confluenceTd"><br></td>
+      </tr>
+      <tr>
+       <td class="confluenceTd">Invoice CCY</td>
+       <td class="confluenceTd">
+        <p><span>Invoice Currency</span></p></td>
+       <td class="confluenceTd">
+        <p><span style="color:#172b4d;">&nbsp;</span></p></td>
+       <td class="confluenceTd">
+        <p><span style="color:#172b4d;">Input VAT invoice</span></p></td>
+       <td class="confluenceTd"><span style="color:#172b4d;">Invoice CCY</span></td>
+       <td class="confluenceTd">Always 'CNY' for VAT invoices from TMP</td>
+      </tr>
+      <tr>
+       <td class="confluenceTd">VAT Inclusive Amount</td>
+       <td class="confluenceTd">
+        <p><span>VAT Inclusive Amount</span></p></td>
+       <td class="confluenceTd">
+        <p><span style="color:#172b4d;">Yes</span></p></td>
+       <td class="confluenceTd">
+        <p><span style="color:#172b4d;">Input VAT invoice&nbsp;</span></p></td>
+       <td class="confluenceTd">
+        <p><span style="color:#172b4d;">VAT Inclusive Amount&nbsp;</span></p>
+        <p><span style="color:#172b4d;">Note: TMP to pay attention to get the amount attributed to Titan Trx only considering the scenario where one bank invoice attrbuted to both Titan Trx. &amp; Oracle commission</span></p>
+        <p><span style="color:#172b4d;">WHT will be sent as the whole amount of WHT since the whole is tax amount, PI will ignore this field for International invoice</span></p></td>
+       <td class="confluenceTd">will be negative for red invoice (Titan Credit Note), and partial CN should also be supported</td>
+      </tr>
+      <tr>
+       <td class="confluenceTd">Net Amount</td>
+       <td class="confluenceTd">
+        <p><span>VAT exclusive Amount</span></p></td>
+       <td class="confluenceTd">
+        <p><span style="color:#172b4d;">Yes</span></p></td>
+       <td class="confluenceTd">
+        <p><span style="color:#172b4d;">Input VAT invoice&nbsp;</span></p></td>
+       <td class="confluenceTd">
+        <p><span style="color:#172b4d;">VAT exclusive Amount</span></p>
+        <p><span style="color:#172b4d;">Note: TMP to pay attention to get the amount attributed to Titan Trx only considering the scenario where one bank invoice attrbuted to both Titan Trx. &amp; Oracle commission</span></p>
+        <p><span style="color:#172b4d;">WHT will be sent as 0 since the whole is tax amount</span></p></td>
+       <td class="confluenceTd">will be negative for red invoice (Titan Credit Note), and partial CN should also be supported</td>
+      </tr>
+      <tr>
+       <td class="confluenceTd">Tax Amount in Invoice CCY</td>
+       <td class="confluenceTd">
+        <p><span>Tax Amount in Invoice CCY</span></p></td>
+       <td class="confluenceTd">
+        <p><span style="color:#172b4d;">Yes</span></p></td>
+       <td class="confluenceTd">
+        <p><span style="color:#172b4d;">Input VAT invoice&nbsp;</span></p></td>
+       <td class="confluenceTd">
+        <p><span style="color:#172b4d;">Tax Amount</span></p>
+        <p><span style="color:#172b4d;">Note: TMP to pay attention to get the amount attributed to Titan Trx only considering the scenario where one bank invoice attrbuted to both Titan Trx. &amp; Oracle commission</span></p>
+        <p><span style="color:#172b4d;">WHT will be sent as the whole amount of WHT since the whole is tax amount</span></p></td>
+       <td class="confluenceTd">will be negative for red invoice (Titan Credit Note), and partial CN should also be supported</td>
+      </tr>
+      <tr>
+       <td class="confluenceTd">Linked PI Id for Credit Note</td>
+       <td class="confluenceTd">
+        <p><span>the underlying CP invoice ref for Credit Note, mandatory only for Credit Note</span></p></td>
+       <td class="confluenceTd"><span style="color:#172b4d;"><span style="color:#172b4d;">Conditional</span></span></td>
+       <td class="confluenceTd"><span style="color:#172b4d;">Input VAT invoice</span></td>
+       <td class="confluenceTd">
+        <p>关联发票号</p>
+        <p>Blue Invoice No. for Red Invoice</p></td>
+       <td class="confluenceTd"><br></td>
+      </tr>
+      <tr>
+       <td class="confluenceTd">Internal Invoice</td>
+       <td class="confluenceTd">
+        <p><span>newly added in API</span></p></td>
+       <td class="confluenceTd"><span style="color:#172b4d;">No</span></td>
+       <td class="confluenceTd"><span style="color:#172b4d;">Input VAT invoice</span></td>
+       <td class="confluenceTd">
+        <p>Internal Invoice flag</p></td>
+       <td class="confluenceTd">
+        <p>If CP is also China GC, set it as 'Yes', else 'No'&nbsp;</p>
+        <p>Note: This will not be covered in 27.R1</p></td>
+      </tr>
+      <tr>
+       <td class="confluenceTd">Titan SI No.</td>
+       <td class="confluenceTd">
+        <p><span>newly added in API</span></p></td>
+       <td class="confluenceTd"><span style="color:#172b4d;">No</span></td>
+       <td class="confluenceTd"><span style="color:#172b4d;">Input VAT invoice</span></td>
+       <td class="confluenceTd">
+        <p>Get from output VAT based on GT Invoice No. for IC invoice</p></td>
+       <td class="confluenceTd">
+        <p>Mandatory when Internal Invoice flag is 'Yes'.</p>
+        <p>Note: This will not be covered in 27.R1</p></td>
+      </tr>
+     </tbody>
+    </table>
+   </div>
+  </div>
+  <p><b>Lines</b></p>
+  <div id="73424607" class="tabs-pane" style="">
+   <div class="table-wrap">
+    <table class="fixed-width wrapped confluenceTable" style="letter-spacing: 0.0px;width: 92.9815%;">
+     <colgroup class="">
+      <col class="" style="width: 15.0641%;">
+      <col class="" style="width: 18.1639%;">
+      <col style="width: 8.10308%;">
+      <col style="width: 15.336%;">
+      <col class="" style="width: 21.155%;">
+      <col class="" style="width: 22.1844%;">
+     </colgroup>
+     <tbody class="">
+      <tr class="">
+       <td class="highlight-grey confluenceTd" data-highlight-colour="grey"><strong title="">Column Name</strong></td>
+       <td class="highlight-grey confluenceTd" data-highlight-colour="grey"><strong title="">Column Description</strong></td>
+       <td class="highlight-#f4f5f7 confluenceTd" data-highlight-colour="#f4f5f7"><strong title=""><strong title=""><strong>Mandatory</strong><span style="color:#172b4d;">&nbsp; &nbsp;</span></strong></strong></td>
+       <td class="highlight-grey confluenceTd" data-highlight-colour="grey"><strong title="">Data Source From</strong></td>
+       <td class="highlight-grey confluenceTd" data-highlight-colour="grey"><strong title="">Data Source Field</strong></td>
+       <td class="highlight-grey confluenceTd" data-highlight-colour="grey"><strong title="">Remark</strong></td>
+      </tr>
+      <tr class="">
+       <td class="confluenceTd">Invoice Line Link Id</td>
+       <td class="confluenceTd">
+        <p><span>This field is to link header and lines, use golden tax invoice reference directly</span></p></td>
+       <td class="confluenceTd"><span style="color:#172b4d;">Yes</span></td>
+       <td class="confluenceTd"><span style="color:#172b4d;">Input VAT invoice</span></td>
+       <td class="confluenceTd">VAT Invoice No.</td>
+       <td class="confluenceTd"><br></td>
+      </tr>
+      <tr>
+       <td class="confluenceTd"><span style="color:#172b4d;">VAT Inclusive Amount</span></td>
+       <td class="confluenceTd">
+        <p><span style="color:#172b4d;">Sum of the attributed VAT-inclusive amount per Invoice &amp; Quota ID</span></p></td>
+       <td class="confluenceTd"><span style="color:#172b4d;">Yes</span></td>
+       <td class="confluenceTd"><span style="color:#172b4d;">Input VAT invoice</span></td>
+       <td class="confluenceTd"><span style="color:#172b4d;">VAT Inclusive Amount attributed</span></td>
+       <td class="confluenceTd">will be negative for Titan Credit Note, and partial CN should also be supported</td>
+      </tr>
+      <tr>
+       <td class="confluenceTd"><span style="color:#172b4d;">Net Amount</span></td>
+       <td class="confluenceTd">
+        <p><span style="color:#172b4d;">VAT exclusive Amount</span></p></td>
+       <td class="confluenceTd"><span style="color:#172b4d;">Yes</span></td>
+       <td class="confluenceTd"><span style="color:#172b4d;">Input VAT invoice</span></td>
+       <td class="confluenceTd"><span style="color:#172b4d;">VAT exclusive Amount attributed</span></td>
+       <td class="confluenceTd"><br></td>
+      </tr>
+      <tr>
+       <td class="confluenceTd"><span style="color:#172b4d;">Tax Amount in Invoice CCY</span></td>
+       <td class="confluenceTd">
+        <p><span style="color:#172b4d;">Sum of the attributed VAT amount per Invoice &amp; Quota ID</span></p></td>
+       <td class="confluenceTd"><span style="color:#172b4d;">Yes</span></td>
+       <td class="confluenceTd"><span style="color:#172b4d;">Input VAT invoice</span></td>
+       <td class="confluenceTd"><span style="color:#172b4d;">Tax Amount in Invoice CCY</span></td>
+       <td class="confluenceTd">will be negative for Titan Credit Note, and partial CN should also be supported</td>
+      </tr>
+      <tr>
+       <td class="confluenceTd"><span style="color:#172b4d;">Assignment ID</span></td>
+       <td class="confluenceTd">
+        <p><span style="color:#172b4d;">Attributed Assignment ID</span></p></td>
+       <td class="confluenceTd"><span style="color:#172b4d;">Remove in 27.R1</span></td>
+       <td class="confluenceTd"><span style="color:#172b4d;">Input VAT invoice</span></td>
+       <td class="confluenceTd"><span style="color:#172b4d;">Assignment ID</span></td>
+       <td class="confluenceTd">TMP won't have this assignment attributed service invoice in 27.R1. TMP only will have the feature when integration with WDMS to get the assignment level attribution which is on-hold now.</td>
+      </tr>
+      <tr>
+       <td class="confluenceTd"><span style="color:#172b4d;">Deal ID</span></td>
+       <td class="confluenceTd">
+        <p><span style="color:#172b4d;">Attributed Deal ID</span></p></td>
+       <td class="confluenceTd"><span style="color:#172b4d;"><span style="color:#172b4d;">Conditional</span></span></td>
+       <td class="confluenceTd"><span style="color:#172b4d;">Input VAT invoice</span></td>
+       <td class="confluenceTd"><span style="color:#172b4d;">default by TMP</span></td>
+       <td class="confluenceTd">TMP to default per FR-29</td>
+      </tr>
+      <tr>
+       <td class="confluenceTd"><span style="color:#172b4d;">Cost Code</span></td>
+       <td class="confluenceTd">
+        <p><span style="color:#172b4d;">Attributed Cost Code</span></p></td>
+       <td class="confluenceTd"><span style="color:#172b4d;"><span style="color:#172b4d;">Conditional</span></span></td>
+       <td class="confluenceTd"><span style="color:#172b4d;">Input VAT invoice&nbsp;</span></td>
+       <td class="confluenceTd"><span style="color:#172b4d;">default by TMP&nbsp;</span></td>
+       <td class="confluenceTd">TMP to default per FR-29, Cost Code displayed in UI not GUID</td>
+      </tr>
+      <tr>
+       <td class="confluenceTd"><span style="color:#172b4d;">MMI ID</span></td>
+       <td class="confluenceTd">
+        <p><span style="color:#172b4d;">MMI ID</span></p></td>
+       <td class="confluenceTd"><span style="color:#172b4d;"><span style="color:#172b4d;">Conditional</span></span></td>
+       <td class="confluenceTd"><span style="color:#172b4d;">Input VAT invoice&nbsp;</span></td>
+       <td class="confluenceTd"><span style="color:#172b4d;">default by TMP&nbsp;</span></td>
+       <td class="confluenceTd">TMP to get from Bank Invoice attribution by Treasury Ops</td>
+      </tr>
+     </tbody>
+    </table>
+   </div>
+  </div>
+  <p><br></p>
+ </div>
+</div><!-- // .deck -->
+<h2 data-nh-numbering="6.3. " id="FSDTMPInputVATAPIIntegrationwithTitanPI-ChinaInternational/CommercialinvoicesfromTitanPItoTMP(27.R2)"><span class="nh-number">6.3. </span>China International/Commercial invoices from Titan PI to TMP (27.R2)</h2>
+<p>Note: Customs VAT and Customs Duty invoices are included in China International invoices</p><a name="composition-deck-Commercialinvoice"></a>
+<div id="Commercialinvoice" class="aui-tabs
+             horizontal-tabs
+          composition-deck
+          " history="true" loopcards="false" effecttype="" effectduration="1.0" nextafter="0.0">
+ <ul class="tabs-menu
+                            top
+                    "></ul>
+ <div class="deck-cards tabs-pane active-pane" style="">
+  <p><b>Header</b></p>
+  <div id="-2137403731" class="tabs-pane" style="">
+   <p><strong>Data level</strong>: Invoice Level. This table is per Invoice level, one line for one commercial invoice.</p>
+   <div class="table-wrap">
+    <table class="fixed-width wrapped confluenceTable" style="text-align: left;width: 92.8045%;">
+     <colgroup class="">
+      <col class="" style="width: 11.6702%;">
+      <col class="" style="width: 17.9592%;">
+      <col class="" style="width: 12.5225%;">
+      <col style="width: 19.0587%;">
+      <col class="" style="width: 38.7283%;">
+     </colgroup>
+     <tbody class="">
+      <tr class="">
+       <td class="highlight-grey confluenceTd" title="Background color :" data-highlight-colour="grey"><strong title="">TMP Column Name</strong></td>
+       <td class="highlight-grey confluenceTd" title="Background color :" data-highlight-colour="grey"><strong title="">Column Description&nbsp;</strong></td>
+       <td class="highlight-grey confluenceTd" title="Background color :" data-highlight-colour="grey"><strong title="">Data Source From</strong></td>
+       <td class="highlight-grey confluenceTd" title="Background color :" data-highlight-colour="grey"><strong title="">Data Source Field</strong></td>
+       <td class="highlight-grey confluenceTd" title="Background color :" data-highlight-colour="grey"><strong title="">Remark</strong></td>
+      </tr>
+      <tr class="">
+       <td class="confluenceTd">Titan PI No.</td>
+       <td class="confluenceTd">
+        <p>Titan PI No.</p></td>
+       <td class="confluenceTd">Titan PI header</td>
+       <td class="confluenceTd">
+        <p>Invoice ID</p></td>
+       <td class="confluenceTd"><span>This field is to link header and lines</span></td>
+      </tr>
+      <tr>
+       <td class="confluenceTd">CP Invoice Ref.</td>
+       <td class="confluenceTd">
+        <p>CP Invoice Ref.</p></td>
+       <td class="confluenceTd">Titan PI header</td>
+       <td class="confluenceTd">
+        <p>CP Invoice Ref.</p></td>
+       <td class="confluenceTd">New field in TMP</td>
+      </tr>
+      <tr>
+       <td class="confluenceTd">Titan PI Description</td>
+       <td class="confluenceTd">
+        <p>Titan PI Description</p></td>
+       <td class="confluenceTd">Titan PI header</td>
+       <td class="confluenceTd">
+        <p>Description</p></td>
+       <td class="confluenceTd"><br></td>
+      </tr>
+      <tr>
+       <td class="confluenceTd">
+        <p>Invoice Type</p>
+        <p>发票类型</p></td>
+       <td class="confluenceTd">
+        <p>VAT/International</p></td>
+       <td class="confluenceTd">Titan PI header</td>
+       <td class="confluenceTd">
+        <p>VAT/International</p></td>
+       <td class="confluenceTd">China International will be mapped as '商业发票' under TMP 发票类型 field</td>
+      </tr>
+      <tr>
+       <td class="confluenceTd">
+        <p>Buyer name</p>
+        <p>购方名称</p></td>
+       <td class="confluenceTd">
+        <p>Group company name</p></td>
+       <td class="confluenceTd">Titan PI header</td>
+       <td class="confluenceTd">
+        <p><span style="color:#000000;">Group Company Name</span></p></td>
+       <td class="confluenceTd">TMP to convert into Chinese GC name</td>
+      </tr>
+      <tr>
+       <td class="confluenceTd">
+        <p>Seller name</p>
+        <p>销方名称</p></td>
+       <td class="confluenceTd">
+        <p>Counterparty name</p></td>
+       <td class="confluenceTd">Titan PI header</td>
+       <td class="confluenceTd">
+        <p><span style="color:#000000;">Counterparty Name</span></p></td>
+       <td class="confluenceTd">TMP to convert into Chinese CP name if exists in TMP, else keep English name from Titan</td>
+      </tr>
+      <tr>
+       <td class="confluenceTd">
+        <p>Invoice Owner</p></td>
+       <td class="confluenceTd">
+        <p>Invoice Owner</p></td>
+       <td class="confluenceTd">Titan PI header</td>
+       <td class="confluenceTd">
+        <p><span style="color:#000000;">Invoice Owner</span></p></td>
+       <td class="confluenceTd">New field in TMP</td>
+      </tr>
+      <tr>
+       <td class="confluenceTd">
+        <p>Functional Line</p>
+        <p>业务线</p></td>
+       <td class="confluenceTd">
+        <p>RM</p>
+        <p>Bulk</p>
+        <p>Concs.</p></td>
+       <td class="confluenceTd">Titan PI header</td>
+       <td class="confluenceTd">
+        <p>Functional Line</p></td>
+       <td class="confluenceTd">Currently TMP only have this functional line as 业务线</td>
+      </tr>
+      <tr>
+       <td class="confluenceTd">Business Line</td>
+       <td class="confluenceTd">
+        <p>RM</p>
+        <p>Bulk</p>
+        <p>Concs.</p></td>
+       <td class="confluenceTd">Titan PI header</td>
+       <td class="confluenceTd">
+        <p>Business Line</p></td>
+       <td class="confluenceTd">This will be a new field in TMP.</td>
+      </tr>
+      <tr>
+       <td class="confluenceTd">
+        <p>Commodity</p>
+        <p>SRD 商品英文名</p></td>
+       <td class="confluenceTd">
+        <p>List from SRD commodity</p></td>
+       <td class="confluenceTd">Titan PI header</td>
+       <td class="confluenceTd">
+        <p>Commodity</p></td>
+       <td class="confluenceTd"><br></td>
+      </tr>
+      <tr>
+       <td class="confluenceTd">
+        <p>Invoice Type</p>
+        <p>发票分类</p></td>
+       <td class="confluenceTd">
+        <p><span>Option list: </span></p>
+        <p><span>CARGO <br>
+           CARGO DOC LC <br>
+           SERVICE <br></span></p></td>
+       <td class="confluenceTd">&nbsp;Titan PI header</td>
+       <td class="confluenceTd">
+        <p>Invoice Type</p></td>
+       <td class="confluenceTd">
+        <p><span>CARGO &amp;&nbsp;CARGO DOC LC will be mapped as Cargo</span></p>
+        <p><span>Service will be mapped as Service</span></p></td>
+      </tr>
+      <tr>
+       <td class="confluenceTd">
+        <p>Invoice Category</p>
+        <p>红票、蓝票</p></td>
+       <td class="confluenceTd">
+        <p><span>Option List:</span></p>
+        <p><span>Purchase Invoice</span></p>
+        <p><span>Credit Note</span></p></td>
+       <td class="confluenceTd">&nbsp;Titan PI header</td>
+       <td class="confluenceTd">
+        <p>Credit Note—Red invoice</p>
+        <p>Purchase Invoice–Blue invoice</p></td>
+       <td class="confluenceTd">Add an indicator in TMP for easy filtering</td>
+      </tr>
+      <tr>
+       <td class="confluenceTd">
+        <p>Invoice Date</p>
+        <p>开票日期</p></td>
+       <td class="confluenceTd">
+        <p><span>Invoice date</span></p></td>
+       <td class="confluenceTd">&nbsp;Titan PI header</td>
+       <td class="confluenceTd">Invoice Date</td>
+       <td class="confluenceTd"><br></td>
+      </tr>
+      <tr>
+       <td class="confluenceTd">
+        <p><s>Account Period</s></p></td>
+       <td class="confluenceTd">
+        <p><s>Account Period</s></p></td>
+       <td class="confluenceTd"><s>GAI</s></td>
+       <td class="confluenceTd"><s>Account Period</s></td>
+       <td class="confluenceTd"><s>New field in TMP for all PIs</s></td>
+      </tr>
+      <tr>
+       <td class="confluenceTd">
+        <p>Invoice Currency</p></td>
+       <td class="confluenceTd">
+        <p><span>Invoice Currency</span></p></td>
+       <td class="confluenceTd">Titan PI header</td>
+       <td class="confluenceTd"><span style="color:#172b4d;">CCY</span></td>
+       <td class="confluenceTd">New field in TMP</td>
+      </tr>
+      <tr>
+       <td class="confluenceTd">
+        <p>Net Amount</p>
+        <p>不含税金额</p></td>
+       <td class="confluenceTd">
+        <p><span>VAT exclusive Amount</span></p></td>
+       <td class="confluenceTd">&nbsp;Titan PI header</td>
+       <td class="confluenceTd">Net amount</td>
+       <td class="confluenceTd">will be negative for Titan Credit Note</td>
+      </tr>
+      <tr>
+       <td class="confluenceTd">
+        <p>Tax Amount in Invoice CCY</p>
+        <p>税额</p></td>
+       <td class="confluenceTd">
+        <p><span>Tax Amount in Invoice CCY</span></p></td>
+       <td class="confluenceTd">&nbsp;Titan PI header</td>
+       <td class="confluenceTd">Tax amount in Invoice Currency</td>
+       <td class="confluenceTd"><br></td>
+      </tr>
+      <tr>
+       <td class="confluenceTd">Underlying PI Id for Credit Note</td>
+       <td class="confluenceTd">
+        <p><span>the underlying Titan PI No. for Credit Note, mandatory only for Credit Note</span></p></td>
+       <td class="confluenceTd">&nbsp;Titan PI header</td>
+       <td class="confluenceTd">
+        <p><span style="color:#000000;">Adjusts Invoice Id</span></p></td>
+       <td class="confluenceTd"><br></td>
+      </tr>
+     </tbody>
+    </table>
+   </div>
+  </div>
+  <p><br></p>
+  <p><b>Lines</b></p>
+  <div id="73424607" class="tabs-pane" style="">
+   <div class="table-wrap">
+    <table class="fixed-width wrapped confluenceTable" style="text-align: left;width: 91.7847%;">
+     <colgroup class="">
+      <col class="" style="width: 14.9469%;">
+      <col class="" style="width: 20.2586%;">
+      <col style="width: 13.2792%;">
+      <col class="" style="width: 24.2156%;">
+      <col class="" style="width: 27.2997%;">
+     </colgroup>
+     <tbody class="">
+      <tr class="">
+       <td class="highlight-grey confluenceTd" data-highlight-colour="grey"><strong title="">Column Name</strong></td>
+       <td class="highlight-grey confluenceTd" data-highlight-colour="grey"><strong title="">Column Description</strong></td>
+       <td class="highlight-grey confluenceTd" data-highlight-colour="grey"><strong title="">Data Source From</strong></td>
+       <td class="highlight-grey confluenceTd" data-highlight-colour="grey"><strong title="">Data Source Field</strong></td>
+       <td class="highlight-grey confluenceTd" data-highlight-colour="grey"><strong title="">Remark</strong></td>
+      </tr>
+      <tr class="">
+       <td class="confluenceTd">Titan PI No.</td>
+       <td class="confluenceTd">
+        <p><span>This field is to link header and lines</span></p></td>
+       <td class="confluenceTd">Titan PI header</td>
+       <td class="confluenceTd">Invoice ID</td>
+       <td class="confluenceTd"><br></td>
+      </tr>
+      <tr>
+       <td class="confluenceTd"><span style="color:#172b4d;">Cost Group</span></td>
+       <td class="confluenceTd">
+        <p><span style="color:#172b4d;">Titan PI attributed cost group</span></p></td>
+       <td class="confluenceTd"><span style="color:#172b4d;">Titan PI Lines</span></td>
+       <td class="confluenceTd"><span style="color:#172b4d;">Cost Group</span></td>
+       <td class="confluenceTd">New in TMP invoice line</td>
+      </tr>
+      <tr>
+       <td class="confluenceTd"><span style="color:#172b4d;">Line-Net Amount</span></td>
+       <td class="confluenceTd">
+        <p>Net amount in each line</p></td>
+       <td class="confluenceTd"><span style="color:#172b4d;">Titan PI Lines</span></td>
+       <td class="confluenceTd"><span style="color:#172b4d;">Amount</span></td>
+       <td class="confluenceTd">will be negative for red invoice (Titan Credit Note), and partial CN should also be supported</td>
+      </tr>
+      <tr>
+       <td class="confluenceTd"><span style="color:#172b4d;">Line-Tax Amount in Invoice CCY</span></td>
+       <td class="confluenceTd">
+        <p>Tax amount in each line</p></td>
+       <td class="confluenceTd"><span style="color:#172b4d;">Titan PI Lines</span></td>
+       <td class="confluenceTd"><span style="color:#172b4d;">Tax Amount</span></td>
+       <td class="confluenceTd">
+        <p>will be negative for red invoice (Titan Credit Note)</p>
+        <p>Normally International PI Tax amount will be 0.&nbsp;&nbsp;</p></td>
+      </tr>
+     </tbody>
+    </table>
+   </div>
+  </div>
+  <p><br></p>
+ </div>
+</div><!-- // .deck -->
+<h1 data-nh-numbering="7. " id="FSDTMPInputVATAPIIntegrationwithTitanPI-TaxCodeMapping(27.R1)"><span class="nh-number">7. </span>Tax Code Mapping (27.R1)</h1>
+<div class="table-wrap">
+ <table class="relative-table wrapped confluenceTable" style="width: 101.981%;">
+  <colgroup>
+   <col style="width: 9.61119%;">
+   <col style="width: 10.1511%;">
+   <col style="width: 6.31747%;">
+   <col style="width: 5.9935%;">
+   <col style="width: 24.5679%;">
+   <col style="width: 20.8427%;">
+   <col style="width: 22.5161%;">
+  </colgroup>
+  <tbody>
+   <tr>
+    <th scope="col" class="confluenceTh">General/Special VAT</th>
+    <th scope="col" class="confluenceTh">VAT Rate in Input VAT</th>
+    <th scope="col" class="confluenceTh">Tax Status</th>
+    <th scope="col" class="confluenceTh">Tax Code</th>
+    <th scope="col" class="confluenceTh">Tax Code Description</th>
+    <th scope="col" class="confluenceTh"><br>
+      Tax Code GUID</th>
+    <th scope="col" class="confluenceTh">Comments</th>
+   </tr>
+   <tr>
+    <td class="confluenceTd">General VAT</td>
+    <td class="confluenceTd">Exempted-免税</td>
+    <td class="confluenceTd">Applicable</td>
+    <td class="confluenceTd"><span style="color:#172b4d;">CN205PI</span></td>
+    <td class="confluenceTd"><span style="color:#172b4d;">CN: Domestic Purchase – Zero Rate for goods under VAT exemption</span></td>
+    <td class="confluenceTd"><span style="color:#172b4d;">263C184DBFFF43C080096C033EFD18FC</span></td>
+    <td class="confluenceTd"><br></td>
+   </tr>
+   <tr>
+    <td class="confluenceTd">General VAT</td>
+    <td class="confluenceTd">not exempted</td>
+    <td class="confluenceTd">Outside Scope</td>
+    <td class="confluenceTd"><span style="color:#172b4d;">CN099PI</span></td>
+    <td class="confluenceTd"><span style="color:#172b4d;">CN - VAT - Outside Scope of Tax</span></td>
+    <td class="confluenceTd">528107DE64264DB196EA28ADFCD3C00C</td>
+    <td class="confluenceTd">Input VAT in General VAT is irrecoverable</td>
+   </tr>
+   <tr>
+    <td class="confluenceTd">Special VAT</td>
+    <td class="confluenceTd">13%</td>
+    <td class="confluenceTd">Applicable</td>
+    <td class="confluenceTd"><span style="color:#172b4d;">CN301PI</span></td>
+    <td class="confluenceTd"><span style="color:#172b4d;">CN: Domestic Purchase –&nbsp; Standard rate for Goods</span></td>
+    <td class="confluenceTd"><span style="color:#172b4d;">DC55BE30A8394FD4A86CA93BA5FB4449</span></td>
+    <td class="confluenceTd"><br></td>
+   </tr>
+   <tr>
+    <td class="confluenceTd">Special VAT</td>
+    <td class="confluenceTd">9%</td>
+    <td class="confluenceTd">Applicable</td>
+    <td class="confluenceTd"><span style="color:#172b4d;">CN302PI</span></td>
+    <td class="confluenceTd">CN: Domestic sales – Standard &nbsp;Rate for Transportation&nbsp;</td>
+    <td class="confluenceTd"><span style="color:#172b4d;">37CC18E933634D2EA5A4B34412D16AC8</span></td>
+    <td class="confluenceTd"><br></td>
+   </tr>
+   <tr>
+    <td class="confluenceTd">Special VAT</td>
+    <td class="confluenceTd">6%</td>
+    <td class="confluenceTd">Applicable</td>
+    <td class="confluenceTd"><span style="color:#172b4d;">CN203PI</span></td>
+    <td class="confluenceTd">CN: Domestic Purchase – Standard Rate for Service</td>
+    <td class="confluenceTd"><span style="color:#172b4d;">58231B9B81E442B38D1A124381BDAD0F</span></td>
+    <td class="confluenceTd">Special VAT issued by brokers is irrecoverable, but such invoices are not booked in Titan, so no need to consider.</td>
+   </tr>
+   <tr>
+    <td class="confluenceTd">Special VAT</td>
+    <td class="confluenceTd">3%</td>
+    <td class="confluenceTd">Applicable</td>
+    <td class="confluenceTd"><span style="color:#172b4d;">CN204PI</span></td>
+    <td class="confluenceTd">CN: Domestic Purchase – Standard Rate for Small Scale Tax Payer</td>
+    <td class="confluenceTd"><span style="color:#172b4d;">FBF120B8536D495B8BB0D158AC434A13</span></td>
+    <td class="confluenceTd"><br></td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<h1 data-nh-numbering="8. " id="FSDTMPInputVATAPIIntegrationwithTitanPI-Non-functionalRequirement（27.R1）"><span class="nh-number">8. </span>Non-functional Requirement （27.R1）</h1>
+<p><span style="color:#172b4d;">NFR is to capture all the non-functional processes and system related requirements for effective deployment and maintenance of the interfaces.</span></p>
+<div class="table-wrap">
+ <table class="wrapped relative-table confluenceTable" style="width: 108.036%;">
+  <colgroup>
+   <col style="width: 5.43689%;">
+   <col style="width: 11.6515%;">
+   <col style="width: 82.9126%;">
+  </colgroup>
+  <tbody>
+   <tr>
+    <th style="text-align: center;" scope="col" class="confluenceTh">#</th>
+    <th style="text-align: center;" scope="col" class="confluenceTh">Type</th>
+    <th style="text-align: center;" scope="col" class="confluenceTh">Description</th>
+   </tr>
+   <tr>
+    <td class="confluenceTd">
+     <p>NFR-01</p></td>
+    <td class="confluenceTd">Performance</td>
+    <td class="confluenceTd">
+     <p>VAT invoice Volumes check Section 5 on page <a href="https://confluence/spaces/CCE/pages/286790477/Integration+Options+between+China+TMP+and+Titan+Purchase+Invoice+Sales+Invoice" rel="nofollow">Integration Options between China TMP and Titan Purchase Invoice &amp; Sales Invoice - CC&amp;E - Confluence</a>.</p>
+     <p>China International PI volume: monthly average 270 cargo &amp; service PI&amp;CN.</p>
+     <p>The interface should support processing at least <span style="color:#f87168;"><span style="color:#172b4d;">500</span> </span>VAT invoices per batch without performance degradation. The batch execution should be completed within 1 hour under normal operating conditions.</p></td>
+   </tr>
+   <tr>
+    <td class="confluenceTd">NFR-02</td>
+    <td class="confluenceTd">
+     <p>Error Handling and Retry</p></td>
+    <td class="confluenceTd">
+     <p>The interface should provide automatic failure recovery mechanisms. Failed interface transactions should be retried automatically every hour.</p>
+     <p>Users should be able to identify failed invoices and trigger resubmission where applicable.</p></td>
+   </tr>
+   <tr>
+    <td class="confluenceTd">NFR-03</td>
+    <td class="confluenceTd">
+     <p>Data Integrity</p></td>
+    <td class="confluenceTd">
+     <p>The interface should ensure data accuracy and completeness throughout the transmission process. No invoice records should be lost during transmission.</p></td>
+   </tr>
+   <tr>
+    <td class="confluenceTd">NFR-04</td>
+    <td class="confluenceTd">
+     <p>Reliability</p></td>
+    <td class="confluenceTd">
+     <p>The interface should support once-and-only-once processing. Each invoice should be processed only once for a given interface transaction without duplication.</p>
+     <p>Reprocessing of failed invoices should not result in duplicate invoices.</p></td>
+   </tr>
+   <tr>
+    <td class="confluenceTd">NFR-05</td>
+    <td class="confluenceTd">
+     <p>Availability</p></td>
+    <td class="confluenceTd">
+     <p>The interface should support normal business operations in China. Planned maintenance windows should be communicated in advance. Temporary unavailability should not result in invoice data loss.</p></td>
+   </tr>
+   <tr>
+    <td class="confluenceTd">NFR-06</td>
+    <td class="confluenceTd">
+     <p>Audit Trail</p></td>
+    <td class="confluenceTd">
+     <p>For each interface transaction, the following information should be logged:</p>
+     <ul>
+      <li data-uuid="be355da3-4443-45fb-85e4-02e310afd0bc">Invoice Number</li>
+      <li data-uuid="b1e960cd-924f-4d08-8464-f782a82fc054">Invoice Type</li>
+      <li data-uuid="7338711f-56f2-47dd-8609-3e35e5560829">Interface Execution Time</li>
+      <li data-uuid="f77f893c-98dc-4cbf-acf4-85c123257191">Sending System</li>
+      <li data-uuid="da39daa6-0b53-4bdb-8577-b02aec3db745">Receiving System</li>
+      <li data-uuid="a662ff49-2ee7-40cb-8791-e4d8f01a9efd">Interface Status</li>
+      <li data-uuid="9e9010ec-52a6-434b-8fe6-7ade1126340f">Error Message (if applicable)</li>
+      <li data-uuid="85fb7a5b-43e6-4f4d-b987-fbb60e181619">User who confirmed the invoice for booking</li>
+     </ul></td>
+   </tr>
+   <tr>
+    <td class="confluenceTd">NFR-07</td>
+    <td class="confluenceTd">
+     <p>Monitoring and Alerting</p></td>
+    <td class="confluenceTd">
+     <p>The interface should be actively monitored.</p>
+     <ul>
+      <li data-uuid="8ee900c5-a5bc-4f22-b38e-e958d54b355a">Failed interface executions should generate alerts to the support team in near real-time</li>
+      <li data-uuid="a028cbb7-0084-427b-870d-44ff105b8aa2">Alerts should be raised to the support team if no invoices are successfully transmitted during a scheduled batch run.</li>
+      <li data-uuid="ca69b789-35d1-492f-acc5-2eca8670d250">Alerts should be raised to the support team if invoices status is 'Sent' without final status of 'Approved' ,'Failed' or 'Cancelled' after <strong>5</strong> mins.</li>
+      <li data-uuid="9e1f22c5-a63c-46ff-85c6-3c1bf42bc09a">Interface health status should be available for support teams.</li>
+     </ul></td>
+   </tr>
+   <tr>
+    <td class="confluenceTd">NFR-08</td>
+    <td class="confluenceTd">
+     <p>Security</p></td>
+    <td class="confluenceTd">
+     <p>The interface should comply with enterprise security standards.</p>
+     <ul>
+      <li data-uuid="dbbd307d-8480-48b2-8344-70830f9a041b">All API communications should use encrypted transport protocols.</li>
+      <li data-uuid="8128d2f1-8375-45a8-a72f-fb2217acfcde">Only authorized systems should be allowed to invoke the APIs.</li>
+      <li data-uuid="e8919d25-c1cd-4308-9b0d-1bb8231219f0">Authentication credentials should be securely managed and not stored in plain text.</li>
+      <li data-uuid="c27731d1-bf04-47b1-b426-545eaf7c70c4">Financial and tax-related data should be protected during transmission and storage.</li>
+     </ul></td>
+   </tr>
+   <tr>
+    <td class="confluenceTd">NFR-09</td>
+    <td class="confluenceTd">
+     <p>Scalability</p></td>
+    <td class="confluenceTd">
+     <p>The solution should support future business growth.</p>
+     <ul>
+      <li data-uuid="cc63bb30-5f38-47d4-a4b7-6c0dad582a74">The interface should support increasing invoice volumes without major redesign.</li>
+      <li data-uuid="6ae2ab5d-c17b-46f5-ba54-51ec903f075e">Additional business line and future China legal entities should be supported through configuration where feasible.</li>
+     </ul></td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<h1 data-nh-numbering="9. " id="FSDTMPInputVATAPIIntegrationwithTitanPI-Q&amp;A"><span class="nh-number">9. </span>Q&amp;A</h1>
+<div class="table-wrap">
+ <table class="relative-table wrapped confluenceTable" style="width: 94.1112%;">
+  <colgroup>
+   <col style="width: 2.86709%;">
+   <col style="width: 64.3671%;">
+   <col style="width: 32.7667%;">
+  </colgroup>
+  <tbody>
+   <tr>
+    <th scope="col" class="confluenceTh">#</th>
+    <th scope="col" class="confluenceTh">Question</th>
+    <th scope="col" class="confluenceTh">Answer</th>
+   </tr>
+   <tr>
+    <td class="confluenceTd">1</td>
+    <td class="confluenceTd">
+     <p>What is the schedule of Oracle Acct. period switch? Considering below scenario:</p>
+     <p>1-Sep: TMP open new period of Sep, a new invoice with issuance date of 1-Sep received in TMP and user complete attribution on 1-Sep.</p>
+     <p>If Oracle side new period is not opened yet, Titan PI will receive failure from Oracle.</p>
+     <p>If above scenario will happen, need to decide the API start timing for each month.</p></td>
+    <td class="confluenceTd">Oracle new period is always open at the 1st day of a new month, so the scenario in this question will never happen.</td>
+   </tr>
+   <tr>
+    <td class="confluenceTd">2</td>
+    <td class="confluenceTd">Any non-fiscal invoice (e.g. redistribution internal invoice) booked as commercial invoice in Titan needs to be excluded when Titan interface commercial invoice to TMP? <span class="inline-comment-marker" data-ref="66b177fb-cf72-4508-bfb3-aed43e45b0dd">What is the filter criterion</span>?</td>
+    <td class="confluenceTd">Load all China international invoice into TMP, and categorization and filter will be done in TMP.</td>
+   </tr>
+   <tr>
+    <td class="confluenceTd">3</td>
+    <td class="confluenceTd">
+     <div class="content-wrapper">
+      <p>Should Tax code for General VAT be booked as&nbsp;<span class="inline-comment-marker" data-ref="d31583a0-4e7f-4a2f-83f4-290bd26f2c59">not applicable</span> or applicable with 0%?</p>
+      <p><span class="confluence-embedded-file-wrapper confluence-embedded-manual-size"><img class="confluence-embedded-image" draggable="false" height="65" src="6c7ff9fe9ca9a7b2558218267a47557c2484f9964fff78486e45fc3c21ec42d4" data-image-src="/download/attachments/296153961/image-2026-8-31_16-4-6.png?version=1&amp;modificationDate=1788163446000&amp;api=v2" data-unresolved-comment-count="0" data-linked-resource-id="380031187" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="image-2026-8-31_16-4-6.png" data-base-url="https://confluence" data-linked-resource-content-type="image/png" data-linked-resource-container-id="296153961" data-linked-resource-container-version="100" tabindex="0" alt="" width="468"></span></p>
+      <p><br></p>
+     </div></td>
+    <td class="confluenceTd">
+     <p style="text-align: left;">Invoice with IRR VAT will be mapped as Out of scope &amp; CN099PI (General VAT &amp; Broker special VAT, but broker special VAT is not in Titan scope).</p>
+     <p style="text-align: left;">VAT Exempted-Applicable &amp; CN205PI</p></td>
+   </tr>
+   <tr>
+    <td class="confluenceTd">4</td>
+    <td class="confluenceTd">
+     <div class="content-wrapper">
+      <p>Whether users' access to book VAT PI in Titan should be blocked?</p>
+     </div></td>
+    <td class="confluenceTd">No. <span class="inline-comment-marker" data-ref="4f3d03c0-e687-43b4-8713-bb8b15123e99">We should keep the access in case there are issues in interfaces and user can still book PI in Titan</span>.</td>
+   </tr>
+   <tr>
+    <td class="confluenceTd">5</td>
+    <td class="confluenceTd">
+     <div class="content-wrapper">
+      <p>Edge cases: Customs payment receipt not retrieved in CIS/TMP yet, but ST needs to make payment.</p>
+      <p>Exceptional scenarios: When TMP is down or API does not work, user need to initiate PI in Titan to make urgent payment.</p>
+      <p>Option 1: Book prepayment to make urgent payment and then ZCF to Customs VAT when system recovered to avoid the risk of duplication while no additional IT effort.</p>
+      <p><span class="inline-comment-marker" data-ref="c0aef4b0-8ba9-42f7-bd39-591e2f83f385">Option 2:</span> Book in Titan PI, then Titan PI sends to TMP Titan PI No. and CP. Invoice Reference\Invoice Description to TMP, and TMP auto update the Input VAT when system recovered with Titan PI NO. to avoid duplicated booking. This make it messy and if user inputs wrong GT VAT No., the auto linkage will fail and result in duplication.</p>
+     </div></td>
+    <td class="confluenceTd">
+     <div class="content-wrapper">
+      <p>Edge cases not valid anymore based on our latest discussion because customs VAT and duty invoices will be synchronzied from Titan PI to TMP <a href="/download/attachments/296153961/RE_%20Follow%20up%20connect%20on%20Customs%20VAT%20in%20API.msg?version=1&amp;modificationDate=1789728984000&amp;api=v2" data-linked-resource-id="383894377" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="RE_ Follow up connect on Customs VAT in API.msg" data-linked-resource-content-type="application/vnd.ms-outlook" data-linked-resource-container-id="296153961" data-linked-resource-container-version="100">RE_ Follow up connect on Customs VAT in API.msg</a></p>
+      <p>For exceptional scenarios, it should be handled specially instead of maintaining two-way interface for the same invoice type which will make systems unnecessarily complex. e.g. when book in Titan PI for VAT invoices, user to inform the same to TMP to do data fix with Titan PI No. At month end, TMP can export a report to show the VAT invoices confirmed to be booked without Titan PI No.</p>
+     </div></td>
+   </tr>
+   <tr>
+    <td class="confluenceTd">6</td>
+    <td class="confluenceTd">
+     <div class="content-wrapper">
+      <p><span class="inline-comment-marker" data-ref="a5a530fa-e643-4d83-871f-2c9211209df4">Do we still book the invoice qty in Titan? Can we take it in TMP as golden source is OK and no need to book in Titan &amp; Oracle?</span></p>
+     </div></td>
+    <td class="confluenceTd">For RM &amp; Bulk, it is needed in order to be mapped in S/N. For Concs, it is not required since TMP is element level qty while Titan is assignment level qty.</td>
+   </tr>
+   <tr>
+    <td class="confluenceTd">7</td>
+    <td class="confluenceTd">How to define invoice owner for Bank invoices?</td>
+    <td class="confluenceTd">Default as Amy Zhou.</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<h1 data-nh-numbering="10. " id="FSDTMPInputVATAPIIntegrationwithTitanPI-MeetingNotes"><span class="nh-number">10. </span>Meeting Notes</h1>
+<div class="table-wrap">
+ <table class="relative-table wrapped confluenceTable" style="width: 103.564%;">
+  <colgroup>
+   <col style="width: 9.31803%;">
+   <col style="width: 11.0061%;">
+   <col style="width: 42.2012%;">
+   <col style="width: 37.4747%;">
+  </colgroup>
+  <tbody>
+   <tr>
+    <th scope="col" class="confluenceTh">Date</th>
+    <th scope="col" class="confluenceTh">Attendees</th>
+    <th scope="col" class="confluenceTh">MoM</th>
+    <th scope="col" class="confluenceTh">Actions</th>
+   </tr>
+   <tr>
+    <td class="confluenceTd">
+     <div class="content-wrapper">
+      <p><time datetime="2026-09-23" class="date-past">23 Sep 2026</time>&nbsp;</p>
+     </div></td>
+    <td class="confluenceTd">Shilpa, Pratik, Prashant, Adyasha, Kevin, Martin, Zoe</td>
+    <td class="confluenceTd">
+     <p><strong>Release Plan</strong></p>
+     <ul>
+      <li data-uuid="a9a62b96-607f-47b3-aa99-eb23194a7b63">The full integration scope is documented on the <strong><a href="https://confluence/spaces/CLA/pages/296153961/FSD-TMP+Input+VAT+API+Integration+with+Titan+PI" rel="nofollow">page</a></strong>, and will be delivered in phases based on available team capacity.</li>
+      <li data-uuid="ce21da92-dac1-4e93-b4af-332fb0f3cfef">Only the Service PI integration from TMP to Titan PI is planned for delivery in 27.R1.</li>
+      <li data-uuid="88048a04-de73-4f7e-be20-aff6e5eb9c43">All remaining integration scope is targeted for delivery in 27.R2.</li>
+     </ul>
+     <p><strong>API Design</strong></p>
+     <ul>
+      <li data-uuid="e7e0c95e-44f7-4461-9f16-a70c0a8dd17c">Aligned on a REST-based API architecture with real-time individual requests, validation checks, and processing responses.</li>
+      <li data-uuid="9b09b053-0ce5-43a5-a170-c5746b43be4e">For China international invoices where the golden source remains in Titan PI and invoice data needs to be synchronized to TMP: TMP will invoke the Titan PI API at scheduled intervals to get delta invoice data instead of synchronous API calls.</li>
+      <li data-uuid="450e5d33-7aad-46bf-843d-1820f9262351">Cargo invoices, non-pooled service invoices, and pooled service invoices will be implemented as three separate APIs. TMP will invoke the relevant API based on the invoice type.----update: Pooled Purchase invoice to be covered in the 27.R1 in the same API, no need to do separate API.</li>
+     </ul>
+     <p><strong>Invoice Data Mapping</strong></p>
+     <ul>
+      <li data-uuid="60fffd1b-b0ff-4865-a97e-1c6ffbec20a3">For data elements that TMP already synchronizes from SRD, the corresponding GUIDs should be passed instead of names, including: GC, CP, Tax Code</li>
+      <li data-uuid="77b0524a-dd17-423f-811b-348b0be7f09e">Cost Code will be passed as the Cost Code Name (e.g., C32P, C31).</li>
+     </ul>
+     <p><strong>Accounting Period</strong></p>
+     <ul>
+      <li data-uuid="689a7bb1-e687-4a65-aa92-21f163c330c3">Titan PI does not maintain Accounting Period information and therefore cannot return this field in its API response.</li>
+     </ul></td>
+    <td class="confluenceTd">
+     <div class="table-wrap">
+      <table class="wrapped confluenceTable" style="letter-spacing: 0.0px;" data-mce-resize="false">
+       <tbody class="">
+        <tr class="">
+         <td class="confluenceTd">
+          <p><strong>#</strong></p></td>
+         <td class="confluenceTd">
+          <p><strong>Follow Up</strong></p></td>
+         <td class="confluenceTd">
+          <p><strong>Owner</strong></p></td>
+         <td class="confluenceTd">
+          <p><strong>Status</strong></p></td>
+        </tr>
+        <tr class="">
+         <td class="confluenceTd">
+          <p>1</p></td>
+         <td class="confluenceTd">
+          <p>Split and complete invoice data mapping into different APIs</p></td>
+         <td class="confluenceTd">
+          <p><a href="mailto:zoe.zhang@trafigura.com" class="external-link" rel="nofollow">@Zoe Zhang</a></p></td>
+         <td class="highlight-grey confluenceTd" data-highlight-colour="grey">
+          <p title="">Done</p></td>
+        </tr>
+        <tr class="">
+         <td class="confluenceTd">
+          <p>2</p></td>
+         <td class="confluenceTd">
+          <p>Review the updated <strong><a href="https://confluence/spaces/CLA/pages/296153961/FSD-TMP+Input+VAT+API+Integration+with+Titan+PI" rel="nofollow">page</a></strong>, identify any remaining open points, and sign off the page.</p></td>
+         <td class="confluenceTd">
+          <p><a href="mailto:Shilpa.Bhansali@trafigura.com" class="external-link" rel="nofollow">@Shilpa Bhansali</a><a href="mailto:Prashant.Banerjee@trafigura.com" class="external-link" rel="nofollow">@Prashant Banerjee</a></p></td>
+         <td class="confluenceTd">
+          <p>Open</p></td>
+        </tr>
+        <tr class="">
+         <td class="confluenceTd">
+          <p>3</p></td>
+         <td class="confluenceTd">
+          <p>Check with the GAI team how the Accounting Period can be obtained for each invoice.</p>
+          <p><time datetime="2026-09-28" class="date-past">28 Sep 2026</time> : Confirmed to get from Oracle.</p></td>
+         <td class="confluenceTd">
+          <p><a href="mailto:zoe.zhang@trafigura.com" class="external-link" rel="nofollow">@Zoe Zhang</a></p></td>
+         <td class="highlight-grey confluenceTd" data-highlight-colour="grey">
+          <p title="">Done</p></td>
+        </tr>
+        <tr class="">
+         <td class="confluenceTd">
+          <p>4</p></td>
+         <td class="confluenceTd">
+          <p>Provide the API technical Specification</p></td>
+         <td class="confluenceTd">
+          <p><a href="mailto:Shilpa.Bhansali@trafigura.com" class="external-link" rel="nofollow">@Shilpa Bhansali</a></p></td>
+         <td class="confluenceTd">
+          <p>Open</p></td>
+        </tr>
+        <tr class="">
+         <td class="confluenceTd">
+          <p>5</p></td>
+         <td class="confluenceTd">
+          <p>Verify the Stargate onboarding, authentication, authorization, and service-account requirements for the REST invoice API</p></td>
+         <td class="confluenceTd">
+          <p><a href="mailto:Shilpa.Bhansali@trafigura.com" class="external-link" rel="nofollow">@Shilpa Bhansali</a></p></td>
+         <td class="highlight-grey confluenceTd" data-highlight-colour="grey">
+          <p title="">Done</p></td>
+        </tr>
+        <tr class="">
+         <td class="confluenceTd">
+          <p>6</p></td>
+         <td class="confluenceTd">
+          <p>Check Pooled VAT volume: monthly average <strong>40</strong> invoices. Confirmed to be covered in the 27.R1 in the same API, no need to do separate API.</p>
+          <p>I Checked with below criteria in PI_INVOICES_VW:</p>
+          <p>ATTRIBUTION_TYPE='POOL' and GROUP_COMPANY_CODE in&nbsp; ('5424','5527','5526','5518','5525','5524') and PURCHASE_INVOICE_TYPE='SERVICE' and CHINA_INV_CLASSIFICATION='VAT' and STATUS='APPROVED'</p></td>
+         <td class="confluenceTd">
+          <p><a href="mailto:zoe.zhang@trafigura.com" class="external-link" rel="nofollow">@Zoe Zhang</a></p></td>
+         <td class="highlight-grey confluenceTd" data-highlight-colour="grey">
+          <p title="">Done</p></td>
+        </tr>
+       </tbody>
+      </table>
+     </div></td>
+   </tr>
+   <tr>
+    <td class="confluenceTd">
+     <div class="content-wrapper">
+      <p><time datetime="2026-09-21" class="date-past">21 Sep 2026</time>&nbsp;</p>
+     </div></td>
+    <td class="confluenceTd">Jane, Amber, Chloe, Janny, Sophia, Amy, Emma, Julie, Monica, Jennie, Sara, Vanessa, Phyllis, Martin, Li Bin</td>
+    <td class="confluenceTd">
+     <p><strong>Prioritization</strong></p>
+     <ul>
+      <li data-uuid="fd759ded-6d41-4c99-817e-00267e7ede43"><strong>Service VAT</strong> will be the top priority in PI considering there are often breaks in month end.</li>
+      <li data-uuid="cbfd03ff-10c0-430f-9f57-c51df6bfb6fb">No open comments from stakeholders</li>
+     </ul></td>
+    <td class="confluenceTd">
+     <div class="content-wrapper">
+      <ul class="inline-task-list" data-inline-tasks-content-id="296153961">
+       <li class="checked" data-inline-task-id="26" data-uuid="d4cd1308-ab18-4ef9-9e30-5f605bbe73f0">All stakeholders to sign off the page by&nbsp;<time datetime="2026-09-22" class="date-past">22 Sep 2026</time><strong> &nbsp;</strong></li>
+      </ul>
+     </div></td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+    </div>
+</body>
+</html>

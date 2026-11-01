@@ -1,0 +1,4632 @@
+
+
+
+
+
+
+
+
+
+
+
+
+FSD-TMP Input VAT API Integration with Titan PI
+
+
+Bin B Li (CN - TAX)
+Bin B Li (CN - TAX)
+2
+2
+2026-09-21T03:46:00Z
+2026-09-21T03:48:00Z
+37
+4995
+28478
+PricewaterhouseCoopers
+237
+66
+33407
+16.00
+
+
+
+
+
+
+
+
+
+Clean
+Clean
+false
+
+
+false
+false
+false
+
+EN-US
+ZH-CN
+X-NONE
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+FSD-TMP Input VAT API Integration with Titan PI
+
+
+1. Roles & Responsibilities
+
+
+Business
+Stakeholders
+
+
+
+
+
+
+
+
+
+
+
+
+Role
+
+| 
+
+Responsibility
+
+| 
+
+
+
+
+
+Business Excellence &
+Transformation Manager
+
+| 
+
+
+
+Chloe Zuo Approve by 22
+Sep 2026
+
+
+
+
+| 
+
+
+
+
+Shanghai Financial
+Controller
+
+| 
+
+
+
+Sophia Zhang Approve by 22
+Sep 2026
+
+
+
+
+| 
+
+
+
+
+Shanghai Tax
+Manager
+
+| 
+
+
+
+@Frank Bao
+Review by 22 Sep
+2026
+
+
+
+
+| 
+
+
+
+
+Supporting
+Operations Manager, China
+
+| 
+
+
+
+Janny Kang Approve by 22
+Sep 2026
+
+
+
+
+| 
+
+
+
+
+Shanghai Refined
+Metals Traffic Operation Manager
+
+| 
+
+
+
+Jane
+Wu Approve by 22
+Sep 2026
+
+
+
+
+| 
+
+
+
+
+China Accounting
+Manager
+
+| 
+
+
+
+Amy Zhou Approve by 22
+Sep 2026
+
+
+
+
+| 
+
+
+
+
+NF Concs. Ops Head,
+China
+
+| 
+
+
+
+Amber Zhu Approve by 22
+Sep 2026
+
+
+
+
+| 
+
+
+
+
+Pb/Zn/Ag RM SH Team
+Leader
+
+| 
+
+
+
+Sara Shen Review by 22
+Sep 2026
+
+
+
+
+| 
+
+
+
+
+Cu RM SH Team
+Leader
+
+| 
+
+
+
+Phyllis Ping Review by 22
+Sep 2026
+
+
+
+
+| 
+
+
+
+
+Al RM SH Team
+leader
+
+| 
+
+
+
+Vanessa Zhang Review by 22
+Sep 2026
+
+
+
+
+| 
+
+
+
+
+Shanghai Ni/Co/FeNi Traffic Operation Manager
+
+| 
+
+
+
+@Julie Jiang
+Review by 22 Sep 2026
+
+
+
+
+| 
+
+
+
+
+Shanghai Concs Pb/Zn Traffic Operation Manager
+
+| 
+
+
+
+@Monica Gao
+Review by 22 Sep 2026
+
+
+
+
+| 
+
+
+
+
+Shanghai Concs Copper Traffic
+Operation Manager
+
+| 
+
+
+
+Jennie Chen Review by 22
+Sep 2026
+
+
+
+
+| 
+
+
+
+
+Shanghai Bulk Operation Manager
+
+| 
+
+
+
+Emma Wei Approve by 22
+Sep 2026
+
+
+
+
+| 
+
+
+
+
+
+
+
+
+
+
+
+IT
+Stakeholders
+
+
+
+
+
+
+
+
+
+
+
+
+Role
+
+| 
+
+Responsibility
+
+| 
+
+
+
+
+
+China BO Business Analyst
+
+| 
+
+
+Zoe Zhang Author
+
+
+
+| 
+
+
+
+
+Back-office Functional lead
+
+| 
+
+
+
+Hardik Mehta Approve by 22
+Sep 2026
+
+
+
+
+| 
+
+
+
+
+Head of Delivery -
+Titan Financial Execution
+
+| 
+
+
+
+Abhishek Shinde Review by 22
+Sep 2026
+
+
+
+
+| 
+
+
+
+
+Lead Business Analyst - Treasury
+
+| 
+
+
+
+Anoop
+K Review by 22
+Sep 2026
+
+
+
+
+| 
+
+
+
+
+PI & SI Lead BA
+
+| 
+
+
+
+Ketan Vajani Approve by 22
+Sep 2026
+
+
+
+
+| 
+
+
+
+
+Senior Technical Lead
+
+| 
+
+
+
+Shilpa Bhansali Approve by 22
+Sep 2026
+
+
+
+
+| 
+
+
+
+
+Senior Functional Consultant -
+Business Analyst
+
+| 
+
+
+
+Prashant Banerjee Approve by 22
+Sep 2026
+
+
+
+
+| 
+
+
+
+
+TMP BA
+
+| 
+
+
+
+Bin
+Li Approve by 22
+Sep 2026
+
+
+
+
+| 
+
+
+
+
+Global Head of
+M&M and Bulk Technology
+
+| 
+
+
+Michael Wong informed
+
+
+
+| 
+
+
+
+
+Head of IT - APAC
+
+| 
+
+
+Louise Liu Informed
+
+
+
+| 
+
+
+
+
+China IT PM
+
+| 
+
+
+Martin Wang Informed
+
+
+
+| 
+
+
+
+
+Technical Project
+Manager
+
+| 
+
+
+Prasad Kamat Informed
+
+
+
+| 
+
+
+
+
+
+
+
+
+2. Glossary
+
+
+For the full glossary of Titan terms the central glossary is maintained here.
+
+
+
+
+
+
+
+
+
+
+
+Term
+
+| 
+
+Definition
+
+| 
+
+
+
+
+VAT Invoice
+
+| 
+
+This is a China specific term. A Value-Added Tax (VAT)
+invoice is a document issued by an accountable entity. A VAT invoice sets out
+the details of a taxable supply and all related information as prescribed by
+VAT law. In the context of this document ,this is to
+mention the Golden tax VAT invoice verified with China Golden tax system.
+
+| 
+
+
+
+
+Special VAT Invoice
+
+| 
+
+This is a China specific term. Special VAT Invoices are
+issued by Trafigura to its counterparty when selling commodities or providing
+taxable services. The Special VAT invoices are used for VAT deduction
+purposes. Trafigura also receives Special VAT invoice
+from counterparty for purchase trades.
+
+| 
+
+
+
+
+General VAT Invoice
+
+| 
+
+This is a China specific term. General VAT invoices
+cannot be used for VAT deduction purposes. General VAT
+Invoices are issued by Trafigura to its counterparty when selling commodities
+or providing tax services. Trafigura also receives General VAT invoice for counterparty for
+purchase trades.
+
+| 
+
+
+
+
+VAT Invoice Number
+
+| 
+
+This is a China specific term. The golden tax invoice
+number approved/ generated by Golden Tax system.
+
+| 
+
+
+
+
+Commercial Invoice
+
+| 
+
+A seller-issued invoice that provides detailed
+information about goods or services sold to a buyer and is used for customs
+declaration, tax assessment, and international trade settlement. It serves as
+a commercial and shipping document supporting domestic and cross-border trade
+transactions. It is also called international invoice in Titan.
+
+| 
+
+
+
+
+
+
+
+
+3. Scope
+
+
+3.1. In Scope
+
+
+
+GC
+incorporated in China
+
+Business
+Line: RM, Bulk, Concs.
+
+Trading
+VAT invoices, including Cargo, Customs VAT, Customs duty and other Service
+VAT
+
+Both IC
+VAT and non-IC VAT are in scope
+
+Blue VAT
+invoice and red VAT invoice (normal PI & CN)
+
+China International （Commercial） invoice
+
+
+
+3.2. Out of Scope
+
+
+
+GC not
+incorporated in China
+
+Business
+Line: Energy
+
+non-Trading
+invoices
+
+
+
+4. To-be process
+
+
+Interface Frequency:
+
+
+Invoice synchronization:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+VAT/Commercial invoice
+
+| 
+
+Cargo/Service
+
+| 
+
+Subtype of Service VAT
+
+| 
+
+Direction
+
+| 
+
+Frequency
+
+| 
+
+Comments
+
+| 
+
+
+
+
+VAT invoice
+
+| 
+
+Cargo
+
+| 
+
+/
+
+| 
+
+TMP→Titan PI
+
+| 
+
+daily batch at 19:00 PM
+Shanghai time
+
+| 
+
+Cargo payment is done by prepayment, VAT
+invoice in Titan is for recording purpose, so once a day is enough
+
+| 
+
+
+
+
+VAT Invoice
+
+| 
+
+Service
+
+| 
+
+Bank invoice
+
+| 
+
+TMP→Titan PI
+
+| 
+
+monthly at 19:00 PM
+Shanghai time
+
+| 
+
+Bank charges are collected by bank
+already, bank VAT in Titan is for recording purpose,
+and TO & Acct do this at monthly basis.
+
+| 
+
+
+
+
+VAT Invoice
+
+| 
+
+Service
+
+| 
+
+non-Bank Service invoice
+
+| 
+
+TMP→Titan PI
+
+| 
+
+near real-time when user confirm to pay
+
+| 
+
+Booking in Titan PI to initiate payment
+to service provider/regulator, so time efficiency is important.
+
+| 
+
+
+
+
+China International invoices
+
+| 
+
+Cargo & Service
+
+| 
+
+/
+
+| 
+
+Titan PI→ TMP
+
+| 
+
+daily batch at 21:00 PM
+Shanghai time
+
+| 
+
+China international invoices in TMP is for Acct. reconciliation purpose, once a day is enough.
+
+| 
+
+
+
+
+
+
+
+
+Interface result response:
+
+
+
+
+
+
+
+
+
+
+
+
+Response
+
+| 
+
+Direction
+
+| 
+
+Frequency
+
+| 
+
+
+
+
+Titan PI NO. &
+Status & failure
+
+| 
+
+Titan PI→ TMP
+
+| 
+
+near real time basis when status get updated to 'Approved', 'Externalfail' or 'Cancelled'
+
+| 
+
+
+
+
+TMP success/fail response on China
+International invoices
+
+| 
+
+TMP→Titan PI
+
+| 
+
+near real time basis when status get updated to 'Success' or 'Fail'
+
+| 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+VAT Invoice
+
+
+
+
+
+
+
+
+Cargo
+VAT
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Service VAT
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+IC Invoicing
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Status Transition
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+China International/Commercial Invoice
+
+
+
+
+
+
+
+
+
+
+
+
+Customs VAT and Duty Invoices
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+5. Functional Requirement
+
+
+
+
+
+
+
+
+
+
+
+
+
+ID
+
+| 
+
+Item
+
+| 
+
+Description
+
+| 
+
+System
+
+| 
+
+
+
+
+FR-01
+
+| 
+
+Customs VAT &
+duty invoices
+
+| 
+
+
+As an ST user, I need Titan PI to auto synchronize below
+information of China Customs VAT & Duty invoices (booked as China
+International invoices) to TMP on daily basis, so that I don't need to
+manually link Titan PI No. with Customs payment receipt in TMP.
+
+Information required: Titan PI No., CP Invoice Ref.,
+Account period, Description
+
+Criteria: Status='Approved', TMP status <>'Success'
+(meaning not booked in TMP yet)
+
+PRD. sample:
+
+Customs VAT:
+
+
+
+
+
+
+
+
+
+
+
+Customs Duty:
+
+
+
+
+
+
+
+
+
+
+
+| 
+
+Titan PI
+
+| 
+
+
+
+
+FR-02
+
+| 
+
+Customs VAT &
+duty invoices
+
+| 
+
+As an ST user, I need Titan PI to auto synchronize below
+information of China Customs VAT & Duty invoices Credit Note to TMP on
+daily basis, so that I don't need to manually unlink Titan PI No. with
+Customs payment receipt in TMP.
+
+Information required: Titan PI No., CP Invoice Ref.,
+Account period, Description, Underlying PI No.
+
+Criteria: Status='Approved', TMP status <>'Success'
+(meaning not booked in TMP yet)
+
+| 
+
+Titan PI
+
+| 
+
+
+
+
+FR-03
+
+| 
+
+Customs VAT &
+duty invoices
+
+| 
+
+As an ST user, I need TMP to auto sync. Titan PI No.
+based on the CP. invoice Ref. and PI description upon receive Titan PI message of the same, so that I don't need
+to manually input the same in TMP.
+
+Notes: For Titan PI-Customs Payment receipt 1-1 case, ST
+will input customs VAT or duty payment receipt No. in CP Invoice Ref, for 1-N
+case, ST will input in Description field with multiple customs VAT or
+duty payment receipt No. with semicolon separated.
+
+| 
+
+TMP
+
+| 
+
+
+
+
+FR-04
+
+| 
+
+Customs VAT &
+duty invoices
+
+| 
+
+As an ST user, I need TMP to auto clear
+Titan PI No. based on the CP. invoice Ref. and PI description upon
+receive Titan CN on the same, so that I don't need to manually clear the same
+in TMP.
+
+| 
+
+TMP
+
+| 
+
+
+
+
+FR-05
+
+| 
+
+Customs VAT
+
+| 
+
+As a mailroom user, I need TMP to auto
+untick Customs VAT upon receive Titan CN if
+previously ticked, so to avoid wrong input VAT ticking.
+
+| 
+
+TMP
+
+| 
+
+
+
+
+FR-06
+
+| 
+
+General VAT invoice
+
+| 
+
+
+General VAT invoice with tax amount should be interfaced
+to Titan PI in the API as below, due to General VAT tax is irrecoverable and
+Oracle does not support 'IRR' tax code.
+
+
+If the
+input VAT is not deductible (i.e. 6% Service General VAT), the tax
+status should be interfaced to Titan PI as ‘Outside scope’ & tax
+code ‘CN099PI’.
+
+
+
+If the
+tax is exempted (e.g. Gold), the tax status should be interfaced to
+Titan PI as ‘Applicable’ & tax code ‘CN205PI’.
+
+
+Tax amount to be consolidated into net amount and pass to
+Titan net amount,
+
+Tax amount pass to Titan as 0.
+
+Notes:
+
+General VAT whose VAT is
+irrecoverable, there will be a break between TMP and Oracle in tax amount
+reconciliation, but total invoice amount reconciliation is balanced.
+
+PRD. Sample:
+
+Service General VAT with 6% tax rate: Tax Status-Outside
+Scope, Tax Code: CN099PI
+
+
+
+
+
+Cargo General VAT with tax exempted: Tax
+Status-Applicable, Tax Code:CN205PI
+
+
+
+
+
+
+
+
+
+| 
+
+TMP
+
+| 
+
+
+
+
+FR-07
+
+| 
+
+IC VAT invoice
+
+| 
+
+
+Previously IC VAT invoice will not be extracted to Titan PI feed, in API, IC invoice should also be covered since it is not necessary
+to be triggered by SI to follow the internal invoicing
+approving process.
+
+If CP is also China GC, mark internal invoice as 'Yes'.
+
+
+
+| 
+
+TMP,
+
+Titan PI
+
+CCEP-194525
+
+| 
+
+
+
+
+FR-08
+
+| 
+
+IC VAT invoice
+
+| 
+
+
+Internal purchase VAT invoice
+will only be interfaced to Titan PI after internal Titan SI issued successfully, so that TMP will interface Titan SI
+number to Titan PI as CP invoice reference for IC invoices.
+
+
+
+| 
+
+TMP, Titan PI
+
+| 
+
+
+
+
+FR-09
+
+| 
+
+IC VAT invoice
+
+| 
+
+
+After internal PI booked, PI No.
+should be sent to Titan SI to book the internal invoice number.
+
+
+
+| 
+
+Titan PI, Titan SI
+
+| 
+
+
+
+
+FR-10
+
+| 
+
+Service VAT attribution
+
+| 
+
+TMP to synchronize RM service cost group from WDMS and
+support user to do service VAT attribution in TMP by
+uploading attribution lines, so that TMP can interface the same to Titan PI
+at day end batch job. For invoices with attribution, the invoice will get
+auto attributed and appovered in Titan PI.
+
+| 
+
+WDMS,
+
+TMP,
+
+Titan PI
+
+CCEP-192145
+
+| 
+
+
+
+
+FR-11
+
+| 
+
+Service VAT without attribution
+
+| 
+
+For service VAT without attribution, only those confirmed
+to be booked by user will be interfaced to Titan PI as Incomplete status and
+then user will do further attribution and approval in Titan PI. The
+information from TMP should not allow user modification so to make sure it's
+the same from TMP.
+
+| 
+
+TMP,
+
+Titan PI
+
+CCEP-192145
+
+| 
+
+
+
+
+FR-12
+
+| 
+
+Status Transition
+
+| 
+
+The status of the VAT invoices sent to Titan PI will be
+updated with Titan PI No. and status. Sent->Approved or failed or
+cancelled. For failed ones, error message should be
+shown for user to check.
+
+TMP will add Titan PI number and
+Titan PI status for each VAT invoice. After sending the VAT invoice to Titan
+PI, the status will be 'sent', only final status is concerned, i.e. when
+Titan PI gets 'Approved' or 'external fail' or 'Cancelled', the same status
+will be flown to TMP, status in between is not necessary. For failed ones,
+the failed reason should also be presented for user
+to further check. For Cancelled ones, Titan PI No. in TMP should be shown as
+empty and taken as not sent to Titan PI and should be re-sent if other
+criteria met.
+
+| 
+
+TMP,
+
+Titan PI
+
+| 
+
+
+
+
+FR-13
+
+| 
+
+Failed PI
+
+| 
+
+As a TMP user who confirm the
+Input VAT to be booked in Titan PI, I need to be notified for the 'external fail' Titan PI timely with failure
+reason, so that I can take necessary actions timely and clear about the gap
+between TMP and Titan/Oracle.
+
+| 
+
+TMP
+
+| 
+
+
+
+
+FR-14
+
+| 
+
+Account Period
+
+| 
+
+Upon invoice status updated to 'Approved', Titan PI
+should return the finalized Accounting Period to TMP. TMP will use this
+Accounting Period to determine the month in which the corresponding Input VAT
+Invoice should be submitted for VAT deduction ("VAT ticking") on
+the China Tax Bureau platform.
+
+Note: Input VAT Confirmation
+
+A mandatory tax process in China whereby a company
+confirms eligible VAT invoices on the State Tax Administration platform
+before claiming Input VAT credits. The confirmation must be performed in the
+correct tax period which is the same in GAI/Oracle. Therefore, TMP requires
+the Accounting Period determined in Titan PI to
+decide in which month the VAT invoice should be included for deduction.
+
+| 
+
+TMP,
+
+Titan PI
+
+| 
+
+
+
+
+FR-15
+
+| 
+
+Cargo Doc. L/C
+
+| 
+
+In cargo invoice attribution screen add a checkbox 'Cargo
+Doc LC'. If ticked, TMP will default LC amount=invoice net amount, LC Tax
+Amount=invoice tax amount, and allow user modification. The same will be
+interfaced to Titan PI.
+
+If PI amount fully covered by LC
+amount, 'DO NOT Pay' will be ticked by Titan PI automatically. Otherwise only
+the amount not covered by LC will be allowed to create PO.
+
+| 
+
+TMP,
+
+Titan PI
+
+| 
+
+
+
+
+FR-16
+
+| 
+
+Bulk invoice weight basis
+
+| 
+
+In cargo invoice
+attribution screen, add field 'invoice weight basis'
+to record Bulk VAT invoice weight basis and pass the same to Titan PI, Titan
+PI needs to use the same to do Qty validation, i.e. if VAT invoice weight
+basis is Wet, use assignment Wet weight to validate invoiced weight, else use
+assignment Dry weight to do the validation. The remaining Qty calculation
+should be on the same invoice weight basis.
+
+| 
+
+TMP,
+
+Titan PI
+
+| 
+
+
+
+
+FR-17
+
+| 
+
+Bulk invoice weight basis
+
+| 
+
+Titan PI should pass the Bulk invoice
+weight basis to BO, so that BO can show the correct invoiced weight and
+remaining to be invoiced weight in Bulk Settlement Note.
+
+| 
+
+Titan PI,
+
+Business Object
+
+| 
+
+
+
+
+FR-18
+
+| 
+
+Cargo Invoice filter
+
+| 
+
+Cargo invoice: Same as current Excel uploader FSD
+-TMP Cargo Input VAT invoice attribution feed to be uploaded to Titan PI -
+China local automation - Confluence with only difference to include IC
+invoice as well.
+
+IC invoice must be interfaced
+after Titan SI booked successfully so that internal
+invoice number can be updated to Titan SI when Titan
+PI approved.
+
+| 
+
+TMP
+
+| 
+
+
+
+
+FR-19
+
+| 
+
+Service Invoice filter
+
+| 
+
+Functional Line should be mandatory for invoices user
+confirmed to be booked
+
+IC invoice must be interfaced after Titan SI booked successfully so that internal invoice number can be
+updated to Titan SI when Titan PI approved.
+
+Bank invoices: Attributed to Titan charges Trx
+
+non-Bank invoice: Functional Line <>'Energy'
+
+User confirmed to be booked: Yes
+
+| 
+
+TMP
+
+| 
+
+
+
+
+FR-20
+
+| 
+
+Estimate assignment
+Attribution
+
+| 
+
+China input VAT and Element VAT QV reports need to add
+field assignment state sourced from Logistics for purchase assignments, so
+that TMP can consume it to build validation logic upon attribution.
+
+| 
+
+QV
+
+| 
+
+
+
+
+FR-21
+
+| 
+
+Estimate assignment Attribution
+
+| 
+
+When user attribute VAT invoice to un-actualized
+assignments whose assignment state='Estimate', there should be warning msg
+pop up to warn the user to check whether it's correct and allow to save when
+user confirm.
+
+| 
+
+TMP
+
+| 
+
+
+
+
+FR-22
+
+| 
+
+Estimate assignment Attribution
+
+| 
+
+For the scenario where CP issued Traf. VAT ahead of
+assignment actualized, currently Titan PI bulk uploader does not support, user need to manually book in Titan PI. This validation
+should be removed in API.
+
+| 
+
+Titan PI
+
+| 
+
+
+
+
+FR-23
+
+| 
+
+Negative Attribution
+
+| 
+
+Titan PI API must support negative
+quota/assignment attribution (overall invoice amount is positive), so that
+Ops does not need to book such scenario manually in Titan PI and complete the
+attribution in TMP.
+
+| 
+
+Titan PI
+
+CCEP-188836
+
+| 
+
+
+
+
+FR-24
+
+| 
+
+Quantity FIFO Attribution
+
+| 
+
+Now in PI bulk uploader, Qty auto attribution is based on
+assignment quantity ratio, in Titan API, it should be based on FIFO logic,
+i.e. the system should allocate the Invoice
+Quantity in the FIFO Logic based on the Assignment Quantity instead of
+Assignment Quantity Prorate and if any additional Quantity is left should be
+added to the last assignment.
+
+Check Question 6.
+
+| 
+
+Titan PI
+
+CCEP-189708
+
+| 
+
+
+
+
+FR-25
+
+| 
+
+Final Invoice Accrual clearance
+
+| 
+
+The invoice amount auto attribution from Quota (RM & Bulk FLs and Alumina
+under Concs. FL) to Assignment (FIFO to actualized assignments) will remain
+unchanged as per the Excel bulk uploader Section 8.4 on FSD
+- Purchase Invoice and Credit Notes uploader for China VAT Invoices -
+CC&E - Confluence, with below enhancement is needed to clear previous
+provisional over-invoicing.
+
+During provisional quota to assignments allocation, any
+residual invoice amount will be temporarily allocated to the last actualized
+assignment. Once the Quota status is set to 'Final', Titan PI shall
+redistribute such residual amounts across all assignments according to the
+final quota allocation, eliminating any over-invoicing and clearing all
+remaining accrual balances.
+
+| 
+
+Titan PI
+
+| 
+
+
+
+
+FR-26
+
+| 
+
+Bank
+VAT Invoice
+
+| 
+
+Bank invoice attributed to Titan charges transactions by
+Treasury Ops in TMP will be auto interfaced to Titan PI at daily batch job.
+For Titan Charges CCF type other than 'Mm Interest' & 'Other Mm Fee', the
+Titan PI will be incomplete status and Acct. need to do further attribution
+& Approval in Titan PI.
+
+| 
+
+TMP, Titan PI
+
+| 
+
+
+
+
+FR-27
+
+| 
+
+Bank
+VAT Invoice
+
+| 
+
+For bank invoices attributed to Titan Charges CCF types
+of 'Mm Interest' & 'Other Mm Fee', TMP will interface to Titan PI with below attribution details, so Acct. does not need to do
+further operation in Titan PI and the PI will get
+auto attributed and approved.
+
+
+
+
+
+
+
+
+
+
+
+CCF Type
+
+| 
+
+Cost code
+
+| 
+
+MMI ID
+
+| 
+
+Deal ID
+
+| 
+
+
+
+
+Mm Interest
+
+| 
+
+C32P
+
+| 
+
+Source ID from Titan CS data dump
+
+| 
+
+N/A, booked as pooled PI
+
+| 
+
+
+
+
+Other Mm Fee
+
+| 
+
+C31
+
+| 
+
+-
+
+| 
+
+Mapped per GC as below:
+
+GC Deal ID
+
+TIC 1292941
+
+TTH 1303397
+
+TEZ 1303401
+
+Lykos 1303398
+
+TTY 1339400
+
+| 
+
+
+
+
+
+
+| 
+
+TMP, Titan PI
+
+| 
+
+
+
+
+FR-28
+
+| 
+
+China International Invoice
+
+| 
+
+China international invoices, both PI & CN, should be
+interfaced to TMP input invoice at daily batch with below details, when
+criteria met.
+
+Invoice header:
+Titan PI No., invoice CP. Ref., Description, GC, CP, invoice date, invoice
+owner, account period, Cargo/Service invoice type, functional line,
+business line, commodity, Invoice Currency, Invoice net amount, Invoice Tax
+Amount, Invoice gross amount, underlying PI No. for Credit Note
+
+Invoice Line: cost group, line net amount, line tax
+amount, line gross amount
+
+Criteria: Status='Approved', TMP status <>'Success'
+
+Note: Customs VAT & duty invoice can be covered in
+the same since they are booked as China international invoices
+
+| 
+
+TMP, Titan PI
+
+| 
+
+
+
+
+FR-29
+
+| 
+
+China International Invoice
+
+| 
+
+TMP should response back to Titan PI on the
+synchronization status of China international invoices on near real-time
+basis.
+
+| 
+
+TMP, Titan PI
+
+| 
+
+
+
+
+FR-30
+
+| 
+
+Partial Credit Note
+
+| 
+
+In Cargo PI excel bulk uploader, only fully reversal-full
+credit note is supported, but in API, partial credit
+note should also be supported, so that user does not
+need to do manual credit note booking when receive
+partial CN from counterparty.
+
+| 
+
+TMP, Titan PI
+
+| 
+
+
+
+
+FR-31
+
+| 
+
+VAT Invoice Owner
+
+| 
+
+For Cargo VAT invoices, invoice owner will remain the
+logic to map from Logistics.Primary
+assignment owner based on attribution,
+
+For non-bank Service VAT, TMP will pass invoice owner as
+the user ‘s name who confirms booking of the service VAT in Titan PI.
+
+Bank invoice (TBC)???
+
+| 
+
+TMP, Titan PI
+
+| 
+
+
+
+
+FR-32
+
+| 
+
+Created By
+
+| 
+
+For VAT invoices created by TMP API, the 'Created By'
+should clearly indicate that it's auto created from TMP, so that user can
+easily differentiate it from manual-booked PIs.
+
+| 
+
+Titan PI
+
+| 
+
+
+
+
+
+
+
+
+6. Detailed Field Mapping (pending Titan API
+design)
+
+
+6.1. VAT invoices from TMP to Titan PI
+
+
+
+
+
+
+Header
+
+
+
+
+Data
+level: Invoice Level. This table is per
+Invoice level, one line for input VAT invoice.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Column Name
+
+| 
+
+Column Description
+
+| 
+
+Data Source From
+
+| 
+
+Data Source Field
+
+| 
+
+Remark
+
+| 
+
+
+
+
+Invoice Line Link Id
+
+| 
+
+This field is to link header and lines, use golden tax
+invoice reference directly
+
+| 
+
+Cargo-Input VAT invoice Attribution
+
+Customs VAT-Customs VAT
+
+other service VAT-Input VAT
+
+| 
+
+VAT Invoice No.
+
+发票号码
+
+| 
+
+Will be mapped as CP invoice Ref in Titan
+PI editor
+
+| 
+
+
+
+
+Invoice Owner
+
+| 
+
+Invoice Owner
+
+| 
+
+Cargo-Titan PI get based on attribution
+
+Customs VAT-Customs VAT,
+
+other service VAT-Input VAT
+
+| 
+
+Cargo VAT will be mapped from Logistics.Primary assignment
+owner based on attribution,
+
+Service VAT-will be passed from TMP the user name who confirm booking of the service VAT
+
+Bank invoice (TBC)???
+
+| 
+
+New in TMP
+
+| 
+
+
+
+
+Functional Line
+
+| 
+
+RM
+
+Bulk
+
+Concs.
+
+| 
+
+Cargo-Input VAT invoice Attribution
+
+Customs VAT-Customs VAT
+
+other service VAT-Input VAT
+
+| 
+
+Functional Line
+
+业务线
+
+| 
+
+Make it mandatory in TMP. service invoice
+when user confirm to be booked in Titan.
+
+| 
+
+
+
+
+Invoice Type
+
+| 
+
+Option list:
+
+CARGO
+
+CARGO DOC LC
+
+SERVICE
+
+CLAIM
+
+| 
+
+Input VAT invoice
+
+| 
+
+Invoice Type
+
+发票分类
+
+| 
+| 
+
+
+
+
+Cargo Invoice Type
+
+| 
+
+Option List:
+
+ProvisionalInvoice
+
+FinalAdjustment
+
+FinalInvoice
+
+| 
+
+Input VAT invoice
+
+| 
+
+If all quotas/assignments attributed to the cargo invoice
+are final, then 'FinalInvoice', else 'ProvisionalInvoice'.
+
+Keep empty for service invoice
+
+| 
+
+Credit Note is not mandatory,
+Titan will get from underlying invoice.
+
+| 
+
+
+
+
+Invoice Category
+
+| 
+
+Option List:
+
+Purchase Invoice
+
+Credit Note
+
+| 
+
+Input VAT invoice
+
+| 
+
+Red invoice: Credit Note
+
+Blue Invoice: Purchase Invoice
+
+| 
+| 
+
+
+
+
+VAT/International
+
+| 
+
+Option List:
+
+VAT
+
+China International
+
+| 
+
+Input VAT invoice
+
+| 
+
+Default as 'VAT' for non Customs
+VAT
+
+Customs VAT-China International
+
+| 
+| 
+
+
+
+
+VAT Type (Special/General)
+
+| 
+
+Option List:
+
+Special
+
+General
+
+| 
+
+Input VAT invoice
+
+| 
+
+发票类型
+
+增值税专票-Special
+
+增值税普票-General
+
+Customs VAT-empty
+
+| 
+| 
+
+
+
+
+Customs VAT
+
+| 
+
+Option List:
+
+Customs VAT
+
+Non-Customs VAT
+
+
+
+| 
+
+Input VAT invoice
+
+| 
+
+Customs VAT
+
+Non-Customs VAT
+
+| 
+| 
+
+
+
+
+Tax Status
+
+| 
+
+Option List:
+
+Applicable
+
+Outside Scope
+
+| 
+
+Input VAT invoice
+
+| 
+
+Tax Applicability
+
+| 
+
+Check tax code mapping
+
+| 
+
+
+
+
+Indirect Tax Code
+
+| 
+
+Tax Code
+
+| 
+
+Master data in TMP
+
+| 
+
+Tax Code
+
+| 
+
+Check tax code mapping
+
+| 
+
+
+
+
+Invoice Date
+
+| 
+
+Invoice Date, will be used to default invoice due date,
+Due date and Tax point date also in Titan PI
+
+| 
+
+Input VAT invoice
+
+| 
+
+Invoice Date
+
+| 
+| 
+
+
+
+
+Invoice CCY
+
+| 
+
+Invoice Currency
+
+| 
+
+Input VAT invoice
+
+| 
+
+Invoice CCY
+
+| 
+
+Always 'CNY' for VAT invoices from TMP
+
+| 
+
+
+
+
+VAT Inclusive Amount
+
+| 
+
+VAT Inclusive Amount
+
+| 
+
+Input VAT invoice Attribution
+
+| 
+
+VAT Inclusive
+Amount summed from Attribution lines
+
+| 
+
+will be negative for red invoice (Titan
+Credit Note)
+
+| 
+
+
+
+
+Tax Amount in Invoice CCY
+
+| 
+
+Tax Amount in Invoice CCY
+
+| 
+
+Input VAT invoice Attribution
+
+| 
+
+Tax Amount summed
+from Attribution lines
+
+| 
+| 
+
+
+
+
+Linked PI Id for Credit Note
+
+| 
+
+the underlying CP invoice ref for Credit Note, mandatory
+only for Credit Note
+
+| 
+
+Input VAT invoice
+
+| 
+
+关联发票号
+
+Blue Invoice No. for Red Invoice
+
+| 
+| 
+
+
+
+
+Internal Invoice
+
+| 
+
+newly added in API
+
+| 
+
+Input VAT invoice
+
+| 
+
+Internal Invoice flag
+
+| 
+
+If CP is also China GC, set it as 'Yes',
+else 'No'
+
+| 
+
+
+
+
+Titan SI No.
+
+| 
+
+newly added in API
+
+| 
+
+Input VAT invoice
+
+| 
+
+Get from output VAT based on GT Invoice No.
+
+| 
+
+Mandatory when Internal Invoice flag is
+'Yes'.
+
+| 
+
+
+
+
+
+
+
+
+
+
+
+Lines
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Column Name
+
+| 
+
+Column Description
+
+| 
+
+Data Source From
+
+| 
+
+Data Source Field
+
+| 
+
+Remark
+
+| 
+
+
+
+
+Invoice Line Link Id
+
+| 
+
+This field is to link header and lines, use golden tax
+invoice reference directly
+
+| 
+
+Input VAT invoice
+Attribution
+
+| 
+
+VAT Invoice No.
+
+| 
+| 
+
+
+
+
+VAT Inclusive
+Amount
+
+| 
+
+Sum of the attributed VAT-inclusive
+amount per Invoice & Quota ID
+
+| 
+
+Input VAT invoice
+Attribution
+
+| 
+
+VAT Inclusive
+Amount
+
+| 
+
+will be negative forTitan
+Credit Note
+
+| 
+
+
+
+
+Tax Amount in
+Invoice CCY
+
+| 
+
+Sum of the attributed VAT amount
+per Invoice & Quota ID
+
+| 
+
+Input VAT invoice
+Attribution
+
+| 
+
+Tax Amount in
+Invoice CCY
+
+| 
+
+will be negative forTitan
+Credit Note
+
+| 
+
+
+
+
+Quantity
+
+| 
+
+Sum of the attributed Quantity per
+Invoice & Quota ID
+
+| 
+
+Input VAT invoice
+Attribution
+
+| 
+
+Quantity
+
+| 
+
+will be negative forTitan
+Credit Note
+
+| 
+
+
+
+
+Quota ID
+
+| 
+
+Attributed Quota ID
+
+| 
+
+Input VAT invoice
+Attribution
+
+| 
+
+Quota ID
+
+| 
+| 
+
+
+
+
+Assignment ID
+
+| 
+
+Attributed Assignment ID
+
+| 
+
+Input VAT invoice
+Attribution
+
+| 
+
+Assignment ID
+
+| 
+| 
+
+
+
+
+Cost Code
+
+| 
+
+Attributed Cost Code
+
+| 
+
+Input VAT invoice
+Attribution
+
+| 
+
+Cost Code (C01 for
+cargo, C26 for Customs VAT, C32P for MM interest, C31 for Other
+MM fee )
+
+| 
+| 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+6.2. China
+International/Commercial invoices from Titan PI to TMP
+
+
+Note: Customs VAT and Customs Duty invoices are included in
+China International invoices
+
+
+
+
+
+
+Header
+
+
+
+
+Data
+level: Invoice Level. This table is per
+Invoice level, one line for one commercial invoice.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+TMP Column Name
+
+| 
+
+Column Description
+
+| 
+
+Data Source From
+
+| 
+
+Data Source Field
+
+| 
+
+Remark
+
+| 
+
+
+
+
+Titan PI No.
+
+| 
+
+Titan PI No.
+
+| 
+
+Titan PI header
+
+| 
+
+Invoice ID
+
+| 
+
+This field is to link header and lines
+
+| 
+
+
+
+
+CP Invoice Ref.
+
+| 
+
+CP Invoice Ref.
+
+| 
+
+Titan PI header
+
+| 
+
+CP Invoice Ref.
+
+| 
+
+New field in TMP
+
+| 
+
+
+
+
+Titan PI Description
+
+| 
+
+Titan PI Description
+
+| 
+
+Titan PI header
+
+| 
+
+Descritption
+
+| 
+| 
+
+
+
+
+Invoice Type
+
+发票类型
+
+| 
+
+VAT/International
+
+| 
+
+Titan PI header
+
+| 
+
+VAT/International
+
+| 
+
+China International will be mapped as '商业发票' under TMP 发票类型 field
+
+| 
+
+
+
+
+Buyer name
+
+购方名称
+
+| 
+
+Group company name
+
+| 
+
+Titan PI header
+
+| 
+
+Group Company Name
+
+| 
+
+TMP to convert into Chinese GC name
+
+| 
+
+
+
+
+Seller name
+
+销方名称
+
+| 
+
+Counterparty name
+
+| 
+
+Titan PI header
+
+| 
+
+Counterparty Name
+
+| 
+
+TMP to convert into Chinese CP name if
+exists in TMP, else keep English name from Titan
+
+| 
+
+
+
+
+Invoice Owner
+
+| 
+
+Invoice Owner
+
+| 
+
+Titan PI header
+
+| 
+
+Invoice Owner
+
+| 
+
+New field in TMP
+
+| 
+
+
+
+
+Functional Line
+
+业务线
+
+| 
+
+RM
+
+Bulk
+
+Concs.
+
+| 
+
+Titan PI header
+
+| 
+
+Functional Line
+
+| 
+
+Currently TMP only have this functional
+line as 业务线
+
+| 
+
+
+
+
+Business Line
+
+| 
+
+RM
+
+Bulk
+
+Concs.
+
+| 
+
+Titan PI header
+
+| 
+
+Business Line
+
+| 
+
+This will be a new field in TMP.
+
+| 
+
+
+
+
+Commodity
+
+SRD 商品英文名
+
+| 
+
+List from SRD commodity
+
+| 
+
+Titan PI header
+
+| 
+
+Commodity
+
+| 
+| 
+
+
+
+
+Invoice Type
+
+发票分类
+
+| 
+
+Option list:
+
+CARGO
+
+CARGO DOC LC
+
+SERVICE
+
+| 
+
+Titan PI header
+
+| 
+
+Invoice Type
+
+| 
+
+CARGO & CARGO DOC LC will be mapped as Cargo
+
+Service will be mapped as Service
+
+| 
+
+
+
+
+Invoice Category
+
+红票、蓝票
+
+| 
+
+Option List:
+
+Purchase Invoice
+
+Credit Note
+
+| 
+
+Titan PI header
+
+| 
+
+Credit Note—Red invoice
+
+Purchase Invoice–Blue invoice
+
+| 
+
+Add an indicator in TMP for easy
+filtering
+
+| 
+
+
+
+
+Invoice Date
+
+开票日期
+
+| 
+
+Invoice date
+
+| 
+
+Titan PI header
+
+| 
+
+Invoice Date
+
+| 
+| 
+
+
+
+
+Account Period
+
+| 
+
+Account Period
+
+| 
+
+GAI
+
+| 
+
+Account Period
+
+| 
+
+New field in TMP for all PIs
+
+| 
+
+
+
+
+Invoice Currency
+
+| 
+
+Invoice Currency
+
+| 
+
+Titan PI header
+
+| 
+
+CCY
+
+| 
+
+New field in TMP
+
+| 
+
+
+
+
+Net Amount
+
+不含税金额
+
+| 
+
+VAT exclusive Amount
+
+| 
+
+Titan PI header
+
+| 
+
+Net amount
+
+| 
+
+will be negative for Titan Credit Note
+
+| 
+
+
+
+
+Tax Amount in Invoice CCY
+
+税额
+
+| 
+
+Tax Amount in Invoice CCY
+
+| 
+
+Titan PI header
+
+| 
+
+Tax amount in Invoice Currency
+
+| 
+| 
+
+
+
+
+Underlying PI Id for Credit Note
+
+| 
+
+the underlying Titan PI No. for Credit Note, mandatory
+only for Credit Note
+
+| 
+
+Titan PI header
+
+| 
+
+Adjusts Invoice Id
+
+| 
+| 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Lines
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Column Name
+
+| 
+
+Column Description
+
+| 
+
+Data Source From
+
+| 
+
+Data Source Field
+
+| 
+
+Remark
+
+| 
+
+
+
+
+Titan PI No.
+
+| 
+
+This field is to link header and lines
+
+| 
+
+Titan PI header
+
+| 
+
+Invoice ID
+
+| 
+| 
+
+
+
+
+Cost Group
+
+| 
+
+Titan PI attributed cost group
+
+| 
+
+Titan PI Lines
+
+| 
+
+Cost Group
+
+| 
+
+New in TMP invoice line
+
+| 
+
+
+
+
+Line-Net Amount
+
+| 
+
+Net amount in each line
+
+| 
+
+Titan PI Lines
+
+| 
+
+Amount
+
+| 
+
+will be negative for red invoice (Titan
+Credit Note)
+
+| 
+
+
+
+
+Line-Tax Amount in
+Invoice CCY
+
+| 
+
+Tax amount in each line
+
+| 
+
+Titan PI Lines
+
+| 
+
+Tax Amount
+
+| 
+
+will be negative for red invoice (Titan Credit Note)
+
+Normally International PI Tax amount will be
+0.
+
+| 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+7. Tax Code Mapping
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+General/Special VAT
+
+| 
+
+VAT Rate in Input VAT
+
+| 
+
+Tax Status
+
+| 
+
+Tax Code
+
+| 
+
+Tax Code Description
+
+| 
+
+Comments
+
+| 
+
+
+
+
+General VAT
+
+| 
+
+Exempted-免税
+
+| 
+
+Applicable
+
+| 
+
+CN205PI
+
+| 
+
+CN: Domestic
+Purchase – Zero Rate for goods under VAT exemption
+
+| 
+| 
+
+
+
+
+General VAT
+
+| 
+
+not exempted
+
+| 
+
+Outside Scope
+
+| 
+
+CN099PI
+
+| 
+
+CN - VAT - Outside
+Scope of Tax
+
+| 
+
+Input VAT in General VAT is irrecoverable
+
+| 
+
+
+
+
+Special VAT
+
+| 
+
+13%
+
+| 
+
+Applicable
+
+| 
+
+CN301PI
+
+| 
+
+CN: Domestic
+Purchase – Standard rate for Goods
+
+| 
+| 
+
+
+
+
+Special VAT
+
+| 
+
+9%
+
+| 
+
+Applicable
+
+| 
+
+CN302PI
+
+| 
+
+CN: Domestic sales – Standard
+Rate for Transportation
+
+| 
+| 
+
+
+
+
+Special VAT
+
+| 
+
+6%
+
+| 
+
+Applicable
+
+| 
+
+CN203PI
+
+| 
+
+CN: Domestic Purchase – Standard Rate for
+Service
+
+| 
+
+Special VAT issued by brokers is
+irrecoverable, but such invoices are not booked in Titan, so no need to
+consider.
+
+| 
+
+
+
+
+Special VAT
+
+| 
+
+3%
+
+| 
+
+Applicable
+
+| 
+
+CN204PI
+
+| 
+
+CN: Domestic Purchase – Standard Rate for
+Small Scale Tax Payer
+
+| 
+| 
+
+
+
+
+
+
+
+
+8. Non-functional Requirement
+
+
+NFR is to capture all the
+non-functional processes and system related requirements for effective
+deployment and maintenance of the interfaces.
+
+
+
+
+
+
+
+
+
+
+
+
+#
+
+| 
+
+Type
+
+| 
+
+Description
+
+| 
+
+
+
+
+NFR-01
+
+| 
+
+Performance
+
+| 
+
+VAT invoice Volumes check Section 5 on page Integration
+Options between China TMP and Titan Purchase Invoice & Sales Invoice -
+CC&E - Confluence.
+
+China International PI volume: monthly average 270 cargo
+& service PI&CN.
+
+The interface should support processing at least 500 VAT
+invoices per batch without performance degradation. The batch execution
+should be completed within 1 hour under normal operating conditions.
+
+| 
+
+
+
+
+NFR-02
+
+| 
+
+Error Handling and Retry
+
+| 
+
+The interface should provide automatic failure recovery
+mechanisms. Failed interface transactions should be retried automatically
+every hour.
+
+Users should be able to identify failed invoices and
+trigger resubmission where applicable.
+
+| 
+
+
+
+
+NFR-03
+
+| 
+
+Data Integrity
+
+| 
+
+The interface should ensure data accuracy and
+completeness throughout the transmission process. No invoice records should
+be lost during transmission.
+
+| 
+
+
+
+
+NFR-04
+
+| 
+
+Reliability
+
+| 
+
+The interface should support once-and-only-once
+processing. Each invoice should be processed only once for a given interface
+transaction without duplication.
+
+Reprocessing of failed invoices should not result in
+duplicate invoices.
+
+| 
+
+
+
+
+NFR-05
+
+| 
+
+Availability
+
+| 
+
+The interface should support normal business operations
+in China. Planned maintenance windows should be communicated in advance.
+Temporary unavailability should not result in invoice data loss.
+
+| 
+
+
+
+
+NFR-06
+
+| 
+
+Audit Trail
+
+| 
+
+For each interface transaction, the following information
+should be logged:
+
+
+Invoice
+Number
+
+Invoice
+Type
+
+Interface
+Execution Time
+
+Sending
+System
+
+Receiving
+System
+
+Interface
+Status
+
+Error
+Message (if applicable)
+
+User who
+confirmed the invoice for booking
+
+
+| 
+
+
+
+
+NFR-07
+
+| 
+
+Monitoring and Alerting
+
+| 
+
+The interface should be actively monitored.
+
+
+Failed
+interface executions should generate alerts to
+the support team in near real-time
+
+Alerts
+should be raised to the support team if no invoices are successfully
+transmitted during a scheduled batch run.
+
+Alerts
+should be raised to the support team if invoices status is 'Sent'
+without final status of 'Approved' ,'Failed' or
+'Cancelled' after 5 mins.
+
+Interface
+health status should be available for support teams.
+
+
+| 
+
+
+
+
+NFR-08
+
+| 
+
+Security
+
+| 
+
+The interface should comply with enterprise security
+standards.
+
+
+All API
+communications should use encrypted transport protocols.
+
+Only
+authorized systems should be allowed to invoke the APIs.
+
+Authentication
+credentials should be securely managed and not stored in plain text.
+
+Financial
+and tax-related data should be protected during transmission and
+storage.
+
+
+| 
+
+
+
+
+NFR-09
+
+| 
+
+Scalability
+
+| 
+
+The solution should support future business growth.
+
+
+The
+interface should support increasing invoice volumes without major
+redesign.
+
+Additional
+business line and future China legal entities should be supported
+through configuration where feasible.
+
+
+| 
+
+
+
+
+
+
+
+
+9. Q&A
+
+
+
+
+
+
+
+
+
+
+
+
+#
+
+| 
+
+Question
+
+| 
+
+Answer
+
+| 
+
+
+
+
+1
+
+| 
+
+What is the schedule of Oracle Acct. period switch?
+Considering below scenario:
+
+1-Sep: TMP open new period of
+Sep, a new invoice with issuance date of 1-Sep received in TMP and user
+complete attribution on 1-Sep.
+
+If Oracle side new period is not opened yet, Titan PI
+will receive failure from Oracle.
+
+If above scenario will happen,
+need to decide the API start timing for each month.
+
+| 
+
+Oracle new period is always open at the 1st day of a new month, so the scenario in this
+question will never happen.
+
+| 
+
+
+
+
+2
+
+| 
+
+Any non-fiscal invoice (e.g.
+redistribution internal invoice) booked as commercial invoice in Titan needs
+to be excluded when Titan interface commercial invoice to TMP? What is the filter
+criterion?
+
+| 
+
+Load all China international invoice into
+TMP, and categorization and filter will be done in TMP.
+
+| 
+
+
+
+
+3
+
+| 
+
+
+Should Tax code for General VAT be booked as not applicable
+or applicable with 0%?
+
+
+
+
+
+
+
+| 
+
+Invoice with IRR VAT will be mapped as Out of scope &
+CN099PI (General VAT & Broker special VAT, but broker special VAT is not
+in Titan scope).
+
+VAT Exempted-Applicable & CN205PI
+
+| 
+
+
+
+
+4
+
+| 
+
+
+Whether users' access to book VAT PI in Titan should be
+blocked?
+
+
+
+| 
+
+No. We
+should keep the access in case there are issues in interfaces and user can still
+book PI in Titan.
+
+| 
+
+
+
+
+5
+
+| 
+
+
+Edge cases: Customs payment receipt not retrieved in
+CIS/TMP yet, but ST needs to make payment.
+
+Exceptional scenarios: When TMP is down or API does not
+work, user need to initiate PI in Titan to make
+urgent payment.
+
+Option 1: Book prepayment to make urgent payment and then
+ZCF to Customs VAT when system recovered to avoid the risk of duplication
+while no additional IT effort.
+
+Option 2: Book
+in Titan PI, then Titan PI sends to TMP Titan PI No. and CP. Invoice
+Reference\Invoice Description to TMP, and TMP auto update the Input VAT when
+system recovered with Titan PI NO. to avoid duplicated booking. This make it messy and if user inputs wrong
+GT VAT No., the auto linkage will fail and result in duplication.
+
+
+
+| 
+
+
+Edge cases not valid anymore
+based on our latest discussion because customs VAT and duty invoices will be synchronzied from Titan PI to TMP RE_ Follow up connect on Customs
+VAT in API.msg
+
+For exceptional scenarios, it should be handled specially
+instead of maintaining two-way interface for the same invoice type which will
+make systems unnecessarily complex. e.g. when book in Titan PI for VAT
+invoices, user to inform the same to TMP to do data fix with Titan PI No. At
+month end, TMP can export a report to show the VAT invoices confirmed to be
+booked without Titan PI No.
+
+
+
+| 
+
+
+
+
+6
+
+| 
+
+
+Do we still book the invoice qty in Titan? Can we take it
+in TMP as golden source is OK and no need to book in Titan & Oracle?
+
+
+
+| 
+| 
+
+
+
+
+7
+
+| 
+
+How to define invoice owner for Bank
+invoices?
+
+| 
+| 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

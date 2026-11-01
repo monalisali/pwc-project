@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python _extract_pi_tables.py)",
+      "Bash(python -c ' *)",
+      "Bash(PYTHONIOENCODING=utf-8 python _extract_pi_tables.py)",
+      "Bash(PYTHONIOENCODING=utf-8 python _dump_fr.py)",
+      "PowerShell(Test-Path \"C:\\\\Users\\\\Bin B Li\\\\Downloads\\\\ff.doc\"; \\(Get-Item \"C:\\\\Users\\\\Bin B Li\\\\Downloads\\\\ff.doc\"\\).Length)",
+      "PowerShell($word = New-Object -ComObject Word.Application; $word.Visible = $false; try { $doc = $word.Documents.Open\\(\"C:\\\\Users\\\\Bin B Li\\\\Downloads\\\\ff.doc\", $false, $true\\); $doc.SaveAs\\([ref]\"C:\\\\Users\\\\Bin B Li\\\\Downloads\\\\ff_extract\\\\ff.html\", [ref]10\\); $doc.SaveAs\\([ref]\"C:\\\\Users\\\\Bin B Li\\\\Downloads\\\\ff_extract\\\\ff.txt\", [ref]7\\); $doc.Close\\($false\\) } finally { $word.Quit\\(\\) }; Get-ChildItem \"C:\\\\Users\\\\Bin B Li\\\\Downloads\\\\ff_extract\" | Select-Object Name, Length)",
+      "PowerShell(New-Item -ItemType Directory -Force \"C:\\\\Users\\\\Bin B Li\\\\Downloads\\\\ff_extract\" | Out-Null; $word = New-Object -ComObject Word.Application; $word.Visible = $false; try { $doc = $word.Documents.Open\\(\"C:\\\\Users\\\\Bin B Li\\\\Downloads\\\\ff.doc\", $false, $true\\); $doc.SaveAs\\([ref]\"C:\\\\Users\\\\Bin B Li\\\\Downloads\\\\ff_extract\\\\ff.html\", [ref]10\\); $doc.SaveAs\\([ref]\"C:\\\\Users\\\\Bin B Li\\\\Downloads\\\\ff_extract\\\\ff.txt\", [ref]7\\); $doc.Close\\($false\\) } finally { $word.Quit\\(\\) }; Get-ChildItem \"C:\\\\Users\\\\Bin B Li\\\\Downloads\\\\ff_extract\" | Select-Object Name, Length)",
+      "Read(//c/Users/Bin B Li/Downloads/ff_extract/**)",
+      "Bash(PYTHONIOENCODING=utf-8 python _compare_fr.py)",
+      "PowerShell(Get-Process WINWORD -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue; Start-Sleep -Seconds 2; New-Item -ItemType Directory -Force \"C:\\\\Users\\\\Bin B Li\\\\Downloads\\\\ff_extract\" | Out-Null; $word = New-Object -ComObject Word.Application; $word.Visible = $false; $word.DisplayAlerts = 0; $word.AutomationSecurity = 3; try { $doc = $word.Documents.Open\\(\"C:\\\\Users\\\\Bin B Li\\\\Downloads\\\\ff.doc\", $false, $true, $false\\); Write-Output \"Opened OK, pages: $\\($doc.ComputeStatistics\\(2\\)\\)\"; $doc.SaveAs\\([ref]\"C:\\\\Users\\\\Bin B Li\\\\Downloads\\\\ff_extract\\\\ff.txt\", [ref]7\\); Write-Output \"TXT saved\"; $doc.Close\\($false\\) } catch { Write-Output \"ERROR: $\\($_.Exception.Message\\)\" } finally { $word.Quit\\(\\) }; Get-ChildItem \"C:\\\\Users\\\\Bin B Li\\\\Downloads\\\\ff_extract\" | Select-Object Name, Length)",
+      "Read(//c/Users/Bin B Li/Downloads/ff_extract/ff_files/**)"
+    ]
+  }
+}

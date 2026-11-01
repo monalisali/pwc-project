@@ -1,0 +1,152 @@
+=== FR-01 | Item: Customs VAT & duty invoices | System: Titan PI | 第一期: N
+DESC: As an ST user, I need Titan PI to auto synchronize below information of China Customs VAT & Duty invoices (booked as China International invoices) to TMP on daily basis, so that I don't need to manually link Titan PI No. with Customs payment receipt in TMP. Information required: Titan PI No., CP Invoice Ref., Account period, Description Criteria: Status='Approved', TMP status <>'Success' (meaning not booked in TMP yet) PRD. sample: Customs VAT: Customs Duty:
+PWC: TMP l Account Period对海关缴款书 -“进口关税”类型的才有意义，它们是不能做认证的，目前在系统从通过“设置认证期间”手动设置。有了API后，就能自动同步了。 Account Period对海关缴款书 -“进口增值税” 确认期间设置为Account Period
+
+=== FR-02 | Item: Customs VAT & duty invoices | System: Titan PI | 第一期: N
+DESC: As an ST user, I need Titan PI to auto synchronize below information of China Customs VAT & Duty invoices Credit Note to TMP on daily basis when CN get approved, so that I don't need to manually unlink Titan PI No. with Customs payment receipt in TMP. Information required: Titan PI No., CP Invoice Ref., Account period, Description, Underlying PI No. Criteria: Status='Approved', TMP status <>'Success' (meaning not booked in TMP yet)
+PWC: NA
+
+=== FR-03 | Item: Customs VAT & duty invoices | System: TMP | 第一期: N
+DESC: As an ST user, I need TMP to auto sync. Titan PI No. based on the CP. invoice Ref. and PI description upon receive Titan PI message of the same, so that I don't need to manually input the same in TMP. Notes: For Titan PI-Customs Payment receipt 1-1 case, ST will input customs VAT or duty payment receipt No. in CP Invoice Ref, for 1-N case, ST will input in Description field with multiple customs VAT or duty payment receipt No. with semicolon separated.
+PWC: TMP l 海关缴款书编号会保存在API的“【CP Invoice Ref.】”中 用它和TMP【海关缴款书编号】关联，然后同步【Titan PI No.】 l 如果Titan PI 和海关VAT是1-N，海关缴款书编号会写在API的“Description”中，用分号分隔（中英文逗号都可能）。 Description 有多个缴款书号是，可能有缴款书已经在TMP中存在AND 有Titan PI No，但是在接口中又传了一个新的Titan PI No. 这种就要报错。
+
+=== FR-04 | Item: Customs VAT & duty invoices | System: TMP | 第一期: N
+DESC: As an ST user, I need TMP to auto clear Titan PI No. based on the CP. invoice Ref. and PI description, untick customs VAT if already ticked (as in reality customs VAT does not have red invoice), upon receive Titan CN on the same, so that I don't need to manually clear the same in TMP.
+PWC: 背景 海关 VAT/关税发票在 Titan PI 审批后，已经通过 API 把 Titan PI 号回写到了 TMP 的对应发票记录上（FR-03）。后来如果发生冲销——比如海关缴款书开错、退税、金额调整——Titan PI 会生成一张红字 CN（Credit Note）。 CN 一旦同步过来，原来写在 TMP 上的那个 Titan PI 号就“失效”了（原蓝票被冲掉），如果不清理，TMP 里会残留一个指向已冲销发票的 PI 号，导致账税口径不一致。 FR-04 就是要求这个清理动作自动化 TMP [表] 步骤 | 动作 | 依据 [表] 1 | 接收 Titan PI 同步过来的红字 CN 报文（含 Underlying PI No.、CP Invoice Ref.、Description、账期） | FR-02 [表] 2 | 按 CP Invoice Ref. + PI Description 匹配找到 TMP 里的原发票记录（1-1 场景匹配 Ref 字段；1-N 场景 Description 里是分号分隔的多个缴款书号） | FR-04 + 流程图 [表] 3 | 清空（clear）该记录上的 Titan PI No. —— 原蓝票在 TMP 侧视为已冲销、不再关联 Titan 发票号 | FR-04 核心 [表] 4 | 如果原海关 VAT 发票之前已做过进项勾选（Customs VAT ticked），自动取消勾选（untick），避免错误抵扣 | FR-05（配合动作） [表] 5 | CN 自身作为一条红字记录写入 TMP 输入发票（带 Underlying PI No. 关联原票），状态回执 Titan PI Success/Fail | FR-02 + FR-29 问题 l 收到的海关CN本身如何处理？只作为数据源使用，还是要添加到TMP（TMP中并没有负数的Custom VAT或Duty）。 建议海关缴款书下新增一个“CN Tab”来保存，专这样从TMP角度查看数据比较方便
+
+=== FR-05 | Item: Customs VAT | System: TMP | 第一期: N
+DESC: As a mailroom user, I need TMP to auto untick Customs VAT upon receive Titan CN if previously ticked, so to avoid wrong input VAT ticking.
+PWC: FR-04的后续步骤 CN对应的Custom VAT（海关增值税发票）如果已认证，则自动取消认证 问题 Custom Duty（海关关税发票）是不能税局认证的，如果已经手动设置了【认证期间】，在收到CN后是否也要清空【认证期间】
+
+=== FR-06 | Item: Customs VAT & duty invoices | System: TMP | 第一期: N
+DESC: As an ST user, I need TMP to inform me if Titan PI sends another PI No. on the same Customs VAT & Duty invoice which is already synchronized with Titan PI No. to avoid duplicated booking & payment.
+PWC: (空)
+
+=== FR-07 | Item: General VAT invoice | System: TMP | 第一期: Y
+DESC: General VAT invoice with tax amount should be interfaced to Titan PI in the API as below, due to General VAT tax is irrecoverable and Oracle does not support 'IRR' tax code. If the input VAT is not deductible (i.e. 6% Service General VAT), the tax status should be interfaced to Titan PI as ‘Outside scope’ & tax code ‘CN099PI’. If the tax is exempted (e.g. Gold), the tax status should be interfaced to Titan PI as ‘Applicable’ & tax code ‘CN205PI’. Tax amount to be consolidated into net amount and pass to Titan net amount, Tax amount pass to Titan as 0. Notes: General VAT whose VAT is irrecoverable, there will be a break between TMP and Oracle in tax amount reconciliation, but total invoice amount reconciliation is balanced. PRD. Sample: Service General VAT with 6% tax rate: Tax Status-Outside Scope, Tax Code: CN099PI Cargo General VAT with tax exempted: Tax Status-Applicable, Tax Code:CN205PI
+PWC: 背景 · 专票：进项税可抵扣 → 正常传净额 + 税额，Titan/Oracle 按可抵扣税金入账（CN301PI 13%、CN302PI 9%、CN203PI 6%、CN204PI 3%）。 · 普票：进项税不能抵扣，本质上是成本的一部分。理想做法是打 “不可收回（IRR）” 标识，但 Oracle 没有这个税码，所以只能换个方式表达：把税额“藏”进净额里，税额传 0，再用税码组合告诉 Oracle 这笔税的真实税务属性 TMP 1️⃣ 识别普票并按规则映射税状态 + 税码（第 7 节税码映射表） [表] 普票情形 | Tax Status（税状态） | Tax Code（税码） | 典型场景 [表] 税不可抵扣（未免税） | Outside Scope | CN099PI（CN - VAT - Outside Scope of Tax） | 6% 服务费普票 [表] 税免税（Exempted-免税） | Applicable | CN205PI（CN: Domestic Purchase – Zero Rate for goods under VAT exemption） | 黄金等免税货物普票 （PRD 样例截图：服务 6% 普票 → Outside Scope + CN099PI，image015；货物免税普票 → Applicable + CN205PI） 2️⃣ 金额变形 —— API 报文核心规则 普票免税、不可抵扣，都要金额变形。 [表] 传给 Titan PI 的字段 | 处理方式 [表] 净额（Net Amount） | 净额 + 税额合并后传入（即传“价税合计”） [表] 税额（Tax Amount） | 传 0 [表] 价税合计（VAT Inclusive Amount） | 不变，仍为发票总额 例：一张 6% 服务普票，净额 100 + 税额 6 → 传 Titan：净额 106、税额 0、税码 CN099PI。 3️⃣ 接受并知悉对账影响（文档 Notes 明确） · 税额并入了净额 → TMP 与 Oracle 在“税额”维度对账会有差异（break）——TMP 记录真实税额 6，Oracle 税额为 0； · 但发票总额（价税合计）对账是平的，因为总数没变。 · TMP 本地仍保留真实税额数据，用于内部记录和税务台账。 要在服务类发票的操作栏新增按钮：book titan 对第一期来说，这里指的也是service 发票。第一期只做service 发票，不做任何cargo 发票。 Bank invoice现在有分摊功能了，需要回传分摊数据（但只回传Titan source的分摊） Non-bank invoice都是without attribution, 不用回传分摊数据
+
+=== FR-08 | Item: IC VAT invoice | System: TMP, Titan PI CCEP-194525 | 第一期: N
+DESC: Previously IC VAT invoice will not be extracted to Titan PI feed, in API, IC invoice should also be covered since it is not necessary to be triggered by SI to follow the internal invoicing approving process. If CP is also China GC, mark internal invoice as 'Yes'.
+PWC: FR-08/09/10 背景 Trafigura 中国内部两个集团公司之间买卖货物（GC A 卖给 GC B，都是中国 GC）： · GC A（卖方）：在金税开销项专票 → TMP Output VAT → Titan 里记 SI（销售发票） · GC B（买方）：收到这张进项专票 → TMP Input VAT → Titan 里记 PI（采购发票） 这是同一张金税发票的两面，两边系统必须互相引用，否则内部交易对不上。 TMP l 以前 IC 进项 VAT 发票不进 Titan PI 接口feed（因为内部票走 SI 触发的内部开票审批流程入账）。改用 API 后，IC 发票也要包含进来——因为不再需要由 SI 触发、走那套内部开票审批流程。判定规则：如果交易对手（CP）也是中国 GC，就把该发票打上 Internal Invoice = 'Yes' 标志 进项发票总览增加字段【Internal Invoice】.如果GC和CP都是Trafigura GC则为Y，否则为N。 对应 API中的【Internal Invoice】
+
+=== FR-09 | Item: IC VAT invoice | System: TMP, Titan PI | 第一期: N
+DESC: Internal purchase VAT invoice will only be interfaced to Titan PI after internal Titan SI issued successfully, so that TMP will interface Titan SI number to Titan PI as CP invoice reference for IC invoices.
+PWC: TMP IC VAT只有当销方发票的Titan SI status = ‘issued’时，才能把进项端数据传给Titan PI 。同时，要在【Titan SI No.】填上sales vat的 T【Titan SI No】 （通过进项发票的发票号码到销方发票中查，IC vat是同一张发票）
+
+=== FR-10 | Item: IC VAT invoice | System: Titan PI, Titan SI | 第一期: N
+DESC: After internal PI booked, PI No. should be sent to Titan SI to book the internal invoice number.
+PWC: TMP NA Titan SI/ Titan PI Titan SI会通过TMP回传的【Titan SI No】获取对应的Titan PI No，然后天道Titan SI中。这样Titan PI, Titan SI中都有了对方的信息，建立了双向联系。
+
+=== FR-11 | Item: Service VAT attribution | System: WDMS, TMP, Titan PI CCEP-192145 | 第一期: N Bank invoice分摊相关的要做
+DESC: TMP to synchronize RM service cost group from WDMS and support user to do service VAT attribution in TMP by uploading attribution lines, so that TMP can interface the same to Titan PI at day end batch job. For invoices with attribution, the invoice will get auto attributed and approved in Titan PI.
+PWC: FR-11/12背景 service进项 VAT和cargo vat一样需要分摊。但服务票有个特点：不是每张票在 TMP 侧都有分摊信息。于是按“TMP 侧有无分摊”分成两条路径：FR-10 和 FR-11 TMP l RM service发票，TMP 要从 WDMS 同步 service cost group； l TMP 支持用户上传分摊行（attribution lines），在 TMP 完成服务 VAT 分摊； l 带分摊的发票在日终批量（day end batch）传给 Titan PI； l 因为分摊信息齐全，Titan PI 收到后自动分摊、自动审批，无需人工干预 问题 l 目前wdms数据源没有“service cost group”字段，这个字段和分摊操作有什么关系？如果有，API中目前也没对应字段，如果同步给Titan PI？ l Wdms同步“service cost group” 只针对service 发票RM业务线的吗？如果是， l 回传分摊API中，Functional line（业务线）是必传的，但目前service发票的业务类型都是N/A，如何设置service 发票的业务类型？ § 不能通过商品名称区分，因为service 发票的商品名称可能都是“利息”，分不出是哪个业务线的。 § 对可分摊的non-bank invoice：分摊时把合同号的business line作为发票的business line § 对不可分摊的 service vat：操作【确认记账】的同时选择一下business line § Bank invoice 分摊：交易号上没有business line，分摊时没有数据可以利用，如何处理？ l 分摊的时候选business line，必输 l 销项商品 - SRD商品英文名，非必填, 传给Titan时要传guid l 确认分摊时调用 book tian api l Uploading attribution lines 指的是分摊/手工分摊/上传excel吗？ l Bulk，Concs 业务线的service 发票是否要支持attribute（分摊）？ l 可分摊的service 发票进入现在的cargo分摊/待分摊？还是新建一个service 分摊 建议沿用现在的cargo 分摊，在“待分摊发票明细”中增加【Cargo/ Service】来标记下即可
+
+=== FR-12 | Item: Service VAT without attribution | System: TMP, Titan PI CCEP-192145 | 第一期: N
+DESC: For service VAT without attribution, only those confirmed to be booked by user will be interfaced to Titan PI as Incomplete status and then user will do further attribution and approval in Titan PI. The information from TMP should not allow user modification so to make sure it's the same from TMP.
+PWC: TMP l TMP“服务类发票模块”增加【确认记账】功能，由用户手动设置。【确认记账】设置为Y的service 发票才需要传给Titan 问题 此时回传给Titan的数据就是票面数据，而不是从分摊数据累加的
+
+=== FR-13 | Item: Status Transition | System: TMP, Titan PI | 第一期: Y
+DESC: The status of the VAT invoices sent to Titan PI will be updated with Titan PI No. and status. Sent->Approved or failed or cancelled. For failed ones, error message should be shown for user to check. TMP will add Titan PI number and Titan PI status for each VAT invoice. After sending the VAT invoice to Titan PI, the status will be 'sent', only final status is concerned, i.e. when Titan PI gets 'Approved' or 'external fail' or 'Cancelled', the same status will be flown to TMP, status in between is not necessary. For failed ones, the failed reason should also be presented for user to further check. For Cancelled ones, Titan PI No. in TMP should be shown as empty and taken as not sent to Titan PI and should be re-sent if other criteria met.
+PWC: 背景 发送后状态为 'Sent'；只关心终态——Titan PI 侧变成 'Approved' / 'External Fail' / 'Cancelled' 时回传 TMP，中间状态不需要传。失败的要展示失败原因；Cancelled 的要把 TMP 里的 Titan PI 号清空，视为未发送过，满足条件后TMP可以重发数据给Titan PI TMP l 进项发票总览增加栏位【Titan PI No】，【Titan PI Status】,【Titan Message】 l 如果【Titan PI Status】 = cancelled，清空【Titan PI Status】、【Titan PI No】、【Titan Message】 问题 l 重新调用titan book api判定条件是什么？ 【Titan PI No】= 空
+
+=== FR-14 | Item: Failed PI | System: TMP | 第一期: Y
+DESC: As a TMP user who confirm the Input VAT to be booked in Titan PI, I need to be notified for the 'external fail' Titan PI timely with failure reason, so that I can take necessary actions timely and clear about the gap between TMP and Titan/Oracle.
+PWC: TMP l 通过API同步【Titan PI Status】,【Titan Message】。用户通过 这2个栏位进行业务判断
+
+=== FR-15 | Item: Accounting Period | System: TMP, Oracle | 第一期: Y
+DESC: As an Accounting user, I require TMP to derive the VAT ticking month from the invoice Accounting Period in Oracle, so that Input VAT Invoices are deducted in the correct reporting period, avoiding timing discrepancies and ensuring compliance with China accounting and tax regulations. Note: Input VAT Confirmation A mandatory tax process in China whereby a company confirms eligible VAT invoices on the State Tax Administration platform before claiming Input VAT credits. The confirmation must be performed in the correct tax period which is the same in GAI/Oracle. Therefore, TMP requires the Accounting Period determined in Titan PI to decide in which month the VAT invoice should be included for deduction.
+PWC: TMP l 针对service 发票，【用户确认期间】栏位要用api返回的【Account Period】 Account Period 是通过QV 生成新的数据源给到TMP，而不是接口。新数据源包括 l 发票号 l Account period
+
+=== FR-16 | Item: Input VAT Confirmation | System: TMP | 第一期: Y
+DESC: TMP should block user from unticking (取消认证) input VAT if Titan PI No. is not empty & status is 'Approved'.
+PWC: (空)
+
+=== FR-17 | Item: Input VAT Confirmation | System: TMP | 第一期: Y
+DESC: As an Accounting user, I require TMP to send a month-end and M+1 exception report of VAT invoices that have been accounted for in the financial system (Titan PI No. not empty and not Credit Noted) but are not yet VAT-confirmed, so that unconfirmed input VAT invoices can be followed up promptly, minimizing the risk of missed VAT deductions and supporting tax compliance.
+PWC: (空)
+
+=== FR-18 | Item: Cargo Doc. L/C | System: TMP, Titan PI | 第一期: N
+DESC: In cargo invoice attribution screen add a checkbox 'Cargo Doc LC'. If ticked, TMP will default LC amount=invoice net amount, LC Tax Amount=invoice tax amount, and allow user modification. The same will be interfaced to Titan PI. If PI amount fully covered by LC amount, 'DO NOT Pay' will be ticked by Titan PI automatically. Otherwise only the amount not covered by LC will be allowed to create PO.
+PWC: 背景 L/C = Letter of Credit（信用证）。大宗贸易中，货物货款经常通过信用证方式支付：银行按信用证条款付款，不走常规的应付付款流程。 问题在于：这张货物的进项 VAT/商业发票传到 Titan PI 后，Titan 默认会把它当普通应付发票走“建 PO → 付款”流程。如果货款其实已经由信用证覆盖，Titan 再建 PO 付款就会重复支付。所以： · 票面要标记“这是信用证项下的发票”，并告诉 Titan LC 覆盖了多少金额； · LC 覆盖的部分 → Titan 自动勾 'DO NOT Pay'（不付款）； · LC 没覆盖的部分（比如 LC 金额小于发票金额）→ 只有差额才允许建 PO 走正常付款 TMP [表] # | 动作 | 说明 [表] 1 | 分摊屏新增勾选框 | cargo发票分摊（cargo invoice attribution screen）增加【Cargo Doc LC】checkbox [表] 2 | 勾选后默认值逻辑 | 勾选时自动带出：LC Amount = 发票净额、LC Tax Amount = 发票税额 [表] 3 | 允许修改 | 两个 LC 字段用户可编辑（覆盖金额不足全额的场景，如 LC 只覆盖部分货款） [表] 4 | API 报文新增字段 | LC Amount、LC Tax Amount（以及 LC 标志）随 API-① 传给 Titan PI——6.1 节标注的新增报文字段 [表] 5 | 发票类型联动 | 勾选后发票类型按 CARGO DOC LC 传递（对应 6.1 报文 Invoice Type 选项） 问题 LC Amount / Tax Amount 是针对分摊的，还是票面的？
+
+=== FR-19 | Item: Bulk invoice weight basis | System: TMP, Titan PI | 第一期: N
+DESC: In cargo invoice attribution screen, add field 'invoice weight basis' to record Bulk VAT invoice weight basis and pass the same to Titan PI, Titan PI needs to use the same to do Qty validation, i.e. if VAT invoice weight basis is Wet, use assignment Wet weight to validate invoiced weight, else use assignment Dry weight to do the validation. The remaining Qty calculation should be on the same invoice weight basis.
+PWC: 背景 大宗散货（RM/Bulk 的矿石、精矿等）的重量有两个口径： · Wet weight（湿重）：含水状态的自然重量； · Dry weight（干重）：扣除水分后的重量。 同一批货两个口径数值差异很大，而增值税发票上开的数量可能按任一基准开。Titan PI 收到发票后要校验“这张票开的数量有没有超出 assignment 剩余可开票量”——如果发票按湿张开，却拿干重去校验，必然误报超量（或漏报）。所以必须把这张发票用的重量基准显式传给 Titan，校验和剩余量计算都用同一基准： l 发票 weight basis = Wet → 用 assignment 的 Wet weight 校验开票数量 l 发票 weight basis = Dry → 用 assignment 的 Dry weight 校验 TMP [表] # | 动作 | 说明 [表] 1 | 分摊新增字段 | 分摊操作维度 Bulk Cargo vat分摊增加【Invoice Weight Basis】字段（Wet / Dry）， [表] 2 | API 报文新增字段 | weight basis 随 API-①（header 或 line 级，待 Titan API 设计定）传给 Titan PI [表] 3 | 数量语义一致性 | 报文中的 Quantity（6.1 节 line 字段：按发票+Quota 汇总的分摊数量）必须与声明的基准匹配——票上是什么基准的量就传什么量 问题： l 【Invoice Weight Basis】字段只针对Bulk吗
+
+=== FR-20 | Item: Bulk invoice weight basis | System: Titan PI, Business Object | 第一期: N
+DESC: Titan PI should pass the Bulk invoice weight basis to BO, so that BO can show the correct invoiced weight and remaining to be invoiced weight in Bulk Settlement Note.
+PWC: NA
+
+=== FR-21 | Item: Cargo Invoice filter | System: TMP | 第一期: N
+DESC: Cargo invoice: Same as current Excel uploader FSD -TMP Cargo Input VAT invoice attribution feed to be uploaded to Titan PI - China local automation - Confluence with only difference to include IC invoice as well. IC invoice must be interfaced after Titan SI booked successfully so that internal invoice number can be updated to Titan SI when Titan PI approved.
+PWC: TMP l Cargo invoice 分摊信息回传Titan API的规则copy 原来excel上传的 l Service invoice也要上传 问题 IC invoice 发送Titan PI的条件：销项发票中【Titan SI No】有值 AND 【Titan SI Status】 = “Issued” —— Titan SI booked successfully
+
+=== FR-22 | Item: Service Invoice filter | System: TMP | 第一期: Y
+DESC: Functional Line should be mandatory for invoices user confirmed to be booked IC invoice must be interfaced after Titan SI booked successfully so that internal invoice number can be updated to Titan SI when Titan PI approved. Bank invoices: Attributed to Titan charges Trx non-Bank invoice: Functional Line <>'Energy' User confirmed to be booked: Yes
+PWC: TMP Service 发票传Titan PI条件 [表] # | 条件 | 逻辑 [表] 1 | 针对不可分摊service 发票， | 【确认记账】= Yes [表] 2 | Functional Line 必填 | 确认记账的票必须已有 Functional Line（业务线 RM/Bulk/Concs.）——没有 FL 就无法在 Titan 落账 [表] 3 | Non bank invoice: FL ≠ 'Energy' | Energy 业务线不在本项目 scope（第 3 节 Out of Scope：Business Line: Energy），直接排除 [表] 4 | Bank invoice：已分摊 | 银行票不走 FL 筛选，前提是 Treasury Ops 已在 TMP 把它分摊到 Titan Charges（FR-26/27 的前置） [表] 5 | IC 票：sales invoice 有Titan SI No， titan status = issued | 与 FR-18 相同的闸门（按金税票号查销项侧 SI 号），服务 IC 票同样适用 问题： Service发票现在是业务线（functional line就是业务线）都是N/A，应该如何设置？和cargo vat一样在归集后设置？ n 非分摊vat发票可以在“确认记账”（FR11）时手动选择 服务类发票 模块 l 【业务线】改成下拉框选择，让用户手动选择业务线。调用api时必填 l 增加【SRD英文名称】，销项商品数据中的【SRD商品英文名】。调用api时非必填api传值时传guid
+
+=== FR-23 | Item: Estimate assignment Attribution | System: QV | 第一期: N
+DESC: China input VAT and Element VAT QV reports need to add field assignment state sourced from Logistics for purchase assignments, so that TMP can consume it to build validation logic upon attribution.
+PWC: QV QV数据源增加【Assignment State】栏位，值：'Estimate' / ‘Actualized’ TMP VAT 发票分摊到“暂估”assignment 是有风险的：暂估数后面可能调整，导致发票分摊与实际业务对不上。所以要警告用户（FR-21）
+
+=== FR-24 | Item: Estimate assignment Attribution | System: TMP | 第一期: N
+DESC: When user attribute VAT invoice to un-actualized assignments whose assignment state='Estimate', there should be warning msg pop up to warn the user to check whether it's correct and allow to save when user confirm.
+PWC: TMP l 分摊时如果使用的assignment在中间表【assignment state】='Estimate'，就要弹出软件提示，用户确认后继续执行分摊。 进项中间表增加字段【assignment state】，否则判断时还要到数据源获取
+
+=== FR-25 | Item: Estimate assignment Attribution | System: Titan PI | 第一期: N
+DESC: For the scenario where CP issued Traf. VAT ahead of assignment actualized, currently Titan PI bulk uploader does not support, user need to manually book in Titan PI. This validation should be removed in API.
+PWC: NA
+
+=== FR-26 | Item: Negative Attribution | System: Titan PI CCEP-188836 | 第一期: N
+DESC: Titan PI API must support negative quota/assignment attribution (overall invoice amount is positive), so that Ops does not need to book such scenario manually in Titan PI and complete the attribution in TMP.
+PWC: NA
+
+=== FR-27 | Item: Quantity FIFO Attribution | System: Titan PI CCEP-189708 | 第一期: N
+DESC: Now in PI bulk uploader, Qty auto attribution is based on assignment quantity ratio, in Titan API, it should be based on FIFO logic, i.e. the system should allocate the Invoice Quantity in the FIFO Logic based on the Assignment Quantity instead of Assignment Quantity Prorate and if any additional Quantity is left should be added to the last assignment.
+PWC: NA
+
+=== FR-28 | Item: Final Invoice Accrual clearance | System: Titan PI | 第一期: N
+DESC: The invoice amount auto attribution from Quota (RM & Bulk FLs and Alumina under Concs. FL) to Assignment (FIFO to actualized assignments) will remain unchanged as per the Excel bulk uploader Section 8.4 on FSD - Purchase Invoice and Credit Notes uploader for China VAT Invoices - CC&E - Confluence, with below enhancement is needed to clear previous provisional over-invoicing. During provisional quota to assignments allocation, any residual invoice amount will be temporarily allocated to the last actualized assignment. Once the Quota status is set to 'Final', Titan PI shall redistribute such residual amounts across all assignments according to the final quota allocation, eliminating any over-invoicing and clearing all remaining accrual balances.
+PWC: NA
+
+=== FR-29 | Item: Bank VAT Invoice | System: TMP, Titan PI | 第一期: Y
+DESC: Bank invoice attributed to Titan charges transactions by Treasury Ops in TMP will be auto interfaced to Titan PI at daily batch job. For Titan Charges CCF type other than 'Mm Interest' & 'Other Mm Fee', the Titan PI will be incomplete status and Acct. need to do further attribution & Approval in Titan PI.
+PWC: FR-29/ 30 背景 业务背景 银行手续费、利息等也要开增值税发票（银行代扣代收，进项票）。这类票的特点： · 没有货物、没有 quota/assignment——成本对象是银行费用本身，在 Titan 里对应 Charges 交易（资金/费用交易，来自 Titan CS 现金管理） TMP l 支持bank invoice 分摊，并把结果通过API传给Titan API 问题 l 调用API的时机：每天回传“数据已确认”的bank invoice 分摊？还是等确认分摊后，统一回传? n 确认分摊的时候调用api，批量操作 l Bank invoice 有“重开期间”的功能，一旦重开期间用户重新分摊后，重新调用API后，Titan PI是否能支持？比如第一次回传时，assignment已经在Titan PI中执行了后续流程，此时TMP“重开期间”，重新分摊assignment后再次回传，Titan PI如何反应？ n 这种场景比较特殊，不支持系统自动处理，走data fix 。 用户需要先到Titan PI 生成一个CN，然后TMP要把发票上的Titan PI 清空。
+
+=== FR-30 | Item: Bank VAT Invoice | System: TMP, Titan PI | 第一期: Y
+DESC: For bank invoices attributed to Titan Charges CCF types of 'Mm Interest' & 'Other Mm Fee', TMP will interface to Titan PI with below attribution details, so Acct. does not need to do further operation in Titan PI and the PI will get auto attributed and approved. [表] CCF Type | Cost code | MMI ID | Deal ID [表] Mm Interest | C32P | Source ID from the attributed Titan CS Trx. | N/A, booked as pooled PI [表] Other Mm Fee | C31 | - | Mapped per GC as below: GC Deal ID TIC 1292941 TTH 1303397 TEZ 1303401 Lykos 1303398 TTY 1339400
+PWC: TMP l 回传bank invoice 分摊数据时，要有cost code 问题 l MMI ID：API中未定义。是否就是交易号的source：Titan、Oracle。 l Deale ID：API中未定义 第一期也要支持MM interest MM interest作为without attributes 情况 ——bulkServiceInvLineReqItemData传空数组
+
+=== FR-31 | Item: China International Invoice | System: TMP, Titan PI | 第一期: N
+DESC: China international invoices, both PI & CN, should be interfaced to TMP input invoice at scheduled intervals. Invoice header: Titan PI No., invoice CP. Ref., Description, GC, CP, invoice date, invoice owner, account period, Cargo/Service invoice type, functional line, business line, commodity, Invoice Currency, Invoice net amount, Invoice Tax Amount, Invoice gross amount, underlying PI No. for Credit Note Invoice Line: cost group, line net amount, line tax amount, line gross amount Criteria: Status='Approved', TMP status <>'Success' Note: Customs VAT & duty invoice should be covered in the same since they are booked as China international invoices.
+PWC: TMP l 这里说的“China international invoices”包含：commercial invoice、海关vat、海关关税。TMP只API add commercial invoice，海关票只更新字段（如 ：Titan PI No） API中会把海关缴款书编号存放在【CP Invoice Ref.】或【Description】栏位
+
+=== FR-32 | Item: China International Invoice | System: TMP | 第一期: N
+DESC: TMP should handle China international invoices differently per below: Cost Code=C26, net amount=0, tax amount>0 → should be mapped with Customs VAT Cost Code=C26, net amount>0, tax amount=0 → should be mapped with Customs duty payment receipt Cost Code=C82, net amount=0, tax amount>0 → This is WHT payment receipt invoices which will synchronized from TMP to Titan PI. So when receives it in China international invoices from Titan PI, TMP should not duplicate it under commercial invoices. Others will be categorized as Commercial invoices in TMP Input invoices. Further sub-classification will be discussed later per Acct. further requirement.
+PWC: (空)
+
+=== FR-33 | Item: China International Invoice | System: TMP | 第一期: N
+DESC: The underlying China International invoice should be updated to 'fully reversed' (已全额红冲) or 'partially reversed' （已部分红冲）based on the Credit Note amount in TMP.
+PWC: (空)
+
+=== FR-34 | Item: China International Invoice | System: TMP, Titan PI | 第一期: N
+DESC: TMP should response back to Titan PI on the synchronization status of China international invoices on near real-time basis.
+PWC: TMP l TMP要返回同步结果，Titan PI要按结果决定是否重新推送。 问题 API中没涉及return parameter的设计
+
+=== FR-35 | Item: Partial Credit Note | System: TMP, Titan PI | 第一期: Y
+DESC: In Cargo PI excel bulk uploader, only fully reversal-full credit note is supported, but in API, partial credit note should also be supported, so that user does not need to do manual credit note booking when receive partial CN from counterparty.
+PWC: TMP l 进项端的红字通知单申请，支持部分红冲申请。对第一期来说，部分红冲的service发票也会流转到“服务类发票模块” l 支持部分红冲的CN流转到待分摊页面，第一期不支持 l 回传Titan PI时CN 发票的金额要传负数
+
+=== FR-36 | Item: Invoice Owner | System: TMP, Titan PI | 第一期: Y
+DESC: For Cargo VAT invoices, invoice owner will remain the logic to map from Logistics.Primary assignment owner based on attribution, For non-bank Service VAT, TMP will pass invoice owner as the user ‘s name who confirms booking of the service VAT in Titan PI. For bank service VAT, TMP will default Amy Zhou as invoice owner and pass to Titan PI. For WHT invoices, TMP will default Amy Zhou as invoice owner and pass to Titan PI.
+PWC: TMP l API中的Invoice Owner就是发票在Titans PI中的责任人 n Cargo VAT：TMP中执行分摊的user n Non-bank VAT：调用“book titan api”的user 问题 l Cargo Invoice 如果是自动分摊的，Invoice Owner 怎么取？ l Bank invoice：TBC ? bank invoice也有手动分摊，自动分摊，怎么取？ n Bank invoice 默认全部是 amy zhou
+
+=== FR-37 | Item: Created By | System: Titan PI | 第一期: N
+DESC: For invoices created by TMP API, the 'Created By' should clearly indicate that it's auto created from TMP, so that user can easily differentiate it from manual-booked PIs.
+PWC: NA
+
+=== FR-38 | Item: WHT invoice | System: TMP, Titan PI | 第一期: Y
+DESC: After WHT payment to local tax bureau, the WHT payment receipt will be auto synchronized into TMP, when Acct. user confirms it to be booked into Titan, TMP will call Titan PI API to book the same in Titan PI with header information only with captured status and Acct. user will do further attribution and approval in Titan. PRD. Sample:
+PWC: (空)
+

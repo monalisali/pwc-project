@@ -1,0 +1,814 @@
+{
+ "A": [
+  {
+   "id": "FR-01",
+   "item": "Customs VAT & duty invoices",
+   "desc": "As an ST user, I need Titan PI to auto synchronize below\n\ninformation of China Customs VAT & Duty invoices (booked as China\n\nInternational invoices) to TMP on daily basis, so that I don't need to\n\nmanually link Titan PI No. with Customs payment receipt in TMP.\n\nInformation required: Titan PI No., CP Invoice Ref.,\n\nAccount period, Description\n\nCriteria: Status='Approved', TMP status <>'Success'\n\n(meaning not booked in TMP yet)\n\nPRD. sample:\n\nCustoms VAT:\n\n\n\n\n\nCustoms Duty:",
+   "system": "Titan PI",
+   "last": "N",
+   "phase1": "N"
+  },
+  {
+   "id": "FR-02",
+   "item": "Customs VAT & duty invoices",
+   "desc": "As an ST user, I need Titan PI to auto synchronize below\n\ninformation of China Customs VAT & Duty invoices Credit Note to TMP on\n\ndaily basis when CN get approved, so that I don't need to manually unlink\n\nTitan PI No. with Customs payment receipt in TMP.\n\nInformation required: Titan PI No., CP Invoice Ref., Account\n\nperiod, Description, Underlying PI No.\n\nCriteria: Status='Approved', TMP status <>'Success'\n\n(meaning not booked in TMP yet)",
+   "system": "Titan PI",
+   "last": "N",
+   "phase1": "N"
+  },
+  {
+   "id": "FR-03",
+   "item": "Customs VAT & duty invoices",
+   "desc": "As an ST user, I need TMP to auto sync. Titan PI No.\n\nbased on the CP. invoice Ref. and PI description upon receive Titan PI message of the same, so that I don't need\n\nto manually input the same in TMP.\n\nNotes: For Titan PI-Customs Payment receipt 1-1 case, ST\n\nwill input customs VAT or duty payment receipt No. in CP Invoice Ref, for 1-N\n\ncase, ST will input in Description field with multiple customs VAT or\n\nduty payment receipt No. with semicolon separated.",
+   "system": "TMP",
+   "last": "N",
+   "phase1": "N"
+  },
+  {
+   "id": "FR-05",
+   "item": "Customs VAT",
+   "desc": "As a mailroom user, I need TMP to auto\n\nuntick Customs VAT upon receive Titan CN if\n\npreviously ticked, so to avoid wrong input VAT ticking.",
+   "system": "TMP",
+   "last": "N",
+   "phase1": "N"
+  },
+  {
+   "id": "FR-06",
+   "item": "Customs VAT & duty invoices",
+   "desc": "As an ST user, I need TMP to inform me if\n\nTitan PI sends another PI No. on the same Customs VAT & Duty invoice\n\nwhich is already synchronized with Titan PI No. to avoid duplicated booking\n\n& payment.",
+   "system": "TMP",
+   "last": "N",
+   "phase1": "N"
+  },
+  {
+   "id": "FR-08",
+   "item": "IC VAT invoice",
+   "desc": "Previously IC VAT invoice will not be extracted to Titan PI feed, in API, IC invoice should also be covered since it is not necessary\n\nto be triggered by SI to follow the internal invoicing\n\napproving process.\n\nIf CP is also China GC, mark internal invoice as 'Yes'.",
+   "system": "TMP,\n\nTitan PI\n\nCCEP-194525",
+   "last": "N",
+   "phase1": "N"
+  },
+  {
+   "id": "FR-09",
+   "item": "IC VAT invoice",
+   "desc": "Internal purchase VAT invoice\n\nwill only be interfaced to Titan PI after internal Titan SI issued successfully, so that TMP will interface Titan SI\n\nnumber to Titan PI as CP invoice reference for IC invoices.",
+   "system": "TMP, Titan PI",
+   "last": "N",
+   "phase1": "N"
+  },
+  {
+   "id": "FR-10",
+   "item": "IC VAT invoice",
+   "desc": "After internal PI booked, PI No.\n\nshould be sent to Titan SI to book the internal invoice number.",
+   "system": "Titan PI, Titan SI",
+   "last": "N",
+   "phase1": "N"
+  },
+  {
+   "id": "FR-11",
+   "item": "Service VAT attribution",
+   "desc": "TMP to synchronize RM service cost group from WDMS and\n\nsupport user to do service VAT attribution in TMP by\n\nuploading attribution lines, so that TMP can interface the same to Titan PI\n\nat day end batch job. For invoices with attribution, the invoice will get\n\nauto attributed and approved in Titan PI.",
+   "system": "WDMS,\n\nTMP,\n\nTitan PI\n\nCCEP-192145",
+   "last": "N Bank invoice分摊相关的要做",
+   "phase1": "N\n\nBank invoice分摊相关的要做"
+  },
+  {
+   "id": "FR-12",
+   "item": "Service VAT without attribution",
+   "desc": "For service VAT without attribution, only those confirmed\n\nto be booked by user will be interfaced to Titan PI as Incomplete status and\n\nthen user will do further attribution and approval in Titan PI. The\n\ninformation from TMP should not allow user modification so to make sure it's\n\nthe same from TMP.",
+   "system": "TMP,\n\nTitan PI\n\nCCEP-192145",
+   "last": "Y",
+   "phase1": "Y"
+  },
+  {
+   "id": "FR-13",
+   "item": "Status Transition",
+   "desc": "The status of the VAT invoices sent to Titan PI will be\n\nupdated with Titan PI No. and status. Sent->Approved or failed or\n\ncancelled. For failed ones, error message should be\n\nshown for user to check.\n\nTMP will add Titan PI number and\n\nTitan PI status for each VAT invoice. After sending the VAT invoice to Titan\n\nPI, the status will be 'sent', only final status is concerned, i.e. when\n\nTitan PI gets 'Approved' or 'external fail' or 'Cancelled', the same status\n\nwill be flown to TMP, status in between is not necessary. For failed ones,\n\nthe failed reason should also be presented for user\n\nto further check. For Cancelled ones, Titan PI No. in TMP should be shown as\n\nempty and taken as not sent to Titan PI and should be re-sent if other\n\ncriteria met.",
+   "system": "TMP,\n\nTitan PI",
+   "last": "Y",
+   "phase1": "Y"
+  },
+  {
+   "id": "FR-14",
+   "item": "Failed PI",
+   "desc": "As a TMP user who confirm the\n\nInput VAT to be booked in Titan PI, I need to be notified for the 'external fail' Titan PI timely with failure\n\nreason, so that I can take necessary actions timely and clear about the gap\n\nbetween TMP and Titan/Oracle.",
+   "system": "TMP",
+   "last": "Y",
+   "phase1": "Y"
+  },
+  {
+   "id": "FR-15",
+   "item": "Accounting Period",
+   "desc": "As an Accounting user, I require TMP to derive the VAT\n\nticking month from the invoice Accounting Period in Oracle, so that Input VAT Invoices are\n\ndeducted in the correct reporting period, avoiding timing discrepancies and\n\nensuring compliance with China accounting and tax regulations.\n\nNote: Input VAT Confirmation\n\nA mandatory tax process in China whereby a company\n\nconfirms eligible VAT invoices on the State Tax Administration platform\n\nbefore claiming Input VAT credits. The confirmation must be performed in the\n\ncorrect tax period which is the same in GAI/Oracle. Therefore, TMP requires\n\nthe Accounting Period determined in Titan PI to\n\ndecide in which month the VAT invoice should be included for deduction.",
+   "system": "TMP,\n\nOracle",
+   "last": "Y",
+   "phase1": "Y"
+  },
+  {
+   "id": "FR-16",
+   "item": "Input VAT Confirmation",
+   "desc": "TMP should block user from unticking (取消认证) input VAT if Titan PI\n\nNo. is not empty & status is 'Approved'.",
+   "system": "TMP",
+   "last": "Y",
+   "phase1": "Y"
+  },
+  {
+   "id": "FR-20",
+   "item": "Bulk invoice weight basis",
+   "desc": "Titan PI should pass the Bulk invoice\n\nweight basis to BO, so that BO can show the correct invoiced weight and\n\nremaining to be invoiced weight in Bulk Settlement Note.",
+   "system": "Titan PI,\n\nBusiness Object",
+   "last": "N",
+   "phase1": "N"
+  },
+  {
+   "id": "FR-21",
+   "item": "Cargo Invoice filter",
+   "desc": "Cargo invoice: Same as current Excel uploader FSD\n\n-TMP Cargo Input VAT invoice attribution feed to be uploaded to Titan PI -\n\nChina local automation - Confluence with only difference to include IC\n\ninvoice as well.\n\nIC invoice must be interfaced\n\nafter Titan SI booked successfully so that internal\n\ninvoice number can be updated to Titan SI when Titan\n\nPI approved.",
+   "system": "TMP",
+   "last": "N",
+   "phase1": "N"
+  },
+  {
+   "id": "FR-23",
+   "item": "Estimate assignment Attribution",
+   "desc": "China input VAT and Element VAT QV reports need to add\n\nfield assignment state sourced from Logistics for purchase assignments, so\n\nthat TMP can consume it to build validation logic upon attribution.",
+   "system": "QV",
+   "last": "N",
+   "phase1": "N"
+  },
+  {
+   "id": "FR-24",
+   "item": "Estimate assignment Attribution",
+   "desc": "When user attribute VAT invoice to un-actualized\n\nassignments whose assignment state='Estimate', there should be warning msg\n\npop up to warn the user to check whether it's correct and allow to save when\n\nuser confirm.",
+   "system": "TMP",
+   "last": "N",
+   "phase1": "N"
+  },
+  {
+   "id": "FR-25",
+   "item": "Estimate assignment Attribution",
+   "desc": "For the scenario where CP issued Traf. VAT ahead of\n\nassignment actualized, currently Titan PI bulk uploader does not support, user need to manually book in Titan PI. This validation\n\nshould be removed in API.",
+   "system": "Titan PI",
+   "last": "N",
+   "phase1": "N"
+  },
+  {
+   "id": "FR-26",
+   "item": "Negative Attribution",
+   "desc": "Titan PI API must support negative\n\nquota/assignment attribution (overall invoice amount is positive), so that\n\nOps does not need to book such scenario manually in Titan PI and complete the\n\nattribution in TMP.",
+   "system": "Titan PI\n\nCCEP-188836",
+   "last": "N",
+   "phase1": "N"
+  },
+  {
+   "id": "FR-27",
+   "item": "Quantity FIFO Attribution",
+   "desc": "Now in PI bulk uploader, Qty auto attribution is based on\n\nassignment quantity ratio, in Titan API, it should be based on FIFO logic,\n\ni.e. the system should allocate the Invoice\n\nQuantity in the FIFO Logic based on the Assignment Quantity instead of\n\nAssignment Quantity Prorate and if any additional Quantity is left should be\n\nadded to the last assignment.",
+   "system": "Titan PI\n\nCCEP-189708",
+   "last": "N",
+   "phase1": "N"
+  },
+  {
+   "id": "FR-28",
+   "item": "Final Invoice Accrual clearance",
+   "desc": "The invoice amount auto attribution from Quota (RM & Bulk FLs and Alumina\n\nunder Concs. FL) to Assignment (FIFO to actualized assignments) will remain\n\nunchanged as per the Excel bulk uploader Section 8.4 on FSD\n\n- Purchase Invoice and Credit Notes uploader for China VAT Invoices -\n\nCC&E - Confluence, with below enhancement is needed to clear previous\n\nprovisional over-invoicing.\n\nDuring provisional quota to assignments allocation, any\n\nresidual invoice amount will be temporarily allocated to the last actualized\n\nassignment. Once the Quota status is set to 'Final', Titan PI shall\n\nredistribute such residual amounts across all assignments according to the\n\nfinal quota allocation, eliminating any over-invoicing and clearing all\n\nremaining accrual balances.",
+   "system": "Titan PI",
+   "last": "N",
+   "phase1": "N"
+  },
+  {
+   "id": "FR-29",
+   "item": "Bank VAT Invoice",
+   "desc": "Bank invoice attributed to Titan charges transactions by\n\nTreasury Ops in TMP will be auto interfaced to Titan PI at daily batch job.\n\nFor Titan Charges CCF type other than 'Mm Interest' & 'Other Mm Fee', the\n\nTitan PI will be incomplete status and Acct. need to do further attribution\n\n& Approval in Titan PI.",
+   "system": "TMP, Titan PI",
+   "last": "Y",
+   "phase1": "Y"
+  },
+  {
+   "id": "FR-31",
+   "item": "China International Invoice",
+   "desc": "China international invoices, both PI & CN, should be\n\ninterfaced to TMP input invoice at scheduled intervals.\n\nInvoice header: Titan PI No., invoice CP. Ref., Description, GC, CP, invoice\n\ndate, invoice owner, account period, Cargo/Service invoice type, functional\n\nline, business line, commodity, Invoice Currency, Invoice net\n\namount, Invoice Tax Amount, Invoice gross amount, underlying PI No. for\n\nCredit Note\n\nInvoice Line: cost group, line net amount, line tax\n\namount, line gross amount\n\nCriteria: Status='Approved', TMP status <>'Success'\n\nNote: Customs VAT & duty invoice should be covered in\n\nthe same since they are booked as China international invoices.",
+   "system": "TMP, Titan PI",
+   "last": "N",
+   "phase1": "N"
+  },
+  {
+   "id": "FR-32",
+   "item": "China International Invoice",
+   "desc": "TMP should handle China international invoices\n\ndifferently per below:\n\nCost Code=C26, net amount=0, tax amount>0 → should be mapped with Customs VAT\n\nCost Code=C26, net amount>0, tax amount=0 → should be mapped with Customs duty payment receipt\n\nCost Code=C82, net amount=0, tax amount>0 → This is WHT payment receipt invoices which will synchronized from\n\nTMP to Titan PI. So when receives it in China\n\ninternational invoices from Titan PI, TMP should not duplicate it under\n\ncommercial invoices.\n\nOthers will be categorized as Commercial invoices in TMP\n\nInput invoices. Further sub-classification will be discussed later per Acct.\n\nfurther requirement.",
+   "system": "TMP",
+   "last": "N",
+   "phase1": "N"
+  },
+  {
+   "id": "FR-33",
+   "item": "China International Invoice",
+   "desc": "The underlying China International invoice should be\n\nupdated to 'fully reversed' (已全额红冲) or 'partially reversed' （已部分红冲）based on the Credit Note amount in TMP.",
+   "system": "TMP",
+   "last": "N",
+   "phase1": "N"
+  },
+  {
+   "id": "FR-34",
+   "item": "China International Invoice",
+   "desc": "TMP should response back to Titan PI on the\n\nsynchronization status of China international invoices on near real-time\n\nbasis.",
+   "system": "TMP, Titan PI",
+   "last": "N",
+   "phase1": "N"
+  },
+  {
+   "id": "FR-35",
+   "item": "Partial Credit Note",
+   "desc": "In Cargo PI excel bulk uploader, only fully reversal-full\n\ncredit note is supported, but in API, partial credit\n\nnote should also be supported, so that user does not\n\nneed to do manual credit note booking when receive\n\npartial CN from counterparty.",
+   "system": "TMP, Titan PI",
+   "last": "Y",
+   "phase1": "Y"
+  },
+  {
+   "id": "FR-36",
+   "item": "Invoice Owner",
+   "desc": "For Cargo VAT invoices, invoice owner will remain the\n\nlogic to map from Logistics.Primary\n\nassignment owner based on attribution,\n\nFor non-bank Service VAT, TMP will pass invoice owner as\n\nthe user ‘s name who confirms booking of the service\n\nVAT in Titan PI.\n\nFor bank service VAT, TMP will default Amy Zhou as invoice owner and pass to Titan PI.\n\nFor WHT invoices, TMP will default Amy\n\nZhou as invoice owner and pass to Titan PI.",
+   "system": "TMP, Titan PI",
+   "last": "Y",
+   "phase1": "Y"
+  },
+  {
+   "id": "FR-37",
+   "item": "Created By",
+   "desc": "For invoices created by TMP API, the 'Created By' should clearly\n\nindicate that it's auto created from TMP, so that user can easily\n\ndifferentiate it from manual-booked PIs.",
+   "system": "Titan PI",
+   "last": "Y",
+   "phase1": "Y"
+  }
+ ],
+ "B": [
+  {
+   "id": "FR-01",
+   "item": "Customs VAT & duty invoices",
+   "desc": "As an ST user, I need Titan PI to auto synchronize below information of China Customs VAT & Duty invoices (booked as China International invoices) to TMP on daily basis, so that I don't need to manually link Titan PI No. with Customs payment receipt in TMP.\nInformation required: Titan PI No., CP Invoice Ref., Account period, Description\nCriteria: Status='Approved', TMP status <>'Success' (meaning not booked in TMP yet)\nPRD. sample:\nCustoms VAT:\n\n\nCustoms Duty:",
+   "system": "Titan PI",
+   "last": "27.R2"
+  },
+  {
+   "id": "FR-02",
+   "item": "Customs VAT & duty invoices",
+   "desc": "As an ST user, I need Titan PI to auto synchronize below information of China Customs VAT & Duty invoices Credit Note to TMP on daily basis when CN get approved, so that I don't need to manually unlink Titan PI No. with Customs payment receipt in TMP.\nInformation required: Titan PI No., CP Invoice Ref., Account period, Description, Underlying PI No.\nCriteria: Status='Approved', TMP status <>'Success' (meaning not booked in TMP yet)",
+   "system": "Titan PI",
+   "last": "27.R2"
+  },
+  {
+   "id": "FR-03",
+   "item": "Customs VAT & duty invoices",
+   "desc": "As an ST user, I need TMP to auto sync. Titan PI No. based on the CP. invoice Ref. and PI description upon receive Titan PI message of the same, so that I don't need to manually input the same in TMP.\nNotes: For Titan PI-Customs Payment receipt 1-1 case, ST will input customs VAT or duty payment receipt No. in CP Invoice Ref, for 1-N case, ST will input in Description field with multiple customs VAT or duty payment receipt No. with semicolon separated.",
+   "system": "TMP",
+   "last": "27.R2"
+  },
+  {
+   "id": "FR-04",
+   "item": "Customs VAT & duty invoices",
+   "desc": "As an ST user, I need TMP to auto clear Titan PI No. based on the CP. invoice Ref. and PI description, untick customs VAT if already ticked (as in reality customs VAT does not have red invoice), upon receive Titan CN on the same, so that I don't need to manually clear the same in TMP.",
+   "system": "TMP",
+   "last": "27.R2"
+  },
+  {
+   "id": "FR-05",
+   "item": "Customs VAT",
+   "desc": "As a mailroom user, I need TMP to auto untick Customs VAT upon receive Titan CN if previously ticked, so to avoid wrong input VAT ticking.",
+   "system": "TMP",
+   "last": "27.R2"
+  },
+  {
+   "id": "FR-06",
+   "item": "Customs VAT & duty invoices",
+   "desc": "As an ST user, I need TMP to inform me if Titan PI sends another PI No. on the same Customs VAT & Duty invoice which is already synchronized with Titan PI No. to avoid duplicated booking & payment.",
+   "system": "TMP",
+   "last": "27.R2"
+  },
+  {
+   "id": "FR-07",
+   "item": "General VAT invoice",
+   "desc": "General VAT invoice with tax amount should be interfaced to Titan PI in the API as below, due to General VAT tax is irrecoverable and Oracle does not support 'IRR' tax code.\n\nIf the input VAT is not deductible (i.e. 6% Service General VAT), the tax status should be interfaced to Titan PI as ‘Outside scope’ & tax code ‘CN099PI’.\n\n\nIf the tax is exempted (e.g. Gold), the tax status should be interfaced to Titan PI as ‘Applicable’ & tax code ‘CN205PI’.\n\nTax amount to be consolidated into net amount and pass to Titan net amount,\nTax amount pass to Titan as 0.\nNotes:\nGeneral VAT whose VAT is irrecoverable, there will be a break between TMP and Oracle in tax amount reconciliation, but total invoice amount reconciliation is balanced.\nPRD. Sample:\nService General VAT with 6% tax rate: Tax Status-Outside Scope, Tax Code: CN099PI\n\nCargo General VAT with tax exempted: Tax Status-Applicable, Tax Code:CN205PI",
+   "system": "TMP",
+   "last": "27.R1"
+  },
+  {
+   "id": "FR-08",
+   "item": "IC VAT invoice",
+   "desc": "Previously IC VAT invoice will not be extracted to Titan PI feed, in API, IC invoice should also be covered since it is not necessary to be triggered by SI to follow the internal invoicing approving process.\nIf CP is also China GC, mark internal invoice as 'Yes'.",
+   "system": "TMP,\nTitan PI\nCCEP-194525",
+   "last": "27.R2"
+  },
+  {
+   "id": "FR-09",
+   "item": "IC VAT invoice",
+   "desc": "Internal purchase VAT invoice will only be interfaced to Titan PI after internal Titan SI issued successfully, so that TMP will interface Titan SI number to Titan PI as CP invoice reference for IC invoices.",
+   "system": "TMP, Titan PI",
+   "last": "27.R2"
+  },
+  {
+   "id": "FR-10",
+   "item": "IC VAT invoice",
+   "desc": "After internal PI booked, PI No. should be sent to Titan SI to book the internal invoice number.",
+   "system": "Titan PI, Titan SI",
+   "last": "27.R2"
+  },
+  {
+   "id": "FR-11",
+   "item": "Service VAT attribution",
+   "desc": "TMP to synchronize RM service cost group from WDMS and support user to do service VAT attribution in TMP by uploading attribution lines, so that TMP can interface the same to Titan PI at day end batch job. For invoices with attribution, the invoice will get auto attributed and approved in Titan PI.",
+   "system": "WDMS,\nTMP,\nTitan PI\nCCEP-192145",
+   "last": "TBD"
+  },
+  {
+   "id": "FR-12",
+   "item": "Service VAT without attribution",
+   "desc": "For service VAT without attribution, only those confirmed to be booked by user will be interfaced to Titan PI as Incomplete status and then user will do further attribution and approval in Titan PI. The information from TMP should not allow user modification so to make sure it's the same from TMP.",
+   "system": "TMP,\nTitan PI\nCCEP-192145",
+   "last": "27.R1"
+  },
+  {
+   "id": "FR-13",
+   "item": "Status Transition",
+   "desc": "The status of the VAT invoices sent to Titan PI will be updated with Titan PI No. and status. Sent->Approved or failed or cancelled. For failed ones, error message should be shown for user to check.\nTMP will add Titan PI number and Titan PI status for each VAT invoice. After sending the VAT invoice to Titan PI, the status will be 'sent', Titan PI will response with current PI No. & Status (e.g. Awaiting external validation) to TMP. TMP will schedule query at intervals (every 5 mins) to get the latest Titan PI status and update the same in TMP (e.g. 'Approved' or 'external fail' or 'Cancelled' ) For failed ones, the failed reason should also be presented for user to further check. For Cancelled ones, Titan PI No. in TMP should be shown as empty and taken as not sent to Titan PI and should be re-sent if other criteria met.",
+   "system": "TMP,\nTitan PI",
+   "last": "27.R1"
+  },
+  {
+   "id": "FR-14",
+   "item": "Failed PI",
+   "desc": "As a TMP user who confirm the Input VAT to be booked in Titan PI, I need to be notified for the 'external fail' Titan PI timely with failure reason, so that I can take necessary actions timely and clear about the gap between TMP and Titan/Oracle.",
+   "system": "TMP",
+   "last": "27.R1"
+  },
+  {
+   "id": "FR-15",
+   "item": "Accounting Period",
+   "desc": "As an Accounting user, I require TMP to derive the VAT ticking month from the invoice Accounting Period in Oracle, so that Input VAT Invoices are deducted in the correct reporting period, avoiding timing discrepancies and ensuring compliance with China accounting and tax regulations.\nNote: Input VAT Confirmation\nA mandatory tax process in China whereby a company confirms eligible VAT invoices on the State Tax Administration platform before claiming Input VAT credits. The confirmation must be performed in the correct tax period which is the same in GAI/Oracle. Therefore, TMP requires the Accounting Period determined in Titan PI to decide in which month the VAT invoice should be included for deduction.",
+   "system": "TMP,\nOracle",
+   "last": "27.R1"
+  },
+  {
+   "id": "FR-16",
+   "item": "Input VAT Confirmation",
+   "desc": "TMP should block user from unticking (取消认证) input VAT if Titan PI No. is not empty.",
+   "system": "TMP",
+   "last": "27.R1"
+  },
+  {
+   "id": "FR-17",
+   "item": "Report",
+   "desc": "As an Accounting user, I require TMP to send a month-end and M+1 exception report of VAT invoices that have been accounted for in the financial system (Titan PI No. not empty and not Credit Noted) but are not yet VAT-confirmed, so that unconfirmed input VAT invoices can be followed up promptly, minimizing the risk of missed VAT deductions and supporting tax compliance.",
+   "system": "TMP",
+   "last": "27.R1"
+  },
+  {
+   "id": "FR-18",
+   "item": "Cargo Doc. L/C",
+   "desc": "In cargo invoice attribution screen add a checkbox 'Cargo Doc LC'. If ticked, TMP will default LC amount=invoice net amount, LC Tax Amount=invoice tax amount, and allow user modification. The same will be interfaced to Titan PI.\nIf PI amount fully covered by LC amount, 'DO NOT Pay' will be ticked by Titan PI automatically. Otherwise only the amount not covered by LC will be allowed to create PO.",
+   "system": "TMP,\nTitan PI",
+   "last": "27.R2"
+  },
+  {
+   "id": "FR-19",
+   "item": "Bulk invoice weight basis",
+   "desc": "In cargo invoice attribution screen, add field 'invoice weight basis' to record Bulk VAT invoice weight basis and pass the same to Titan PI, Titan PI needs to use the same to do Qty validation, i.e. if VAT invoice weight basis is Wet, use assignment Wet weight to validate invoiced weight, else use assignment Dry weight to do the validation. The remaining Qty calculation should be on the same invoice weight basis.",
+   "system": "TMP,\nTitan PI",
+   "last": "27.R2"
+  },
+  {
+   "id": "FR-20",
+   "item": "Bulk invoice weight basis",
+   "desc": "Titan PI should pass the Bulk invoice weight basis to BO, so that BO can show the correct invoiced weight and remaining to be invoiced weight in Bulk Settlement Note.",
+   "system": "Titan PI,\nBusiness Object",
+   "last": "27.R2"
+  },
+  {
+   "id": "FR-21",
+   "item": "Cargo Invoice filter",
+   "desc": "Cargo invoice: Same as current Excel uploader FSD -TMP Cargo Input VAT invoice attribution feed to be uploaded to Titan PI - China local automation - Confluence with only difference to include IC invoice as well.\nIC invoice must be interfaced after Titan SI booked successfully so that internal invoice number can be updated to Titan SI when Titan PI approved.",
+   "system": "TMP",
+   "last": "27.R2"
+  },
+  {
+   "id": "FR-22",
+   "item": "Service Invoice filter",
+   "desc": "Functional Line should be mandatory for invoices user confirmed to be booked\nIC invoice must be interfaced after Titan SI booked successfully so that internal invoice number can be updated to Titan SI when Titan PI approved.\nBank invoices: Attributed to Titan charges Trx\nnon-Bank invoice & WHT: Functional Line <>'Energy' & User confirmed to be booked: Yes",
+   "system": "TMP",
+   "last": "27.R1"
+  },
+  {
+   "id": "FR-23",
+   "item": "Estimate assignment Attribution",
+   "desc": "China input VAT and Element VAT QV reports need to add field assignment state sourced from Logistics for purchase assignments, so that TMP can consume it to build validation logic upon attribution.",
+   "system": "QV",
+   "last": "27.R2"
+  },
+  {
+   "id": "FR-24",
+   "item": "Estimate assignment Attribution",
+   "desc": "When user attribute VAT invoice to un-actualized assignments whose assignment state='Estimate', there should be warning msg pop up to warn the user to check whether it's correct and allow to save when user confirm.",
+   "system": "TMP",
+   "last": "27.R2"
+  },
+  {
+   "id": "FR-25",
+   "item": "Estimate assignment Attribution",
+   "desc": "For the scenario where CP issued Traf. VAT ahead of assignment actualized, currently Titan PI bulk uploader does not support, user need to manually book in Titan PI. This validation should be removed in API.",
+   "system": "Titan PI",
+   "last": "27.R2"
+  },
+  {
+   "id": "FR-26",
+   "item": "Negative Attribution",
+   "desc": "Titan PI API must support negative quota/assignment attribution (overall invoice amount is positive), so that Ops does not need to book such scenario manually in Titan PI and complete the attribution in TMP.",
+   "system": "Titan PI\nCCEP-188836",
+   "last": "27.R2"
+  },
+  {
+   "id": "FR-27",
+   "item": "Quantity FIFO Attribution",
+   "desc": "Now in PI bulk uploader, Qty auto attribution is based on assignment quantity ratio, in Titan API, it should be based on FIFO logic, i.e. the system should allocate the Invoice Quantity in the FIFO Logic based on the Assignment Quantity instead of Assignment Quantity Prorate and if any additional Quantity is left should be added to the last assignment.",
+   "system": "Titan PI\nCCEP-189708",
+   "last": "27.R2"
+  },
+  {
+   "id": "FR-28",
+   "item": "Final Invoice Accrual clearance",
+   "desc": "The invoice amount auto attribution from Quota (RM & Bulk FLs and Alumina under Concs. FL) to Assignment (FIFO to actualized assignments) will remain unchanged as per the Excel bulk uploader Section 8.4 on FSD - Purchase Invoice and Credit Notes uploader for China VAT Invoices - CC&E - Confluence, with below enhancement is needed to clear previous provisional over-invoicing.\nDuring provisional quota to assignments allocation, any residual invoice amount will be temporarily allocated to the last actualized assignment. Once the Quota status is set to 'Final', Titan PI shall redistribute such residual amounts across all assignments according to the final quota allocation, eliminating any over-invoicing and clearing all remaining accrual balances.",
+   "system": "Titan PI",
+   "last": "27.R2"
+  },
+  {
+   "id": "FR-29",
+   "item": "Bank VAT Invoice",
+   "desc": "Bank invoice attributed to Titan charges transactions by Treasury Ops in TMP will be auto interfaced to Titan PI at daily batch job. For Titan Charges CCF type other than 'Mm Interest' & 'Other Mm Fee', the Titan PI will be incomplete status and Acct. need to do further attribution & Approval in Titan PI.\nNote: If TO identifies mistake after Titan PI is booked and cancel attribution in TMP to re-attribute, TMP should warn user that the Titan PI is booked already and user need to tell TMP the new Titan PI No. after re-book in Titan PI since the same GT Invoice No. cannot be used to re-book in Titan PI due to unique key validation.",
+   "system": "TMP, Titan PI",
+   "last": "27.R1"
+  },
+  {
+   "id": "FR-31",
+   "item": "China International Invoice",
+   "desc": "China international invoices, both PI & CN, should be interfaced to TMP input invoice at scheduled intervals.\nInvoice header: Titan PI No., invoice CP. Ref., Description, GC, CP, invoice date, invoice owner, account period, Cargo/Service invoice type, functional line, business line, commodity, Invoice Currency, Invoice net amount, Invoice Tax Amount, Invoice gross amount, underlying PI No. for Credit Note\nInvoice Line: cost group, line net amount, line tax amount, line gross amount\nCriteria: Status='Approved', TMP status <>'Success'\nNote: Customs VAT & duty invoice should be covered in the same since they are booked as China international invoices.",
+   "system": "TMP, Titan PI",
+   "last": "27.R2"
+  },
+  {
+   "id": "FR-32",
+   "item": "China International Invoice",
+   "desc": "TMP should handle China international invoices differently per below:\nCost Code=C26, net amount=0, tax amount>0 → should be mapped with Customs VAT\nCost Code=C26, net amount>0, tax amount=0 → should be mapped with Customs duty payment receipt\nCost Code=C82, net amount=0, tax amount>0 → This is WHT payment receipt invoices which will synchronized from TMP to Titan PI. So when receives it in China international invoices from Titan PI, TMP should not duplicate it under commercial invoices.\nOthers will be categorized as Commercial invoices in TMP Input invoices. Further sub-classification will be discussed later per Acct. further requirement.",
+   "system": "TMP",
+   "last": "27.R2"
+  },
+  {
+   "id": "FR-33",
+   "item": "China International Invoice",
+   "desc": "The underlying China International invoice should be updated to 'fully reversed' (已全额红冲) or 'partially reversed' （已部分红冲）based on the Credit Note amount in TMP.",
+   "system": "TMP",
+   "last": "27.R2"
+  },
+  {
+   "id": "FR-34",
+   "item": "China International Invoice",
+   "desc": "TMP should response back to Titan PI on the synchronization status of China international invoices on near real-time basis.",
+   "system": "TMP, Titan PI",
+   "last": "27.R2"
+  },
+  {
+   "id": "FR-35",
+   "item": "Partial Credit Note",
+   "desc": "In Cargo PI excel bulk uploader, only fully reversal-full credit note is supported, but in API, partial credit note should also be supported, so that user does not need to do manual credit note booking when receive partial CN from counterparty.",
+   "system": "TMP, Titan PI",
+   "last": "27.R1"
+  },
+  {
+   "id": "FR-36",
+   "item": "Invoice Owner",
+   "desc": "For Cargo VAT invoices, invoice owner will remain the logic to map from Logistics.Primary assignment owner based on attribution,\nFor non-bank Service VAT, TMP will pass invoice owner as the user ‘s name who confirms booking of the service VAT in Titan PI.\nFor bank service VAT, TMP will default Amy Zhou as invoice owner and pass to Titan PI.\nFor WHT invoices, TMP will default Amy Zhou as invoice owner and pass to Titan PI.\nOperator & Approver will be the same as Invoice Owner.",
+   "system": "TMP, Titan PI",
+   "last": "27.R1"
+  },
+  {
+   "id": "FR-37",
+   "item": "Created By",
+   "desc": "For invoices created by TMP API, the 'Created By' should clearly indicate that it's auto created from TMP, so that user can easily differentiate it from manual-booked PIs.",
+   "system": "Titan PI",
+   "last": "27.R1"
+  },
+  {
+   "id": "FR-39",
+   "item": "Report",
+   "desc": "At month end, TMP should automate a report to show the VAT /WHT invoices confirmed to be booked in TMP but without Titan PI No., so to take action to see whether user forget to update the Titan PI to TMP under exceptional cases, to avoid break. (address Question 5)",
+   "system": "TMP",
+   "last": "27.R1"
+  }
+ ],
+ "matched": [
+  {
+   "a_id": "FR-01",
+   "a_item": "Customs VAT & duty invoices",
+   "a_phase1": "N",
+   "b_id": "FR-01",
+   "b_item": "Customs VAT & duty invoices",
+   "b_fix": "27.R2",
+   "score": 1.0
+  },
+  {
+   "a_id": "FR-02",
+   "a_item": "Customs VAT & duty invoices",
+   "a_phase1": "N",
+   "b_id": "FR-02",
+   "b_item": "Customs VAT & duty invoices",
+   "b_fix": "27.R2",
+   "score": 1.0
+  },
+  {
+   "a_id": "FR-03",
+   "a_item": "Customs VAT & duty invoices",
+   "a_phase1": "N",
+   "b_id": "FR-03",
+   "b_item": "Customs VAT & duty invoices",
+   "b_fix": "27.R2",
+   "score": 1.0
+  },
+  {
+   "a_id": "FR-05",
+   "a_item": "Customs VAT",
+   "a_phase1": "N",
+   "b_id": "FR-05",
+   "b_item": "Customs VAT",
+   "b_fix": "27.R2",
+   "score": 1.0
+  },
+  {
+   "a_id": "FR-06",
+   "a_item": "Customs VAT & duty invoices",
+   "a_phase1": "N",
+   "b_id": "FR-06",
+   "b_item": "Customs VAT & duty invoices",
+   "b_fix": "27.R2",
+   "score": 1.0
+  },
+  {
+   "a_id": "FR-08",
+   "a_item": "IC VAT invoice",
+   "a_phase1": "N",
+   "b_id": "FR-08",
+   "b_item": "IC VAT invoice",
+   "b_fix": "27.R2",
+   "score": 1.0
+  },
+  {
+   "a_id": "FR-09",
+   "a_item": "IC VAT invoice",
+   "a_phase1": "N",
+   "b_id": "FR-09",
+   "b_item": "IC VAT invoice",
+   "b_fix": "27.R2",
+   "score": 1.0
+  },
+  {
+   "a_id": "FR-10",
+   "a_item": "IC VAT invoice",
+   "a_phase1": "N",
+   "b_id": "FR-10",
+   "b_item": "IC VAT invoice",
+   "b_fix": "27.R2",
+   "score": 1.0
+  },
+  {
+   "a_id": "FR-11",
+   "a_item": "Service VAT attribution",
+   "a_phase1": "N\n\nBank invoice分摊相关的要做",
+   "b_id": "FR-11",
+   "b_item": "Service VAT attribution",
+   "b_fix": "TBD",
+   "score": 1.0
+  },
+  {
+   "a_id": "FR-12",
+   "a_item": "Service VAT without attribution",
+   "a_phase1": "Y",
+   "b_id": "FR-12",
+   "b_item": "Service VAT without attribution",
+   "b_fix": "27.R1",
+   "score": 1.0
+  },
+  {
+   "a_id": "FR-13",
+   "a_item": "Status Transition",
+   "a_phase1": "Y",
+   "b_id": "FR-13",
+   "b_item": "Status Transition",
+   "b_fix": "27.R1",
+   "score": 0.828
+  },
+  {
+   "a_id": "FR-14",
+   "a_item": "Failed PI",
+   "a_phase1": "Y",
+   "b_id": "FR-14",
+   "b_item": "Failed PI",
+   "b_fix": "27.R1",
+   "score": 1.0
+  },
+  {
+   "a_id": "FR-15",
+   "a_item": "Accounting Period",
+   "a_phase1": "Y",
+   "b_id": "FR-15",
+   "b_item": "Accounting Period",
+   "b_fix": "27.R1",
+   "score": 1.0
+  },
+  {
+   "a_id": "FR-16",
+   "a_item": "Input VAT Confirmation",
+   "a_phase1": "Y",
+   "b_id": "FR-16",
+   "b_item": "Input VAT Confirmation",
+   "b_fix": "27.R1",
+   "score": 0.944
+  },
+  {
+   "a_id": "FR-20",
+   "a_item": "Bulk invoice weight basis",
+   "a_phase1": "N",
+   "b_id": "FR-20",
+   "b_item": "Bulk invoice weight basis",
+   "b_fix": "27.R2",
+   "score": 1.0
+  },
+  {
+   "a_id": "FR-21",
+   "a_item": "Cargo Invoice filter",
+   "a_phase1": "N",
+   "b_id": "FR-21",
+   "b_item": "Cargo Invoice filter",
+   "b_fix": "27.R2",
+   "score": 1.0
+  },
+  {
+   "a_id": "FR-23",
+   "a_item": "Estimate assignment Attribution",
+   "a_phase1": "N",
+   "b_id": "FR-23",
+   "b_item": "Estimate assignment Attribution",
+   "b_fix": "27.R2",
+   "score": 1.0
+  },
+  {
+   "a_id": "FR-24",
+   "a_item": "Estimate assignment Attribution",
+   "a_phase1": "N",
+   "b_id": "FR-24",
+   "b_item": "Estimate assignment Attribution",
+   "b_fix": "27.R2",
+   "score": 1.0
+  },
+  {
+   "a_id": "FR-25",
+   "a_item": "Estimate assignment Attribution",
+   "a_phase1": "N",
+   "b_id": "FR-25",
+   "b_item": "Estimate assignment Attribution",
+   "b_fix": "27.R2",
+   "score": 1.0
+  },
+  {
+   "a_id": "FR-26",
+   "a_item": "Negative Attribution",
+   "a_phase1": "N",
+   "b_id": "FR-26",
+   "b_item": "Negative Attribution",
+   "b_fix": "27.R2",
+   "score": 1.0
+  },
+  {
+   "a_id": "FR-27",
+   "a_item": "Quantity FIFO Attribution",
+   "a_phase1": "N",
+   "b_id": "FR-27",
+   "b_item": "Quantity FIFO Attribution",
+   "b_fix": "27.R2",
+   "score": 1.0
+  },
+  {
+   "a_id": "FR-28",
+   "a_item": "Final Invoice Accrual clearance",
+   "a_phase1": "N",
+   "b_id": "FR-28",
+   "b_item": "Final Invoice Accrual clearance",
+   "b_fix": "27.R2",
+   "score": 1.0
+  },
+  {
+   "a_id": "FR-29",
+   "a_item": "Bank VAT Invoice",
+   "a_phase1": "Y",
+   "b_id": "FR-29",
+   "b_item": "Bank VAT Invoice",
+   "b_fix": "27.R1",
+   "score": 0.874
+  },
+  {
+   "a_id": "FR-31",
+   "a_item": "China International Invoice",
+   "a_phase1": "N",
+   "b_id": "FR-31",
+   "b_item": "China International Invoice",
+   "b_fix": "27.R2",
+   "score": 1.0
+  },
+  {
+   "a_id": "FR-32",
+   "a_item": "China International Invoice",
+   "a_phase1": "N",
+   "b_id": "FR-32",
+   "b_item": "China International Invoice",
+   "b_fix": "27.R2",
+   "score": 1.0
+  },
+  {
+   "a_id": "FR-33",
+   "a_item": "China International Invoice",
+   "a_phase1": "N",
+   "b_id": "FR-33",
+   "b_item": "China International Invoice",
+   "b_fix": "27.R2",
+   "score": 1.0
+  },
+  {
+   "a_id": "FR-34",
+   "a_item": "China International Invoice",
+   "a_phase1": "N",
+   "b_id": "FR-34",
+   "b_item": "China International Invoice",
+   "b_fix": "27.R2",
+   "score": 1.0
+  },
+  {
+   "a_id": "FR-35",
+   "a_item": "Partial Credit Note",
+   "a_phase1": "Y",
+   "b_id": "FR-35",
+   "b_item": "Partial Credit Note",
+   "b_fix": "27.R1",
+   "score": 1.0
+  },
+  {
+   "a_id": "FR-36",
+   "a_item": "Invoice Owner",
+   "a_phase1": "Y",
+   "b_id": "FR-36",
+   "b_item": "Invoice Owner",
+   "b_fix": "27.R1",
+   "score": 0.982
+  },
+  {
+   "a_id": "FR-37",
+   "a_item": "Created By",
+   "a_phase1": "Y",
+   "b_id": "FR-37",
+   "b_item": "Created By",
+   "b_fix": "27.R1",
+   "score": 1.0
+  }
+ ],
+ "unmatched_b": [
+  {
+   "b_id": "FR-04",
+   "b_item": "Customs VAT & duty invoices",
+   "b_fix": "27.R2"
+  },
+  {
+   "b_id": "FR-07",
+   "b_item": "General VAT invoice",
+   "b_fix": "27.R1"
+  },
+  {
+   "b_id": "FR-17",
+   "b_item": "Report",
+   "b_fix": "27.R1"
+  },
+  {
+   "b_id": "FR-18",
+   "b_item": "Cargo Doc. L/C",
+   "b_fix": "27.R2"
+  },
+  {
+   "b_id": "FR-19",
+   "b_item": "Bulk invoice weight basis",
+   "b_fix": "27.R2"
+  },
+  {
+   "b_id": "FR-22",
+   "b_item": "Service Invoice filter",
+   "b_fix": "27.R1"
+  },
+  {
+   "b_id": "FR-39",
+   "b_item": "Report",
+   "b_fix": "27.R1"
+  }
+ ]
+}
